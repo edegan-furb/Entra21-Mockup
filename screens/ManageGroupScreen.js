@@ -28,8 +28,7 @@ function ManageGroupScreen({ route, navigation }) {
   async function confirmHandler(groupData) {
     setIsLoading(true);
     try {
-      const group = await docGroup(groupData.title);
-      const groupId = group.id;
+      const groupId = await docGroup(groupData.title);
       groupsCtx.addGroup({ ...groupData, id: groupId });
       navigation.goBack();
     } catch (error) {
