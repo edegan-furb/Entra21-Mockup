@@ -17,6 +17,8 @@ import { Colors } from "./constants/styles";
 import AuthContextProvider, { AuthContext } from "./store/auth-context";
 import IconButton from "./components/ui/IconButton";
 import GroupsContextProvider from "./store/groups-context";
+import GroupScreen from "./screens/GroupScreen";
+import { View } from "react-native";
 
 const BottomTabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -117,6 +119,32 @@ function AuthenticatedStack() {
         component={ManageGroupScreen}
         options={{
           presentation: "modal",
+        }}
+      />
+      <Stack.Screen
+        name="GroupScreen"
+        component={GroupScreen}
+        options={{
+          presentation: "modal",
+          headerRight: ({ tintColor }) => (
+            <View style={{ flexDirection: 'row' }}>
+            <IconButton
+              icon={"create-outline"}
+              color={tintColor}
+              size={24}
+            />
+              <IconButton
+              icon={"person-add-outline"}
+              color={tintColor}
+              size={24}
+            />
+             <IconButton
+              icon={"add-circle-outline"}
+              color={tintColor}
+              size={24}
+            />
+            </View>
+          ),
         }}
       />
     </Stack.Navigator>

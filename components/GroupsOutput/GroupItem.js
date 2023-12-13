@@ -7,7 +7,7 @@ function GroupItem({ id, title }) {
   const navigation = useNavigation();
 
   function groupPressHandler() {
-    navigation.navigate("ManageGroupScreen", {
+    navigation.navigate("GroupScreen", {
       groupId: id,
     });
   }
