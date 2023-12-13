@@ -1,5 +1,13 @@
 import { auth, db } from "./firebaseConfig";
-import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  addDoc,
+  getDoc,
+  doc,
+} from "firebase/firestore";
 
 export async function docGroup(title) {
   try {
@@ -18,9 +26,11 @@ export async function docGroup(title) {
 
 export async function docMember(groupRef, userRef) {
   try {
+    const groupDocRef = doc(db, "groups", groupRef);
+    const userDocRef = doc(db, "users", userRef);
     const memberRef = await addDoc(collection(db, "members"), {
-      group: "groups/" + groupRef,
-      user: "users/" + userRef,
+      group: groupDocRef,
+      user: userDocRef,
     });
     return memberRef;
   } catch (error) {
@@ -32,27 +42,25 @@ export async function docMember(groupRef, userRef) {
 export async function fetchGroups() {
   try {
     const userRef = auth.currentUser.uid;
+    const userDocRef = doc(db, "users", userRef);
     const groupsCollection = collection(db, "groups");
     const membersCollection = collection(db, "members");
 
     const userMembersQuery = query(
       membersCollection,
-      where("user", "==", `users/${userRef}`)
+      where("user", "==", userDocRef)
     );
     const userMembersSnapshot = await getDocs(userMembersQuery);
 
     const groupRefs = userMembersSnapshot.docs
       .map((doc) => doc.data().group)
-      .filter((groupRef) => groupRef); // Filter out undefined values
+      .filter((groupRef) => groupRef);
 
     if (groupRefs.length === 0) {
-      // No groups found for the user
       return [];
     }
 
-    const groupIDs = groupRefs.map((groupRef) =>
-      typeof groupRef === "string" ? groupRef.split("/")[1] : groupRef.id
-    );
+    const groupIDs = groupRefs.map((groupRef) => groupRef.id);
 
     const groupsQuery = query(
       groupsCollection,
