@@ -33,9 +33,8 @@ function AllExpenses() {
         setIsLoading(false);
       }
     }
-
     getGroups();
-  }, [initialLoad]);
+  }, [initialLoad]); // Run the effect when initialLoad changes
 
   if (error && !isLoading) {
     return <Error message={error} />;
