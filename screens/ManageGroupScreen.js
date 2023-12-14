@@ -8,13 +8,14 @@ import { docGroup } from "../util/firestore";
 import Error from "../components/ui/Error";
 import Loading from "../components/ui/LoadingOverlay";
 
-function ManageGroupScreen({ route, navigation }) {
+function ManageGroupScreen({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
+  const editedGroupId = route.params?.editedGroupId;
+
   const groupsCtx = useContext(GroupsContext);
 
-  const editedGroupId = route.params?.groupId;
   const isEditing = !!editedGroupId;
 
   function cancelHandler() {
@@ -37,15 +38,13 @@ function ManageGroupScreen({ route, navigation }) {
     }
   }
 
-  const selectGroup = groupsCtx.groups.find(
-    (group) => group.id === editedGroupId
-  );
+  const selectGroup = groupsCtx.groups.find((group) => group.id === editedGroupId);
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: "Add Group",
+      title: editedGroupId ? "Update Group" : "Add Group",
     });
-  }, [navigation, isEditing]);
+  }, [isEditing]);
 
   if (error && !isLoading) {
     return <Error message={error} />;

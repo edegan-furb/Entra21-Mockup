@@ -124,28 +124,33 @@ function AuthenticatedStack() {
       <Stack.Screen
         name="GroupScreen"
         component={GroupScreen}
-        options={{
+        options={({ route, navigation }) => ({
           presentation: "modal",
           headerRight: ({ tintColor }) => (
-            <View style={{ flexDirection: 'row' }}>
-            <IconButton
-              icon={"create-outline"}
-              color={tintColor}
-              size={24}
-            />
+            <View style={{ flexDirection: "row" }}>
               <IconButton
-              icon={"person-add-outline"}
-              color={tintColor}
-              size={24}
-            />
-             <IconButton
-              icon={"add-circle-outline"}
-              color={tintColor}
-              size={24}
-            />
+                icon={"create-outline"}
+                color={tintColor}
+                size={24}
+                onPress={() => {
+                  navigation.navigate("ManageGroupScreen", {
+                    editedGroupId: route.params?.groupId,
+                  });
+                }}
+              />
+              <IconButton
+                icon={"person-add-outline"}
+                color={tintColor}
+                size={24}
+              />
+              <IconButton
+                icon={"add-circle-outline"}
+                color={tintColor}
+                size={24}
+              />
             </View>
           ),
-        }}
+        })}
       />
     </Stack.Navigator>
   );
