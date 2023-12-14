@@ -1,6 +1,5 @@
-User
 import { View, StyleSheet } from "react-native";
-import { useLayoutEffect, useContext, useState } from "react";
+import { useLayoutEffect, useContext } from "react";
 import { Colors } from "../constants/styles";
 import { GroupsContext } from "../store/groups-context";
 
