@@ -1,15 +1,23 @@
 import { View, StyleSheet } from "react-native";
-import { useLayoutEffect, useContext, useState } from "react";
+import { useLayoutEffect, useContext, useEffect } from "react";
 import { Colors } from "../constants/styles";
 import { GroupsContext } from "../store/groups-context";
 
 function GroupScreen({ route, navigation }) {
-
   const groupsCtx = useContext(GroupsContext);
 
   const GroupId = route.params?.groupId;
 
-  const selectGroup = groupsCtx.groups.find((group) => group.id === GroupId);
+  useEffect(() => {
+    if (!GroupId) {
+      // If it doesn't exist, navigate back
+      navigation.goBack();
+    } else {
+      // Find and set the selected group
+      const group = groupsCtx.groups.find((group) => group.id === GroupId);
+      setSelectGroup(group);
+    }
+  }, [GroupId, groupsCtx.groups, navigation]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
