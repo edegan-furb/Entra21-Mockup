@@ -7,23 +7,20 @@ import Error from "../components/ui/Error";
 import LoadingOverlay from "../components/ui/LoadingOverlay";
 
 function AllExpenses() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
   const groupsCtx = useContext(GroupsContext);
 
   useEffect(() => {
-    async function getGroups() {
-      setIsLoading(true);
-      try {
-        const groups = await fetchGroups();
-        groupsCtx.setGroups(groups);
-      } catch (error) {
-        setError("Could not fetch group!");
-      }
-      setIsLoading(false);
-    }
-    getGroups();
+    const unsubscribe = fetchGroups((groups) => {
+      groupsCtx.setGroups(groups);
+    });
+  
+    return () => {
+      // Unsubscribe when the component unmounts
+      unsubscribe();
+    };
   }, []);
 
   if (error && !isLoading) {

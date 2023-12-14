@@ -7,7 +7,8 @@ import {
   addDoc,
   updateDoc,
   doc,
-  deleteDoc
+  deleteDoc,
+  onSnapshot,
 } from "firebase/firestore";
 
 export async function createGroup(title) {
@@ -73,43 +74,36 @@ export async function addMember(groupRef, userRef) {
   }
 }
 
-export async function fetchGroups() {
-  try {
-    const userRef = auth.currentUser.uid;
-    const userDocRef = doc(db, "users", userRef);
-    const groupsCollection = collection(db, "groups");
-    const membersCollection = collection(db, "members");
+export async function fetchGroups(callback) {
+  const userRef = auth.currentUser.uid;
+  const userDocRef = doc(db, "users", userRef);
+  const membersCollection = collection(db, "members");
 
-    const userMembersQuery = query(
-      membersCollection,
-      where("user", "==", userDocRef)
-    );
-    const userMembersSnapshot = await getDocs(userMembersQuery);
+  const userMembersQuery = query(
+    membersCollection,
+    where("user", "==", userDocRef)
+  );
 
+  const unsubscribe = onSnapshot(userMembersQuery, (userMembersSnapshot) => {
     const groupRefs = userMembersSnapshot.docs
       .map((doc) => doc.data().group)
       .filter((groupRef) => groupRef);
 
-    if (groupRefs.length === 0) {
-      return [];
-    }
-
     const groupIDs = groupRefs.map((groupRef) => groupRef.id);
 
     const groupsQuery = query(
-      groupsCollection,
+      collection(db, "groups"),
       where("__name__", "in", groupIDs)
     );
-    const groupsSnapshot = await getDocs(groupsQuery);
 
-    const groups = groupsSnapshot.docs.map((doc) => ({
-      id: doc.id,
-      title: doc.data().title,
-    }));
+    return onSnapshot(groupsQuery, (groupsSnapshot) => {
+      const groups = groupsSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        title: doc.data().title,
+      }));
+      callback(groups);
+    });
+  });
 
-    return groups;
-  } catch (error) {
-    console.error("Error fetching groups:", error.message);
-    throw error;
-  }
+  return unsubscribe;
 }
