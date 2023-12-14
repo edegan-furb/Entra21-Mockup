@@ -84,10 +84,18 @@ export async function fetchGroups(callback) {
     where("user", "==", userDocRef)
   );
 
-  const unsubscribe = onSnapshot(userMembersQuery, (userMembersSnapshot) => {
+  let unsubscribe; // Declare unsubscribe outside the callback
+
+  onSnapshot(userMembersQuery, (userMembersSnapshot) => {
     const groupRefs = userMembersSnapshot.docs
       .map((doc) => doc.data().group)
       .filter((groupRef) => groupRef);
+
+    // Check if there are any groupRefs
+    if (groupRefs.length === 0) {
+      // If no groups, you can handle it as needed, or simply return
+      return;
+    }
 
     const groupIDs = groupRefs.map((groupRef) => groupRef.id);
 
@@ -96,7 +104,8 @@ export async function fetchGroups(callback) {
       where("__name__", "in", groupIDs)
     );
 
-    return onSnapshot(groupsQuery, (groupsSnapshot) => {
+    // Assign the unsubscribe function
+    unsubscribe = onSnapshot(groupsQuery, (groupsSnapshot) => {
       const groups = groupsSnapshot.docs.map((doc) => ({
         id: doc.id,
         title: doc.data().title,
@@ -105,5 +114,6 @@ export async function fetchGroups(callback) {
     });
   });
 
-  return unsubscribe;
+  // Ensure unsubscribe is defined, even if no groups
+  return unsubscribe || (() => {});
 }

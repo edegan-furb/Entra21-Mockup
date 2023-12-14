@@ -16,9 +16,8 @@ function AllExpenses() {
     const unsubscribe = fetchGroups((groups) => {
       groupsCtx.setGroups(groups);
     });
-  
+
     return () => {
-      // Unsubscribe when the component unmounts
       unsubscribe();
     };
   }, []);
