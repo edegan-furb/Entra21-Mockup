@@ -4,7 +4,7 @@ import GroupForm from "../components/ManageGroup/GroupForm";
 import { Colors } from "../constants/styles";
 import { GroupsContext } from "../store/groups-context";
 import IconButton from "../components/ui/IconButton";
-import { docGroup } from "../util/firestore";
+import { deleteGroup, createGroup, updateGroup } from "../util/firestore";
 import Error from "../components/ui/Error";
 import Loading from "../components/ui/LoadingOverlay";
 
@@ -22,15 +22,28 @@ function ManageGroupScreen({ navigation, route }) {
     navigation.goBack();
   }
 
-  function deleteGroupHandler() {
-    navigation.goBack();
+  async function deleteGroupHandler() {
+    setIsLoading(true);
+    try {
+      await deleteGroup(editedGroupId);
+      groupsCtx.deleteGroup(editedGroupId);
+      navigation.navigate("Groups");
+    } catch (error) {
+      setError("Could not delete group - please try again later");
+      setIsLoading(false);
+    }
   }
 
   async function confirmHandler(groupData) {
     setIsLoading(true);
     try {
-      const groupId = await docGroup(groupData.title);
-      groupsCtx.addGroup({ ...groupData, id: groupId });
+      if (isEditing) {
+        groupsCtx.updateGroup(editedGroupId, groupData);
+        await updateGroup(editedGroupId, groupData.title);
+      } else {
+        const groupId = await createGroup(groupData.title);
+        groupsCtx.addGroup({ ...groupData, id: groupId });
+      }
       navigation.goBack();
     } catch (error) {
       setError("Could not save date - please try again later");
@@ -38,7 +51,9 @@ function ManageGroupScreen({ navigation, route }) {
     }
   }
 
-  const selectGroup = groupsCtx.groups.find((group) => group.id === editedGroupId);
+  const selectGroup = groupsCtx.groups.find(
+    (group) => group.id === editedGroupId
+  );
 
   useLayoutEffect(() => {
     navigation.setOptions({

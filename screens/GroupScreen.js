@@ -13,9 +13,9 @@ function GroupScreen({ route, navigation }) {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: selectGroup.title,
+      title: selectGroup && selectGroup.title,
     });
-  }, [navigation]);
+  }, [navigation, selectGroup]);
 
   return <View style={styles.container}></View>;
 }
