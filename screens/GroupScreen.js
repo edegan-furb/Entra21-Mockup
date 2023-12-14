@@ -1,10 +1,11 @@
 import { View, StyleSheet } from "react-native";
-import { useLayoutEffect, useContext, useEffect } from "react";
+import { useLayoutEffect, useContext, useEffect, useState } from "react";
 import { Colors } from "../constants/styles";
 import { GroupsContext } from "../store/groups-context";
 
 function GroupScreen({ route, navigation }) {
   const groupsCtx = useContext(GroupsContext);
+  const [selectGroup, setSelectGroup] = useState(null);
 
   const GroupId = route.params?.groupId;
 
