@@ -20,7 +20,6 @@ function WelcomeScreen() {
           token
       )
       .then((response) => {
-        //console.log("protected message = " + response.data);
         setFetchedMesssage(response.data);
       });
   }, [token]);

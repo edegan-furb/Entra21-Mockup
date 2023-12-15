@@ -1,5 +1,5 @@
-import { View, StyleSheet, Text } from "react-native";
-import { useLayoutEffect, useContext } from "react";
+import { View, StyleSheet, Text, Alert } from "react-native";
+import { useLayoutEffect, useContext, useEffect } from "react";
 import { Colors } from "../constants/styles";
 import { GroupsContext } from "../store/groups-context";
 
@@ -9,6 +9,13 @@ function GroupScreen({ route, navigation }) {
   const GroupId = route.params?.groupId;
 
   const selectGroup = groupsCtx.groups.find((group) => group.id === GroupId);
+
+  useEffect(() => {
+    if (!selectGroup) {
+      navigation.goBack();
+      Alert.alert("Access Update", "You no longer have access to this group");
+    }
+  }, [selectGroup]);
 
   useLayoutEffect(() => {
     navigation.setOptions({

@@ -41,7 +41,6 @@ function GroupForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
       return;
     }
 
-    console.log(groupData);
     onSubmit(groupData);
   }
 
