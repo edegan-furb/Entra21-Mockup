@@ -123,6 +123,7 @@ export async function fetchGroups(callback) {
 
     //  If there are no group references, return early
     if (groupRefs.length === 0) {
+      callback([]);
       return;
     }
 
