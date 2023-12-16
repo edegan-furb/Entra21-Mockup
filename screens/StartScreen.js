@@ -1,10 +1,10 @@
 import {
-    StyleSheet,
-    View,
-    SafeAreaView,
-    Platform,
-    StatusBar,
+  StyleSheet,
+  View,
+  Platform,
+  StatusBar,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 
 import UpperLogo from '../components/StartComponents/UpperLogo';
@@ -19,7 +19,7 @@ function StartScreen() {
   
     function onPressHandler(page) {
       if (page === "Login") {
-        navigation.navigate("Login");
+        navigation.navigate("Login"); 
       } else {
         navigation.navigate("Signup");
       }
@@ -36,12 +36,15 @@ function StartScreen() {
           description={"Best place to create tasks and manage your teams"}
         />
         <View style={styles.buttonsContainer}>
-          <CustomButton title={"LOGIN"} onPress={() => onPressHandler("LogIn")} />
+          <CustomButton 
+            title={"LOGIN"} 
+            onPress={() => onPressHandler("Login")}
+          />
           <CustomButton
             title={"SIGN UP"}
             styleButton={styles.signUpButton}
             styleText={styles.signText}
-            onPress={() => onPressHandler("SignUp")}
+            onPress={() => onPressHandler("Signup")}
           />
         </View>
         <Footer

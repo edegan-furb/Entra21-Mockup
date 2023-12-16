@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     fontFamily: "open-sans-bold",
   },
   description: {
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: "open-sans",
     textAlign: "center",
     paddingHorizontal: "5%",

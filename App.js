@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SplashScreen from "expo-splash-screen";
+import * as Font from "expo-font";
 import { useContext, useEffect, useState, useCallback } from "react";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -25,12 +26,42 @@ import GroupMembersScreen from "./screens/GroupMembersScreen";
 const BottomTabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+SplashScreen.preventAutoHideAsync();
+
 function AuthStack() {
+
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    async function prepare() {
+      try {
+        await Font.loadAsync({
+          "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
+          "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
+        });
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setIsReady(true);
+      }
+    }
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (isReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [isReady]);
+
+  if (!isReady) {
+    return null;
+  }
+
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false
-      }}
+    <Stack.Navigator 
+      screenOptions={{ headerShown: false }} 
+      onLayout={onLayoutRootView}
     >
       <Stack.Screen name="Start" component={StartScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
@@ -47,7 +78,7 @@ function AuthenticatedBottomTab() {
       screenOptions={{
         headerStyle: { backgroundColor: Colors.primary500 },
         headerTintColor: "white",
-        tabBarStyle: { backgroundColor: Colors.primary500 },
+        tabBarStyle: { backgroundColor: Colors.primary900 },
         tabBarActiveTintColor: Colors.primary100,
         tabBarShowLabel: false,
       }}
@@ -56,29 +87,35 @@ function AuthenticatedBottomTab() {
         name="Welcome"
         component={WelcomeScreen}
         options={{
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" size={size} color={color} />
-          ),
+          tabBarIcon: ({ focused }) => {
+            if(focused) {
+              return <Ionicons 
+                  size={25} 
+                  name="home-sharp"
+                  color={Colors.neutral50} 
+              />
+            }
+            return <Ionicons size={25} color={Colors.neutral400} name="home-outline"/>
+          },
         }}
       />
       <BottomTabs.Screen
         name="Groups"
         component={AllGroupsScreen}
-        options={({ navigation }) => ({
-          headerRight: ({ tintColor }) => (
-            <IconButton
-              icon={"add-circle-outline"}
-              color={tintColor}
-              size={24}
-              onPress={() => {
-                navigation.navigate("ManageGroupScreen");
-              }}
-            />
-          ),
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="people-circle-outline" size={size} color={color} />
-          ),
-        })}
+        options={{
+          tabBarShowLabel: false,
+          headerShown: false,
+          tabBarIcon: ({focused}) => {
+            if(focused) {
+            return <Ionicons 
+                size={25} 
+                name="people"
+                color={Colors.neutral50} 
+              />
+            }
+          return <Ionicons size={25} color={Colors.neutral400} name="people-outline"/>
+        }
+      }} 
       />
       <BottomTabs.Screen
         name="Settings"
@@ -92,9 +129,16 @@ function AuthenticatedBottomTab() {
               onPress={authCtx.logout}
             />
           ),
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="settings-outline" size={size} color={color} />
-          ),
+          tabBarIcon: ({focused}) => {
+            if(focused) {
+            return <Ionicons 
+                size={25} 
+                name="settings"
+                color={Colors.neutral50} 
+              />
+            }
+            return <Ionicons size={25} color={Colors.neutral400} name="settings-outline"/>
+          }
         }}
       />
     </BottomTabs.Navigator>
@@ -119,6 +163,7 @@ function AuthenticatedStack() {
         name="ManageGroupScreen"
         component={ManageGroupScreen}
         options={{
+          
           presentation: "modal",
         }}
       />
@@ -182,7 +227,7 @@ function Navigation() {
 function Root() {
   const [appIsReady, setAppIsReady] = useState(false);
   const authCtx = useContext(AuthContext);
-
+  
   useEffect(() => {
     async function fetchToken() {
       SplashScreen.preventAutoHideAsync();

@@ -1,5 +1,5 @@
 export const Colors = {
-  error100: '#fee2e2',
+  error100: '#ffc6c6',
   error500: '#ef4444',
 
   //  Violet

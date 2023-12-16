@@ -1,10 +1,21 @@
+import {
+  StyleSheet, 
+  TouchableWithoutFeedback, 
+  View, 
+  Keyboard, 
+  Platform, 
+  StatusBar,
+} from "react-native";
 import { useState } from "react";
-import { Alert, StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import BackButton from '../SignUp-Login-components/BackButton';
 
-import FlatButton from "../ui/FlatButton";
 import AuthForm from "./AuthForm";
+
 import { Colors } from "../../constants/styles";
+import { LinearGradient } from 'expo-linear-gradient';
+import PagesTitle from "../SignUp-Login-components/PagesTitle";
 
 function AuthContent({ isLogin, onAuthenticate }) {
   const navigation = useNavigation();
@@ -40,7 +51,6 @@ function AuthContent({ isLogin, onAuthenticate }) {
       !passwordIsValid ||
       (!isLogin && (!emailsAreEqual || !passwordsAreEqual))
     ) {
-      Alert.alert("Invalid input", "Please check your entered credentials.");
       setCredentialsInvalid({
         email: !emailIsValid,
         confirmEmail: !emailIsValid || !emailsAreEqual,
@@ -53,37 +63,48 @@ function AuthContent({ isLogin, onAuthenticate }) {
   }
 
   return (
-    <View style={styles.authContent}>
-      <AuthForm
-        isLogin={isLogin}
-        onSubmit={submitHandler}
-        credentialsInvalid={credentialsInvalid}
-      />
-      <View style={styles.buttons}>
-        <FlatButton onPress={switchAuthModeHandler}>
-          {isLogin ? "Create a new user" : "Log in instead"}
-        </FlatButton>
-      </View>
-    </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <LinearGradient
+        colors={[
+          Colors.primary950,
+          Colors.primary900,
+          Colors.primary600,
+          Colors.primary300,
+          Colors.neutral300,
+          Colors.neutral300,
+        ]}
+        locations={[0.01, 0.05, 0.15, 0.3, 0.4, 0.5]}
+        style={styles.linearContainer}
+      >
+        <SafeAreaView style={styles.rootContainer}>
+          <BackButton/>
+          <PagesTitle title={'Hello !'} subTitle={isLogin ? 'Sign in to continue' : 'Create a new account'}/>
+          <View style={styles.inputsContainer}>
+            <AuthForm
+              isLogin={isLogin}
+              onSubmit={submitHandler}
+              credentialsInvalid={credentialsInvalid}
+            />
+          </View>
+        </SafeAreaView>
+      </LinearGradient>
+    </TouchableWithoutFeedback>
   );
 }
 
 export default AuthContent;
 
 const styles = StyleSheet.create({
-  authContent: {
-    marginTop: 64,
-    marginHorizontal: 32,
-    padding: 16,
-    borderRadius: 8,
-    backgroundColor: Colors.primary800,
-    elevation: 2,
-    shadowColor: "black",
-    shadowOffset: { width: 1, height: 1 },
-    shadowOpacity: 0.35,
-    shadowRadius: 4,
+  linearContainer: {
+    width: "100%",
+    height: "100%",
+  },
+  rootContainer: {
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    width: '100%',
+    height: '100%',
   },
   buttons: {
-    marginTop: 8,
+    height: '20%',
   },
 });

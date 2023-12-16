@@ -12,14 +12,14 @@ function AllGroups() {
   const [error, setError] = useState();
   const [initialLoad, setInitialLoad] = useState(true);
 
-  //  Access the GroupsContext
+  // Access the GroupsContext
   const groupsCtx = useContext(GroupsContext);
 
-  //  useEffect to fetch groups data
+  // useEffect to fetch groups data
   useEffect(() => {
     const getGroups = async () => {
       try {
-        //  Fetch groups data and get the stopListening function
+        // Fetch groups data and get the stopListening function
         const stopListening = await fetchGroups((groups) => {
           groupsCtx.setGroups(groups);
           if (initialLoad) {
@@ -28,7 +28,7 @@ function AllGroups() {
           }
         });
 
-        //  Return the cleanup function to stop listening when the component unmounts
+        // Return the cleanup function to stop listening when the component unmounts
         return () => {
           stopListening();
         };
@@ -51,7 +51,12 @@ function AllGroups() {
   }
 
   return (
-    <GroupsOuput groups={groupsCtx.groups} fallbackText="No groups found!" />
+    <GroupsOuput 
+      groups={groupsCtx.groups} 
+      firstText={"Oops! It looks like you don't have any teams registered yet."}
+      secondText={'Press the button below to create your first team now!'}
+      title={'Add Teams'}
+    />
   );
 }
 

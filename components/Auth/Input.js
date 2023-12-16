@@ -1,29 +1,45 @@
-import { View, Text, TextInput, StyleSheet } from 'react-native';
-
+import { View, TextInput, StyleSheet, Pressable, Text } from 'react-native';
+import { useState } from "react";
 import { Colors } from '../../constants/styles';
+import { Ionicons } from '@expo/vector-icons';
 
 function Input({
-  label,
   keyboardType,
   secure,
   onUpdateValue,
   value,
   isInvalid,
+  placeHolder,
+  height
 }) {
+
+  const [hidePass, setHidePass] = useState(true);
+
   return (
-    <View style={styles.inputContainer}>
-      <Text style={[styles.label, isInvalid && styles.labelInvalid]}>
-        {label}
-      </Text>
-      <TextInput
-        style={[styles.input, isInvalid && styles.inputInvalid]}
-        //autoCapitalize={false}
-        autoCapitalize="none"
-        keyboardType={keyboardType}
-        secureTextEntry={secure}
-        onChangeText={onUpdateValue}
-        value={value}
-      />
+    <View style={styles.inputContent}>
+      <View style={[styles.inputArea, isInvalid && styles.inputInvalid]}>
+        <TextInput
+          style={styles.input}
+          //autoCapitalize={false}
+          autoCapitalize="none"
+          keyboardType={keyboardType}
+          secureTextEntry={secure ? hidePass : !hidePass}
+          onChangeText={onUpdateValue}
+          value={value}
+          placeholder={placeHolder}
+          placeholderTextColor={isInvalid ? '#be0000' : '#999'}
+        />        
+        <Pressable onPress={() => setHidePass(!hidePass)}>
+          {/* Icon check */}
+          { hidePass ?
+            // true
+            <Ionicons name="eye" color={isInvalid ? '#be0000' : Colors.primary800} size={20} height={height}/>
+            :
+            // false
+            <Ionicons name="eye-off" color={isInvalid ? '#be0000' : Colors.primary800} size={20} height={height}/>
+          }
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -31,24 +47,29 @@ function Input({
 export default Input;
 
 const styles = StyleSheet.create({
-  inputContainer: {
-    marginVertical: 8,
-  },
-  label: {
-    color: 'white',
-    marginBottom: 4,
-  },
-  labelInvalid: {
-    color: Colors.error500,
+  inputContent: {
+  width: '100%',
+  height:'20%',
+  alignItems: "center",
+  justifyContent: "center",
+},
+  inputArea: {
+  flexDirection: 'row',
+  borderBottomWidth: 1.5,
+  borderColor: Colors.primary800,
+  height: '80%',
+  width: '85%',
+  alignItems: "center",
   },
   input: {
-    paddingVertical: 8,
-    paddingHorizontal: 6,
-    backgroundColor: Colors.primary100,
-    borderRadius: 4,
-    fontSize: 16,
+    width: '90%',
+    fontFamily: 'open-sans',
+    fontSize: 16
   },
   inputInvalid: {
-    backgroundColor: Colors.error100,
+    borderColor: '#be0000',
   },
+  textInvalid: {
+    color: '#be0000',
+  }
 });
