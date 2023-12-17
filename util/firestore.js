@@ -148,7 +148,6 @@ export async function fetchGroups(callback) {
       .filter((groupRef) => groupRef);
 
     if (groupRefs.length === 0) {
-      // If no groups, invoke the callback with an empty array
       callback([]);
       return;
     }
