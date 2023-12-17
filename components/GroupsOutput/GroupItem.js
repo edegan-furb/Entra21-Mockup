@@ -35,10 +35,10 @@ const styles = StyleSheet.create({
     opacity: 0.75,
   },
   groupItem: {
-    padding: 12,
+    width: '100%',
+    height: 105,
     marginVertical: 8,
     backgroundColor: Colors.primary800,
-    flexDirection: "row",
     justifyContent: "space-between",
     borderRadius: 6,
     elevation: 3,

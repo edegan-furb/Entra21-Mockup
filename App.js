@@ -149,9 +149,7 @@ function AuthenticatedStack() {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: Colors.primary500 },
-        headerTintColor: "white",
-        contentStyle: { backgroundColor: Colors.primary100 },
+        headerShown: true
       }}
     >
       <Stack.Screen
@@ -163,7 +161,6 @@ function AuthenticatedStack() {
         name="ManageGroupScreen"
         component={ManageGroupScreen}
         options={{
-          
           presentation: "modal",
         }}
       />

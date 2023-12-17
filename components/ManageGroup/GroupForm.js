@@ -1,11 +1,10 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableWithoutFeedback, View, Keyboard, Pressable } from "react-native";
 import { useState } from "react";
 
 import Input from "./Input";
-import Button from "../ui/Button";
 import { Colors } from "../../constants/styles";
 
-function GroupForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
+function GroupForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, PageTitle }) {
   const [inputs, setInputs] = useState({
     title: {
       value: defaultValues ? defaultValues.title.toString() : "",
@@ -47,31 +46,37 @@ function GroupForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
   const formIsInvalid = !inputs.title.isValid;
 
   return (
-    <View style={styles.form}>
-      <Text style={styles.title}>Your Group</Text>
-      <Input
-        label={"Title"}
-        invalid={!inputs.title.isValid}
-        textInputConfig={{
-          multiline: false,
-          onChangeText: inputChangeHandler.bind(this, "title"),
-          value: inputs.title.value,
-        }}
-      />
-      {formIsInvalid && (
-        <Text style={styles.errorText}>
-          Invalid input values - please check your entered data
-        </Text>
-      )}
-      <View style={styles.buttons}>
-        <Button style={styles.button} mode="flat" onPress={onCancel}>
-          Cancel
-        </Button>
-        <Button style={styles.button} onPress={submitHandler}>
-          {submitButtonLabel}
-        </Button>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={styles.form}>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>{PageTitle}</Text>
+        </View>
+        <View style={styles.content}>
+          <Input
+            label={"Enter the group name"}
+            invalid={!inputs.title.isValid}
+            textInputConfig={{
+              multiline: false,
+              onChangeText: inputChangeHandler.bind(this, "title"),
+              value: inputs.title.value,
+            }}
+          />
+          {formIsInvalid && (
+            <Text style={styles.errorText}>
+              Invalid input values - please check your entered data
+            </Text>
+          )}
+          <View style={styles.buttons}>
+            <Pressable style={styles.button} onPress={submitHandler}>
+              <Text style={styles.textbutton}>{submitButtonLabel}</Text>
+            </Pressable>
+            <Pressable style={styles.button} mode="flat" onPress={onCancel}>
+              <Text style={styles.textbutton}>Cancel</Text>
+            </Pressable>
+          </View>
+        </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -80,33 +85,53 @@ export default GroupForm;
 const styles = StyleSheet.create({
   form: {
     marginTop: 40,
+    height: '60%',
+    width: '100%',
+    borderRadius: 5,
+    backgroundColor: Colors.primary100,
+  },
+  titleContainer: {
+    height: '15%',
+    width: '100%',
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: Colors.primary900,
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
   },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: "bold",
     color: Colors.primary100,
-    marginVertical: 24,
     textAlign: "center",
-  },
-  inputRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  rowInput: {
-    flex: 1,
   },
   errorText: {
     textAlign: "center",
     color: Colors.error500,
     margin: 8,
   },
-  buttons: {
-    flexDirection: "row",
-    justifyContent: "center",
+  content: {
+    height: '60%',
     alignItems: "center",
+    justifyContent: "center"
   },
-  button: {
-    minWidth: 120,
-    marginHorizontal: 8,
+  buttons: {
+    width: '100%',
+    height: 70,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "flex-end",
   },
+  button : {
+    width: '40%',
+    height: '70%',
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: 'center',
+    backgroundColor: Colors.primary900,
+  },
+  textbutton: {
+    color: '#fff',
+    fontWeight: "bold"
+  }
 });
