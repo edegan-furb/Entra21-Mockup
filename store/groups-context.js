@@ -2,10 +2,10 @@ import { createContext, useReducer } from "react";
 
 export const GroupsContext = createContext({
   groups: [],
-  addGroup: ({ title }) => {},
+  addGroup: ({ title, members }) => {},
   setGroups: (groups) => {},
   deleteGroup: (id) => {},
-  updateGroup: (id, { title }) => {},
+  updateGroup: (id, { title, members }) => {},
 });
 
 function groupsReducer(state, action) {

@@ -21,11 +21,13 @@ function AllGroups() {
       try {
         //  Fetch groups data and get the stopListening function
         const stopListening = await fetchGroups((groups) => {
+          console.log(JSON.stringify(groupsCtx.groups, null, 2))
           groupsCtx.setGroups(groups);
+          console.log(JSON.stringify(groupsCtx.groups, null, 2))
           if (initialLoad) {
             setIsLoading(false);
             setInitialLoad(false);
-          }
+          } 
         });
 
         //  Return the cleanup function to stop listening when the component unmounts

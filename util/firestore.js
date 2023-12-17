@@ -9,6 +9,7 @@ import {
   doc,
   deleteDoc,
   onSnapshot,
+  getDoc,
 } from "firebase/firestore";
 
 export async function createGroup(title) {
@@ -25,6 +26,8 @@ export async function createGroup(title) {
     const groupRef = group.id;
     //  Add the current user as a member to the newly created group
     await addMember(groupRef, userRef);
+    //  Add the current user as a admin to the newly created group
+    addAdminToMember(groupRef, userRef, true);
     //  Return the ID of the created group
     return groupRef;
   } catch (error) {
@@ -78,6 +81,32 @@ export async function updateGroup(groupId, newTitle) {
   }
 }
 
+export async function addAdminToMember(groupRef, userRef, state) {
+  try {
+    const groupDocRef = doc(db, "groups", groupRef);
+    const userDocRef = doc(db, "users", userRef);
+
+    const querySnapshot = await getDocs(
+      query(
+        collection(db, "members"),
+        where("group", "==", groupDocRef),
+        where("user", "==", userDocRef)
+      )
+    );
+
+    const memberDocRef = querySnapshot.docs[0].ref;
+
+    await updateDoc(memberDocRef, {
+      admin: state,
+    });
+
+    console.log("Member document updated successfully.");
+  } catch (error) {
+    console.error("Error updating member document:", error.message);
+    throw error;
+  }
+}
+
 export async function addMember(groupRef, userRef) {
   try {
     //  Create Firestore document references for the group and user
@@ -98,55 +127,82 @@ export async function addMember(groupRef, userRef) {
 }
 
 export async function fetchGroups(callback) {
-  //  Get the current user's UID
+  // Get the current user's ID
   const userRef = auth.currentUser.uid;
-  //  Reference to the user document in Firestore
   const userDocRef = doc(db, "users", userRef);
-  //  Collection reference for the "members" collection in Firestore
   const membersCollection = collection(db, "members");
 
-  //  Get user memberships based on the user document reference
+  // Get user memberships based on the user document reference
   const userMembersQuery = query(
     membersCollection,
     where("user", "==", userDocRef)
   );
 
-  //  Variable to store the stopListening function
   let stopListening;
 
-  //  Listener for real-time updates on user memberships
-  onSnapshot(userMembersQuery, (userMembersSnapshot) => {
-    //  Extract group references from user memberships
+  // Listener for real-time updates on user memberships
+  stopListening = onSnapshot(userMembersQuery, (userMembersSnapshot) => {
+    // Extract group references from user memberships
     const groupRefs = userMembersSnapshot.docs
       .map((doc) => doc.data().group)
       .filter((groupRef) => groupRef);
 
-    //  If there are no group references, return early
     if (groupRefs.length === 0) {
+      // If no groups, invoke the callback with an empty array
+      callback([]);
       return;
     }
 
-    //  Extract group IDs from group references
     const groupIDs = groupRefs.map((groupRef) => groupRef.id);
 
-    //  Fetch groups from Firestore based on group IDs
+    // Fetch groups from Firestore based on group IDs
     const groupsQuery = query(
       collection(db, "groups"),
       where("__name__", "in", groupIDs)
     );
 
-    //  Listener for real-time updates on groups
-    stopListening = onSnapshot(groupsQuery, (groupsSnapshot) => {
-      //  Extract and map group data from the snapshot
-      const groups = groupsSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        title: doc.data().title,
-      }));
-      //  Callback function with the fetched groups data
-      callback(groups);
+    // Listener for real-time updates on groups
+    onSnapshot(groupsQuery, async (groupsSnapshot) => {
+      // Process each group in parallel
+      const groups = await Promise.all(
+        groupsSnapshot.docs.map(async (doc) => {
+          const groupData = {
+            id: doc.id,
+            title: doc.data().title,
+            members: [],
+          };
+
+          const membersQuery = query(
+            membersCollection,
+            where("group", "==", doc.ref)
+          );
+
+          // Listener for real-time updates on members within a group
+          onSnapshot(membersQuery, async (membersSnapshot) => {
+            // Process each member in parallel
+            groupData.members = await Promise.all(
+              membersSnapshot.docs.map(async (memberDoc) => {
+                const userRef = memberDoc.data().user;
+                const userDoc = await getDoc(userRef);
+                const userData = userDoc.data();
+                return {
+                  id: userDoc.id,
+                  email: userData.email,
+                  username: userData.username,
+                };
+              })
+            );
+
+            // Callback function with the fetched groups data
+            callback(groups.filter(group => group.members.length > 0));
+          });
+
+          return groupData;
+        })
+      );
     });
   });
 
-  //  Return the stopListening function or an empty function if undefined
+  // Return the stopListening function
   return stopListening || (() => {});
 }
