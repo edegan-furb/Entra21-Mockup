@@ -6,6 +6,12 @@ import {
   Platform, 
   StatusBar,
 } from "react-native";
+
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -96,11 +102,11 @@ export default AuthContent;
 
 const styles = StyleSheet.create({
   linearContainer: {
-    width: "100%",
-    height: "100%",
+    width: wp("100%"),
+    height: hp("100%"),
+    flexGrow: 1
   },
   rootContainer: {
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     width: '100%',
     height: '100%',
   },

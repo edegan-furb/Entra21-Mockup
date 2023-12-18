@@ -105,11 +105,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-    backgroundColor: Colors.primary800
+    backgroundColor: Colors.primary800,
+    alignItems: "center",
   },
   deleteContainer: {
-    marginTop: -120,
-    marginLeft: '5%',
+    marginTop: -90,
     borderTopWidth: 2,
     borderTopColor: Colors.primary800,
     alignItems: "center",
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   },
   buttonDelete: {
     width: '70%',
-    height: '80%',
+    height: '75%',
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",

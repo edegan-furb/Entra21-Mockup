@@ -4,6 +4,12 @@ import { useState } from "react";
 import Input from "./Input";
 import { Colors } from "../../constants/styles";
 
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+
+
 function GroupForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, PageTitle }) {
   const [inputs, setInputs] = useState({
     title: {
@@ -85,10 +91,11 @@ export default GroupForm;
 const styles = StyleSheet.create({
   form: {
     marginTop: 40,
-    height: '60%',
-    width: '100%',
+    height: hp('60%'),
+    width: wp('90%'),
     borderRadius: 5,
     backgroundColor: Colors.primary100,
+    gap: 10,
   },
   titleContainer: {
     height: '15%',
@@ -108,23 +115,24 @@ const styles = StyleSheet.create({
   errorText: {
     textAlign: "center",
     color: Colors.error500,
-    margin: 8,
+    marginTop: 5,
+    marginHorizontal: 15,
   },
   content: {
-    height: '60%',
+    height: '70%',
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   buttons: {
     width: '100%',
-    height: 70,
+    height: 100,
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "flex-end",
   },
   button : {
     width: '40%',
-    height: '70%',
+    height: '55%',
     borderRadius: 12,
     alignItems: "center",
     justifyContent: 'center',

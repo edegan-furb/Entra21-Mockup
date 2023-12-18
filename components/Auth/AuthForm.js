@@ -8,6 +8,8 @@ import Button from '../ui/Button';
 import Input from './Input';
 import ButtonGoogleLogin from "../SignUp-Login-components/ButtonGoogleLogin";
 
+
+
 function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
   const [enteredEmail, setEnteredEmail] = useState('');
   const [enteredConfirmEmail, setEnteredConfirmEmail] = useState('');
