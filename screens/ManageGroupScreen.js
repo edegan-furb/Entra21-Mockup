@@ -1,12 +1,15 @@
-import { View, StyleSheet, TouchableWithoutFeedback, Keyboard, Pressable, Text } from "react-native";
+import { View, StyleSheet, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { useLayoutEffect, useContext, useState } from "react";
 import GroupForm from "../components/ManageGroup/GroupForm";
 import { Colors } from "../constants/styles";
 import { GroupsContext } from "../store/groups-context";
-import { Ionicons } from '@expo/vector-icons';
 import { deleteGroup, createGroup, updateGroup } from "../util/firestore";
 import Error from "../components/ui/Error";
 import Loading from "../components/ui/LoadingOverlay";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 function ManageGroupScreen({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -73,27 +76,19 @@ function ManageGroupScreen({ navigation, route }) {
       <View style={styles.container}>
         <GroupForm
           onCancel={cancelHandler}
-          submitButtonLabel={isEditing ? "Update" : "Add"}
           onSubmit={confirmHandler}
           defaultValues={selectGroup}
+          submitButtonLabel={isEditing ? 'Update' : 'Create'}
           PageTitle={isEditing ? 'Edit your team' : 'Create a new team'}
+          styleForm={isEditing ? styles.formEditing : styles.formCreate}
+          styleContent={isEditing ? styles.contentEdit : styles.contentCreate}
+          inputName={isEditing ? 'Edit group name' : 'Enter the group name'}
+          styleInputsContainer={isEditing ? styles.inputEdit : styles.inputCreate}
+          styleDeleteContainer={isEditing ? styles.deleteContainer : {display: 'none'}}
+          styleButtons={isEditing ? styles.styleButtonsEdit : styles.styleButtonsCreate}
+          buttonsContent={isEditing ? styles.buttonEdit : styles.buttonCreate}
+          deleteHandler={deleteGroupHandler}
         />
-        {isEditing && (
-          <View style={styles.deleteContainer}>
-            <Pressable style={styles.buttonDelete} onPress={deleteGroupHandler}>
-              <View style={styles.textContainer}>
-                <Text style={styles.buttonText}>Delete group</Text>                
-              </View>
-              <View style={styles.iconContainer}>
-                <Ionicons
-                  name="trash"
-                  color={Colors.error500}
-                  size={25}
-                />
-              </View>
-            </Pressable>
-          </View>
-        )}
       </View>
     </TouchableWithoutFeedback>
   );
@@ -108,41 +103,69 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary800,
     alignItems: "center",
   },
-  deleteContainer: {
-    marginTop: -90,
-    borderTopWidth: 2,
-    borderTopColor: Colors.primary800,
+  formCreate: {
+    marginTop: 40,
+    height: hp('35%'),
+    width: wp('90%'),
+    borderRadius: 5,
+    backgroundColor: Colors.primary100,
+  },
+  contentCreate: {
+    alignItems: 'center',
+    justifyContent: "center",
+    width: '100%',
+    height: '70%',
+  },
+  inputCreate: {
+    width: '100%',
+    height: '70%',
     alignItems: "center",
-    justifyContent: "flex-end",
+    justifyContent: "center",
+  },
+  styleButtonsCreate: {
     width: '90%',
-    height: '10%',
-  },
-  buttonDelete: {
-    width: '70%',
-    height: '75%',
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row",
-    backgroundColor: Colors.primary900,
-    borderRadius: 12
-  },
-  textContainer: {
-    width: '70%',
-    height: '100%',
+    height: '30%',
     alignItems: "center",
     justifyContent: "center",
   },
-  buttonText: {
-    color: '#fff',
-    fontSize: 15,
-    fontWeight: "bold"
-  },
-  iconContainer: {
-    backgroundColor: '#fff',
+  buttonCreate: {
+    width: '100%',
     height: '80%',
-    width: '25%',
-    borderRadius: 4,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+  },
+  formEditing: {
+    marginTop: 40,
+    height: hp('40%'),
+    width: wp('90%'),
+    borderRadius: 5,
+    backgroundColor: Colors.primary100,
+  },
+  contentEdit: {
+    width: '100%',
+    height: '80%',
+  },
+  inputEdit: {
+    width: '100%',
+    height: '50%',
     alignItems: "center",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
+  styleButtonsEdit: {
+    width: '100%',
+    height: '50%',
+    alignItems: "center",
+  },
+  buttonEdit: {
+    width: '100%',
+    height: '35%',
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+  },
+  deleteContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: '90%',
+    height: '50%',
+  },
 });

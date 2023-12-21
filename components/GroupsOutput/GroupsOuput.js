@@ -45,7 +45,7 @@ function GroupsOutput({ groups, firstText, secondText, title }) {
         <AddButton 
           title={title} 
           onPress={modalPress} 
-          button={groups.length > 0 ? styles.button : styles.btnNone}
+          button={groups.length > 0 ? styles.button : {display: 'none'}}
         />
       </View>
       {content}
@@ -93,7 +93,4 @@ const styles = StyleSheet.create({
   button: {
     width: '80%'
   },
-  btnNone: {
-    display: "none"
-  }
 });

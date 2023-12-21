@@ -1,16 +1,26 @@
 import { StyleSheet, Text, TouchableWithoutFeedback, View, Keyboard, Pressable } from "react-native";
 import { useState } from "react";
+import { Ionicons } from '@expo/vector-icons';
 
 import Input from "./Input";
 import { Colors } from "../../constants/styles";
 
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
+function GroupForm({ 
+  onCancel, 
+  onSubmit, 
+  defaultValues, 
+  PageTitle, 
+  inputName,
+  submitButtonLabel, 
+  styleForm,
+  styleDeleteContainer,
+  styleButtons,
+  deleteHandler,
+  styleContent,
+  styleInputsContainer,
+  buttonsContent
+}) {
 
-
-function GroupForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, PageTitle }) {
   const [inputs, setInputs] = useState({
     title: {
       value: defaultValues ? defaultValues.title.toString() : "",
@@ -53,32 +63,49 @@ function GroupForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, PageT
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={styles.form}>
+      <View style={styleForm}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>{PageTitle}</Text>
         </View>
-        <View style={styles.content}>
-          <Input
-            label={"Enter the group name"}
-            invalid={!inputs.title.isValid}
-            textInputConfig={{
-              multiline: false,
-              onChangeText: inputChangeHandler.bind(this, "title"),
-              value: inputs.title.value,
-            }}
-          />
-          {formIsInvalid && (
-            <Text style={styles.errorText}>
-              Invalid input values - please check your entered data
-            </Text>
-          )}
-          <View style={styles.buttons}>
-            <Pressable style={styles.button} onPress={submitHandler}>
-              <Text style={styles.textbutton}>{submitButtonLabel}</Text>
-            </Pressable>
-            <Pressable style={styles.button} mode="flat" onPress={onCancel}>
-              <Text style={styles.textbutton}>Cancel</Text>
-            </Pressable>
+        <View style={styleContent}>
+          <View style={styleInputsContainer}>
+            <Input
+              label={inputName}
+              invalid={!inputs.title.isValid}
+              textInputConfig={{
+                multiline: false,
+                onChangeText: inputChangeHandler.bind(this, "title"),
+                value: inputs.title.value,
+              }}
+            />
+            {formIsInvalid && (
+              <Text style={styles.errorText}>
+                Invalid input values - please check your entered data
+              </Text>
+            )}
+          </View>
+          <View style={styleButtons}>
+            <View style={buttonsContent}>
+              <Pressable style={styles.button} onPress={submitHandler}>
+                <Text style={styles.textbutton}>{submitButtonLabel}</Text>
+              </Pressable>
+              <Pressable style={styles.button} mode="flat" onPress={onCancel}>
+                <Text style={styles.textbutton}>Cancel</Text>
+              </Pressable>
+            </View>
+            <View style={styleDeleteContainer}>
+            <View style={styles.divider}></View>
+              <Pressable style={styles.buttonDelete} onPress={deleteHandler}>
+                <Ionicons
+                  name="trash"
+                  color={'#fff'}
+                  size={20}
+                />
+                <View style={styles.textContainer}>
+                  <Text style={styles.textbutton}>Delete group</Text>                
+                </View>
+              </Pressable>
+            </View>
           </View>
         </View>
       </View>
@@ -89,16 +116,8 @@ function GroupForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, PageT
 export default GroupForm;
 
 const styles = StyleSheet.create({
-  form: {
-    marginTop: 40,
-    height: hp('60%'),
-    width: wp('90%'),
-    borderRadius: 5,
-    backgroundColor: Colors.primary100,
-    gap: 10,
-  },
   titleContainer: {
-    height: '15%',
+    height: '20%',
     width: '100%',
     alignItems: "center",
     justifyContent: "center",
@@ -115,31 +134,42 @@ const styles = StyleSheet.create({
   errorText: {
     textAlign: "center",
     color: Colors.error500,
-    marginTop: 5,
-    marginHorizontal: 15,
-  },
-  content: {
-    height: '70%',
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  buttons: {
-    width: '100%',
-    height: 100,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "flex-end",
+    width: '90%',
+    height: '25%',
   },
   button : {
     width: '40%',
-    height: '55%',
+    height: '100%',
     borderRadius: 12,
     alignItems: "center",
     justifyContent: 'center',
     backgroundColor: Colors.primary900,
   },
+  divider: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: '100%',
+    height: '2%',
+    backgroundColor: Colors.primary800,
+    marginVertical: 15
+  },
   textbutton: {
     color: '#fff',
     fontWeight: "bold"
-  }
+  },
+  buttonDelete: {
+    width: '50%',
+    height: '70%',
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    backgroundColor: Colors.primary900,
+    borderRadius: 12
+  },
+  textContainer: {
+    width: '65%',
+    height: '100%',
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });

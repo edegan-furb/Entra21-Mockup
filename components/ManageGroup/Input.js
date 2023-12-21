@@ -27,18 +27,20 @@ export default Input;
 const styles = StyleSheet.create({
   inputContainer: {
     width: '90%',
-    height: '30%',
+    height: '40%',
+    marginBottom: 10
   },
   label: {
     fontSize: 15,
     color: Colors.primary900,
-    marginBottom: 12,
+    marginBottom: 5,
   },
   input: {
     borderWidth: 2,
     borderColor: Colors.primary900,
     color: Colors.primary900,
-    padding: 15,
+    width: '100%',
+    height: '75%',
     borderRadius: 6,
     fontSize: 15,
   },
