@@ -90,9 +90,9 @@ function AuthenticatedBottomTab() {
           tabBarIcon: ({ focused }) => {
             if(focused) {
               return <Ionicons 
-                  size={25} 
-                  name="home-sharp"
-                  color={Colors.neutral50} 
+                size={25} 
+                name="home-sharp"
+                color={Colors.neutral50} 
               />
             }
             return <Ionicons size={25} color={Colors.neutral400} name="home-outline"/>
@@ -149,7 +149,9 @@ function AuthenticatedStack() {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerShown: true
+        headerShown: true,
+        headerStyle: { backgroundColor: Colors.primary900 },
+        headerTintColor: "white",
       }}
     >
       <Stack.Screen
@@ -162,6 +164,7 @@ function AuthenticatedStack() {
         component={ManageGroupScreen}
         options={{
           presentation: "modal",
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -169,6 +172,7 @@ function AuthenticatedStack() {
         component={GroupMembersScreen}
         options={{
           presentation: "modal",
+          headerShown: true,
         }}
       />
       <Stack.Screen
@@ -177,11 +181,11 @@ function AuthenticatedStack() {
         options={({ route, navigation }) => ({
           presentation: "modal",
           headerRight: ({ tintColor }) => (
-            <View style={{ flexDirection: "row" }}>
+            <View style={{ flexDirection: "row"}}>
               <IconButton
                 icon={"create-outline"}
                 color={tintColor}
-                size={24}
+                size={22}
                 onPress={() => {
                   navigation.navigate("ManageGroupScreen", {
                     editedGroupId: route.params?.groupId,
@@ -191,7 +195,7 @@ function AuthenticatedStack() {
               <IconButton
                 icon={"person-add-outline"}
                 color={tintColor}
-                size={24}
+                size={22}
                 onPress={() => {
                   navigation.navigate("GroupMembersScreen", {
                     editedGroupId: route.params?.groupId,
@@ -201,7 +205,7 @@ function AuthenticatedStack() {
               <IconButton
                 icon={"add-circle-outline"}
                 color={tintColor}
-                size={24}
+                size={22}
               />
             </View>
           ),

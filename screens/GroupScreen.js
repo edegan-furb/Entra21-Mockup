@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, Alert } from "react-native";
+import { View, StyleSheet, Text, Alert, Pressable } from "react-native";
 import { useLayoutEffect, useContext, useEffect } from "react";
 import { Colors } from "../constants/styles";
 import { GroupsContext } from "../store/groups-context";
@@ -24,9 +24,7 @@ function GroupScreen({ route, navigation }) {
   }, [navigation, selectGroup]);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tasks Ouput</Text>
-    </View>
+    <View style={styles.container}></View>
   );
 }
 
@@ -35,14 +33,7 @@ export default GroupScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
     backgroundColor: Colors.primary100,
-    justifyContent: "center",
-    alignItems: "center",
   },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 8,
-  },
+  
 });

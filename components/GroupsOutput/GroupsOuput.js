@@ -7,7 +7,7 @@ import AddButton from '../GroupsOutput/AddButton';
 import UpperLogo from '../../components/StartComponents/UpperLogo';
 import { Colors } from "../../constants/styles";
 
-function GroupsOutput({ groups, firstText, secondText, title }) {
+function GroupsOutput({ groups, firstText, secondText, title, page }) {
 
   // Create the navigation component
   const navigation = useNavigation();
@@ -33,6 +33,7 @@ function GroupsOutput({ groups, firstText, secondText, title }) {
         />
       </View>
     </View> 
+  ;
 
   if (groups.length > 0) {
     content = <GroupsList groups={groups} />;
