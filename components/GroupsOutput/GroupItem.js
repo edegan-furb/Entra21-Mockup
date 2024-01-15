@@ -36,16 +36,17 @@ const styles = StyleSheet.create({
   },
   groupItem: {
     width: '100%',
-    height: 105,
+    height: 80,
     marginVertical: 8,
     backgroundColor: Colors.primary800,
     justifyContent: "space-between",
-    borderRadius: 6,
+    borderRadius: 9,
     elevation: 3,
     shadowColor: Colors.primary100,
     shadowRadius: 4,
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.4,
+    justifyContent: "center"
   },
   textBase: {
     color: Colors.primary100,
@@ -54,6 +55,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 4,
     fontWeight: "bold",
+    marginLeft: 15
   },
   amountContainer: {
     paddingHorizontal: 12,

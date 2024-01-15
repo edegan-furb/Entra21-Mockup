@@ -62,7 +62,6 @@ function StartScreen() {
     rootContainer: {
       flex: 1,
       backgroundColor: Colors.neutral100,
-      paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
       width: '100%',
       height: '100%'
     },
