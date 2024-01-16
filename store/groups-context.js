@@ -11,10 +11,15 @@ export const GroupsContext = createContext({
 function groupsReducer(state, action) {
   switch (action.type) {
     case "ADD":
-      return [...state, { ...action.payload }];
+      return [...state, { ...action.payload }].sort((a, b) =>
+        a.title.localeCompare(b.title)
+      );
     case "SET":
-      const inverted = action.payload.reverse();
-      return inverted;
+      // Sort groups by name in ascending order
+      const sortedGroups = [...action.payload].sort((a, b) =>
+        a.title.localeCompare(b.title)
+      );
+      return sortedGroups;
     case "UPDATE":
       const updatableGroupIndex = state.findIndex(
         (group) => group.id === action.payload.id
@@ -23,7 +28,8 @@ function groupsReducer(state, action) {
       const updatedItem = { ...updatableGroup, ...action.payload.data };
       const updatedGroups = [...state];
       updatedGroups[updatableGroupIndex] = updatedItem;
-      return updatedGroups;
+      // Ensure the updated list is also sorted
+      return updatedGroups.sort((a, b) => a.title.localeCompare(b.title));
     case "DELETE":
       return state.filter((group) => group.id !== action.payload);
     default:
