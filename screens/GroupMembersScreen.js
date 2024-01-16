@@ -17,11 +17,8 @@ function GroupMembersScreen({ navigation, route }) {
 
   return (
     <View style={styles.rootContainer}>
-      <Text style={styles.title}>Members Form - By email</Text>
-      <Text style={styles.text}>Add User Button</Text>
-      <Text style={styles.title}>Members Ouput - Current Users</Text>
-      <Text style={styles.text}>OnPress Remove User from Group</Text>
-      <Text style={styles.text}>Leave Group Button</Text>
+      <Text style={styles.title}>List of Members</Text>
+      <Text style={styles.text}>delete button next to members</Text> 
     </View>
   );
 }
