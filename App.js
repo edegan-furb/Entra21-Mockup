@@ -125,10 +125,20 @@ function AuthenticatedStack() {
       <Stack.Screen
         name="GroupMembersScreen"
         component={GroupMembersScreen}
-        options={{
+        options={({ route, navigation }) => ({
           presentation: "modal",
-        }}
+          headerRight: ({ tintColor }) => (
+            <View style={{ flexDirection: "row" }}>
+              <IconButton
+                icon={"person-add-outline"}
+                color={tintColor}
+                size={24}
+              />
+            </View>
+          ),
+        })}
       />
+
       <Stack.Screen
         name="GroupScreen"
         component={GroupScreen}
@@ -147,7 +157,7 @@ function AuthenticatedStack() {
                 }}
               />
               <IconButton
-                icon={"person-add-outline"}
+                icon={"people-outline"}
                 color={tintColor}
                 size={24}
                 onPress={() => {
@@ -165,7 +175,7 @@ function AuthenticatedStack() {
           ),
         })}
       />
-    </Stack.Navigator>
+    </Stack.Navigator >
   );
 }
 
