@@ -1,6 +1,7 @@
 import { useLayoutEffect, useContext } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { GroupsContext } from "../store/groups-context";
+import MembersOuput from "../components/MembersOutput/MembersOutput";
 
 function GroupMembersScreen({ navigation, route }) {
   const GroupId = route.params?.editedGroupId;
@@ -15,12 +16,7 @@ function GroupMembersScreen({ navigation, route }) {
     });
   }, [navigation]);
 
-  return (
-    <View style={styles.rootContainer}>
-      <Text style={styles.title}>List of Members</Text>
-      <Text style={styles.text}>delete button next to members</Text> 
-    </View>
-  );
+  return <MembersOuput members={null} fallbackText="No members found!" />;
 }
 
 export default GroupMembersScreen;
@@ -36,12 +32,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 8,
-    color: "red"
+    color: "red",
   },
   text: {
     fontSize: 16,
     fontWeight: "semibold",
     marginBottom: 8,
-    color: "blue"
+    color: "blue",
   },
 });

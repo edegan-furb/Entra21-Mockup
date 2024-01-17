@@ -1,7 +1,34 @@
-import { View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
-function MembersOutput() {
-    return <View></View>
+import { Colors } from "../../constants/styles";
+import MembersList from "./MembersList";
+
+function MembersOutput({ members, fallbackText }) {
+  let content = <Text style={styles.infoText}>{fallbackText}</Text>;
+
+  if (members !== null) {
+    if (members.length > 0) {
+      content = <MembersList groups={groups} />;
+    }
+  }
+
+  return <View style={styles.container}>{content}</View>;
 }
 
 export default MembersOutput;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 24,
+    paddingTop: 24,
+    paddingBottom: 0,
+    backgroundColor: Colors.primary100,
+  },
+  infoText: {
+    color: Colors.primary800,
+    fontSize: 16,
+    textAlign: "center",
+    marginTop: 32,
+  },
+});
