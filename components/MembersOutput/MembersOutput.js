@@ -1,15 +1,12 @@
 import { StyleSheet, Text, View } from "react-native";
-
 import { Colors } from "../../constants/styles";
 import MembersList from "./MembersList";
 
 function MembersOutput({ members, fallbackText }) {
   let content = <Text style={styles.infoText}>{fallbackText}</Text>;
 
-  if (members !== null) {
-    if (members.length > 0) {
-      content = <MembersList groups={groups} />;
-    }
+  if (members.length > 0) {
+    content = <MembersList members={members} />;
   }
 
   return <View style={styles.container}>{content}</View>;

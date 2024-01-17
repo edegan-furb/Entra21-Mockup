@@ -133,40 +133,89 @@ export async function fetchGroups(callback) {
   const groupsCollectionRef = collection(db, "groups");
 
   // Listen for changes in user memberships
-  const stopListeningUserMemberships = onSnapshot(query(membersCollection, where("user", "==", userDocRef)), (userMembersSnapshot) => {
-    // Get the group references from the user's memberships
-    const groupRefs = userMembersSnapshot.docs.map(doc => doc.data().group).filter(Boolean);
+  const stopListeningUserMemberships = onSnapshot(
+    query(membersCollection, where("user", "==", userDocRef)),
+    (userMembersSnapshot) => {
+      // Get the group references from the user's memberships
+      const groupRefs = userMembersSnapshot.docs
+        .map((doc) => doc.data().group)
+        .filter(Boolean);
 
-    if (groupRefs.length === 0) {
-      callback([]);
-      return;
+      if (groupRefs.length === 0) {
+        callback([]);
+        return;
+      }
+
+      const groupIDs = groupRefs.map((groupRef) => groupRef.id);
+
+      // Listener for real-time updates on groups
+      const groupsQuery = query(
+        groupsCollectionRef,
+        where("__name__", "in", groupIDs)
+      );
+      const stopListeningGroups = onSnapshot(groupsQuery, (groupsSnapshot) => {
+        const groups = groupsSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        // Sort groups by title
+        const sortedGroups = groups.sort((a, b) =>
+          a.title.localeCompare(b.title)
+        );
+
+        // Callback function with the sorted groups data
+        callback(sortedGroups);
+      });
+
+      // This will return the stopListening function for the groups listener
+      return stopListeningGroups;
     }
-
-    const groupIDs = groupRefs.map(groupRef => groupRef.id);
-
-    // Listener for real-time updates on groups
-    const groupsQuery = query(groupsCollectionRef, where("__name__", "in", groupIDs));
-    const stopListeningGroups = onSnapshot(groupsQuery, (groupsSnapshot) => {
-      const groups = groupsSnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-
-      // Sort groups by title
-      const sortedGroups = groups.sort((a, b) => a.title.localeCompare(b.title));
-
-      // Callback function with the sorted groups data
-      callback(sortedGroups);
-    });
-
-    // This will return the stopListening function for the groups listener
-    return stopListeningGroups;
-  });
+  );
 
   // Return a function to stop both listeners
   return () => {
     stopListeningUserMemberships();
     // Call the stopListeningGroups function if it's defined
     stopListeningGroups && stopListeningGroups();
+  };
+}
+
+export async function fetchGroupMembers(groupId, callback) {
+  const groupDocRef = doc(db, "groups", groupId);
+
+  const membersQuery = query(
+    collection(db, "members"),
+    where("group", "==", groupDocRef)
+  );
+
+  const stopListeningMembers = onSnapshot(
+    membersQuery,
+    async (membersSnapshot) => {
+      const membersData = await Promise.all(
+        membersSnapshot.docs.map(async (docSnapshot) => {
+          const memberData = docSnapshot.data();
+          const userDocRef = memberData.user;
+
+          // Fetch user data
+          const userSnapshot = await getDoc(userDocRef);
+          const userData = userSnapshot.data();
+
+          return {
+            id: docSnapshot.id,
+            admin: memberData.admin,
+            group: groupId,
+            email: userData.email,
+            username: userData.username,
+          };
+        })
+      );
+
+      callback(membersData);
+    }
+  );
+
+  return () => {
+    stopListeningMembers();
   };
 }
