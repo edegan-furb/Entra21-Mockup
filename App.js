@@ -134,11 +134,7 @@ function AuthenticatedStack() {
                 color={tintColor}
                 size={24}
               />
-              <IconButton
-                icon={"exit-outline"}
-                color={tintColor}
-                size={24}
-              />
+              <IconButton icon={"exit-outline"} color={tintColor} size={24} />
             </View>
           ),
         })}
@@ -149,38 +145,9 @@ function AuthenticatedStack() {
         component={GroupScreen}
         options={({ route, navigation }) => ({
           presentation: "modal",
-          headerRight: ({ tintColor }) => (
-            <View style={{ flexDirection: "row" }}>
-              <IconButton
-                icon={"create-outline"}
-                color={tintColor}
-                size={24}
-                onPress={() => {
-                  navigation.navigate("ManageGroupScreen", {
-                    editedGroupId: route.params?.groupId,
-                  });
-                }}
-              />
-              <IconButton
-                icon={"people-outline"}
-                color={tintColor}
-                size={24}
-                onPress={() => {
-                  navigation.navigate("GroupMembersScreen", {
-                    editedGroupId: route.params?.groupId,
-                  });
-                }}
-              />
-              <IconButton
-                icon={"add-circle-outline"}
-                color={tintColor}
-                size={24}
-              />
-            </View>
-          ),
         })}
       />
-    </Stack.Navigator >
+    </Stack.Navigator>
   );
 }
 

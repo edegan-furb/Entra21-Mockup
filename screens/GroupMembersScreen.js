@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useContext, useState, useEffect } from "react";
 import { GroupsContext } from "../store/groups-context";
 import MembersOutput from "../components/MembersOutput/MembersOutput";
-import { fetchGroupMembers } from "../util/firestore";
+import { fetchGroupMembers, removeMember } from "../util/firestore";
 import Error from "../components/ui/Error";
 import LoadingOverlay from "../components/ui/LoadingOverlay";
 
@@ -9,11 +9,13 @@ function GroupMembersScreen({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState();
 
+  const isAdmin = route.params?.isAdmin;
   const groupId = route.params?.editedGroupId;
   const groupsCtx = useContext(GroupsContext);
 
   useEffect(() => {
     let isMounted = true;
+    setIsLoading(true);
 
     const getGroupMembers = async () => {
       try {
@@ -21,7 +23,6 @@ function GroupMembersScreen({ navigation, route }) {
           groupId,
           (fetchedMembers) => {
             if (isMounted) {
-              // Update the context with the fetched members for the specific group
               groupsCtx.setMembers(groupId, fetchedMembers);
               setIsLoading(false);
             }
@@ -67,8 +68,26 @@ function GroupMembersScreen({ navigation, route }) {
   const selectedGroup = groupsCtx.groups.find((group) => group.id === groupId);
   const groupMembers = selectedGroup ? selectedGroup.members : [];
 
+  const handleRemoveMember = (memberId) => {
+    removeMember(memberId)
+      .then(() => {
+        const updatedMembers = groupsCtx.groups
+          .find((group) => group.id === groupId)
+          .members.filter((member) => member.id !== memberId);
+        groupsCtx.setMembers(groupId, updatedMembers);
+      })
+      .catch((error) => {
+        console.error("Error removing member:", error);
+      });
+  };
+
   return (
-    <MembersOutput members={groupMembers} fallbackText="No members found!" />
+    <MembersOutput
+      members={groupMembers}
+      onRemoveMember={handleRemoveMember}
+      fallbackText="No members found!"
+      isAdmin={isAdmin}
+    />
   );
 }
 

@@ -81,6 +81,43 @@ export async function updateGroup(groupId, newTitle) {
   }
 }
 
+export async function isAdmin(groupRef, userRef, callback) {
+  try {
+    const groupDocRef = doc(db, "groups", groupRef);
+    const userDocRef = doc(db, "users", userRef);
+
+    const q = query(
+      collection(db, "members"),
+      where("group", "==", groupDocRef),
+      where("user", "==", userDocRef)
+    );
+
+    const unsubscribe = onSnapshot(
+      q,
+      (querySnapshot) => {
+        if (!querySnapshot.empty) {
+          const memberData = querySnapshot.docs[0].data();
+          const isAdmin = memberData.admin;
+          console.log("Member admin info updated.");
+          callback(isAdmin);
+        } else {
+          console.log("Member document not found.");
+          callback(false);
+        }
+      },
+      (error) => {
+        console.error("Error listening to admin status:", error);
+        throw error;
+      }
+    );
+
+    return unsubscribe;
+  } catch (error) {
+    console.error("Error setting up admin status listener:", error.message);
+    throw error;
+  }
+}
+
 export async function addAdminToMember(groupRef, userRef, state) {
   try {
     const groupDocRef = doc(db, "groups", groupRef);
@@ -122,6 +159,21 @@ export async function addMember(groupRef, userRef) {
     return memberRef;
   } catch (error) {
     console.error("Error updating member document:", error.message);
+    throw error;
+  }
+}
+
+export async function removeMember(memberId) {
+  try {
+    // Create a reference to the member document in the Firestore
+    const memberDocRef = doc(db, "members", memberId);
+
+    // Delete the member document
+    await deleteDoc(memberDocRef);
+
+    console.log("Member removed successfully from Firestore");
+  } catch (error) {
+    console.error("Error removing member from Firestore:", error);
     throw error;
   }
 }
@@ -205,6 +257,7 @@ export async function fetchGroupMembers(groupId, callback) {
             id: docSnapshot.id,
             admin: memberData.admin,
             group: groupId,
+            user: memberData.user,
             email: userData.email,
             username: userData.username,
           };

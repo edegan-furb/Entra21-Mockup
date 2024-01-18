@@ -2,11 +2,17 @@ import { FlatList } from "react-native";
 
 import MemberItem from "./MemberItem";
 
-function renderMemberItem(itemData) {
-  return <MemberItem {...itemData.item} />;
-}
+function MembersList({ members, onRemoveMember, isAdmin }) {
+  const renderMemberItem = (itemData) => {
+    return (
+      <MemberItem
+        {...itemData.item}
+        onRemoveMember={onRemoveMember}
+        isAdmin={isAdmin}
+      />
+    );
+  };
 
-function MembersList({ members }) {
   return (
     <FlatList
       data={members}

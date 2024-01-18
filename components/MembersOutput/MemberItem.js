@@ -1,13 +1,34 @@
 import { StyleSheet, Text, View } from "react-native";
-
 import { Colors } from "../../constants/styles";
+import IconButton from "../ui/IconButton";
+import { auth } from "../../util/auth";
 
-function MemberItem({ email, username }) {
+function MemberItem({ id, email, username, onRemoveMember, user, isAdmin }) {
+  const currentUser = auth.currentUser.uid;
+  const userId = user?._key?.path?.segments[user._key.path.segments.length - 1];
+  const isCurrentUser = currentUser === userId;
+
+  const removeMemberHandler = () => {
+    onRemoveMember(id);
+  };
+
   return (
     <View style={styles.memberItem}>
       <View>
         <Text style={[styles.textBase, styles.title]}>{username}</Text>
-        <Text style={[styles.textBase, styles.title]}>{email}</Text>
+        <Text style={[styles.textBase, styles.subtitle]}>{email}</Text>
+      </View>
+      <View style={{ justifyContent: "center" }}>
+        {isCurrentUser ? (
+          <Text style={styles.currentUserText}>You</Text>
+        ) : isAdmin ? (
+          <IconButton
+            icon={"person-remove-outline"}
+            color={"white"}
+            size={24}
+            onPress={removeMemberHandler}
+          />
+        ) : null}
       </View>
     </View>
   );
@@ -36,5 +57,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 4,
     fontWeight: "bold",
+  },
+  subtitle: {
+    fontSize: 12,
+  },
+  currentUserText: {
+    color: Colors.primary100,
+    fontSize: 16,
+    fontWeight: "bold",
+    margin: 8,
+    borderRadius: 20,
   },
 });
