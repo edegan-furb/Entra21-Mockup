@@ -3,7 +3,7 @@ import { Colors } from "../../constants/styles";
 import IconButton from "../ui/IconButton";
 import { auth } from "../../util/auth";
 
-function MemberItem({ id, email, username, onRemoveMember, user, isAdmin }) {
+function MemberItem({ id, email, username, onRemoveMember, user, isAdmin, admin }) {
   const currentUser = auth.currentUser.uid;
   const userId = user?._key?.path?.segments[user._key.path.segments.length - 1];
   const isCurrentUser = currentUser === userId;
@@ -11,14 +11,25 @@ function MemberItem({ id, email, username, onRemoveMember, user, isAdmin }) {
   const removeMemberHandler = () => {
     onRemoveMember(id);
   };
-
+  
   return (
     <View style={styles.memberItem}>
       <View>
         <Text style={[styles.textBase, styles.title]}>{username}</Text>
         <Text style={[styles.textBase, styles.subtitle]}>{email}</Text>
       </View>
-      <View style={{ justifyContent: "center" }}>
+      <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row', }}>
+        {admin ? (
+          <IconButton
+            icon={"key"}
+            color={"white"}
+            size={24}
+          />
+        ) : <IconButton
+          icon={"key-outline"}
+          color={"white"}
+          size={24}
+        />}
         {isCurrentUser ? (
           <Text style={styles.currentUserText}>You</Text>
         ) : isAdmin ? (
