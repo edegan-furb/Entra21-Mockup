@@ -13,6 +13,8 @@ function GroupMembersScreen({ navigation, route }) {
   const groupId = route.params?.editedGroupId;
   const groupsCtx = useContext(GroupsContext);
 
+
+
   useEffect(() => {
     let isMounted = true;
     setIsLoading(true);
@@ -68,23 +70,35 @@ function GroupMembersScreen({ navigation, route }) {
   const selectedGroup = groupsCtx.groups.find((group) => group.id === groupId);
   const groupMembers = selectedGroup ? selectedGroup.members : [];
 
-  const handleRemoveMember = (memberId) => {
-    removeMember(memberId)
-      .then(() => {
-        const updatedMembers = groupsCtx.groups
-          .find((group) => group.id === groupId)
-          .members.filter((member) => member.id !== memberId);
-        groupsCtx.setMembers(groupId, updatedMembers);
-      })
-      .catch((error) => {
-        console.error("Error removing member:", error);
-      });
-  };
+
+  async function deleteMemberHandler(memberId) {
+    setIsLoading(true);
+    try {
+      await removeMember(memberId);
+      groupsCtx.deleteMember(groupId, memberId);
+    } catch (error) {
+      setError("Could not delete member - please try again later");
+      setIsLoading(false);
+    }
+  }
+
+  // const handleRemoveMember = (memberId) => {
+  //   removeMember(memberId)
+  //     .then(() => {
+  //       const updatedMembers = groupsCtx.groups
+  //         .find((group) => group.id === groupId)
+  //         .members.filter((member) => member.id !== memberId);
+
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error removing member:", error);
+  //     });
+  // };
 
   return (
     <MembersOutput
       members={groupMembers}
-      onRemoveMember={handleRemoveMember}
+      onRemoveMember={deleteMemberHandler}
       fallbackText="No members found!"
       isAdmin={isAdmin}
     />

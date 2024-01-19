@@ -2,11 +2,12 @@ import { createContext, useReducer } from "react";
 
 export const GroupsContext = createContext({
   groups: [],
-  addGroup: ({ title }) => {},
-  setGroups: (groups) => {},
-  deleteGroup: (id) => {},
-  updateGroup: (id, { title }) => {},
-  setMembers: (groupId, members) => {},
+  addGroup: ({ title }) => { },
+  setGroups: (groups) => { },
+  deleteGroup: (id) => { },
+  updateGroup: (id, { title }) => { },
+  setMembers: (groupId, members) => { },
+  deleteMember: (id) = {},
 });
 
 function groupsReducer(state, action) {
@@ -43,9 +44,20 @@ function groupsReducer(state, action) {
         }
         return group;
       });
+    case "DELETE_MEMBER":
+      return state.map(group => {
+        if (group.id === action.payload.groupId) {
+          return {
+            ...group,
+            members: group.members.filter(member => member.id !== action.payload.memberId),
+          };
+        }
+        return group;
+      });
     default:
       return state;
   }
+
 }
 
 function GroupsContextProvider({ children }) {
@@ -70,6 +82,9 @@ function GroupsContextProvider({ children }) {
   function setMembers(groupId, members) {
     dispatch({ type: "SET_MEMBERS", payload: { groupId, members } });
   }
+  function deleteMember(groupId, memberId) {
+    dispatch({ type: "DELETE_MEMBER", payload: { groupId, memberId } });
+  }
 
   const value = {
     groups: groupsState,
@@ -78,6 +93,7 @@ function GroupsContextProvider({ children }) {
     deleteGroup: deleteGroup,
     updateGroup: updateGroup,
     setMembers: setMembers,
+    deleteMember: deleteMember,
   };
 
   return (
