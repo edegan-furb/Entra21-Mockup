@@ -63,7 +63,7 @@ function StartScreen() {
       flex: 1,
       backgroundColor: Colors.neutral100,
       width: '100%',
-      height: '100%'
+      height: '100%',
     },
     upperLogoContainer: {
       height: "5%",

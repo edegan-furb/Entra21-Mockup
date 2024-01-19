@@ -53,8 +53,8 @@ const styles = StyleSheet.create({
     },
     googleButton: {
         backgroundColor: Colors.neutral100,
-        paddingVertical: "4.5%",
-        paddingHorizontal: '7.5%',
+        paddingVertical: "4%",
+        paddingHorizontal: '3%',
         borderWidth: 2,
         borderRadius: 12,
         borderColor: Colors.primary800,
@@ -69,12 +69,12 @@ const styles = StyleSheet.create({
         gap: 10
     },
     buttonText: {
-        fontSize: 15,
+        fontSize: 10,
         fontFamily: "open-sans-bold",
         color: Colors.primary800,
     },
     logoGoogle: {
-        width: '5%',
+        width: '4%',
         height: '100%'
     }
 })

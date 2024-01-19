@@ -6,7 +6,7 @@ function UpperLogo({ children }) {
     <View style={styles.container}>
       <Feather 
         name="check-square"
-        size={22}
+        size={17}
         color={'#000'}
       />
       <Text style={styles.text}>{children}</Text>
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   text: {
-    fontSize: 19,
+    fontSize: 15,
     fontFamily: "open-sans-bold",
   },
 });

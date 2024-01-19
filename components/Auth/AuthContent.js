@@ -72,12 +72,12 @@ function AuthContent({ isLogin, onAuthenticate }) {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <LinearGradient
         colors={[
-          Colors.primary950,
-          Colors.primary900,
-          Colors.primary600,
-          Colors.primary300,
-          Colors.neutral300,
-          Colors.neutral300,
+          Colors.primary50,
+          Colors.primary50,
+          Colors.primary50,
+          Colors.primary50,
+          Colors.primary50,
+          Colors.primary50,
         ]}
         locations={[0.01, 0.05, 0.15, 0.3, 0.4, 0.5]}
         style={styles.linearContainer}
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   linearContainer: {
     width: wp("100%"),
     height: hp("100%"),
-    flexGrow: 1
+    flexGrow: 1,
   },
   rootContainer: {
     width: '100%',

@@ -16,7 +16,7 @@ export default function BackButton() {
                 <Ionicons 
                     name="ios-arrow-back" 
                     color={'#fff'} 
-                    size={35} 
+                    size={30} 
                     style={styles.backButton}
                 />
             </Pressable>
@@ -27,13 +27,13 @@ export default function BackButton() {
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        height: '5%',
-        paddingLeft: '7%',
-        justifyContent: "center",
+        height: '7%',
+        paddingLeft: '7%'
     },
     backButtonContainer: {
         width: '10%',
         height: '100%',
         borderRadius: 50,
+        justifyContent: "flex-end",
     },
 })

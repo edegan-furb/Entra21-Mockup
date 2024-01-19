@@ -23,8 +23,8 @@ export default Button;
 const styles = StyleSheet.create({
   button: {
     borderRadius: 12,
-    paddingVertical: "4.5%",
-    paddingHorizontal: '25%',
+    paddingVertical: "4%",
+    paddingHorizontal: '13%',
     backgroundColor: Colors.primary800,
   },
   flat: {
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: "center",
     fontFamily: 'open-sans-bold',
-    fontSize: 15
+    fontSize: 13
   },
   flatText: {
     color: Colors.primary100,

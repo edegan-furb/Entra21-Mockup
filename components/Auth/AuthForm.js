@@ -123,7 +123,6 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
           </Pressable>
         </View>
       </View>
-      
     </View>
   );
 }
@@ -138,45 +137,42 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   inputAreaLogin: {
-    height: '50%',
+    height: '40%',
     width: '100%',
     justifyContent: 'center',
-    gap: 35,
+    gap: 30,
   },
   inputAreaSignup: {
-    height: '65%',
+    height: '60%',
     width: '100%',
     justifyContent: 'space-around',
-    marginTop: 60
+    marginTop: 90
   },
   buttons: {
     width: '100%',
-    height: '40%',
-    justifyContent: 'flex-end',
-    marginTop: 30,
+    height: '35%',
+    marginTop: 10,
     gap: 10,
   },
   stylesButton: {
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  paddingButton: {
-    paddingHorizontal: '3%'
+    height: '30%',
   },
   signUpButton: {
-    height: "18%",
+    height: "15%",
     flexDirection: "row",
     alignItems: 'flex-end',
     justifyContent: "center",
     gap: 5
   },
   signText: {
-    fontSize: 15,
+    fontSize: 13,
     fontFamily: "open-sans",
     color: Colors.primary950,
   },
   signTextButton: {
-    fontSize: 15,
+    fontSize: 13,
     fontFamily: "open-sans-bold",
     color: Colors.primary800,
     textDecorationLine: 'underline'
