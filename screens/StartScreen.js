@@ -6,6 +6,10 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 import UpperLogo from '../components/StartComponents/UpperLogo';
 import Banner from '../components/StartComponents/Banner';
@@ -62,8 +66,8 @@ function StartScreen() {
     rootContainer: {
       flex: 1,
       backgroundColor: Colors.neutral100,
-      width: '100%',
-      height: '100%',
+      width: wp('100%'),
+      height: hp('100%'),
     },
     upperLogoContainer: {
       height: "5%",
