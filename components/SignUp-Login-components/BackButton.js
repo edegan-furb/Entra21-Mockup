@@ -2,6 +2,7 @@
 import { StyleSheet, Pressable, View } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
+import { Colors } from "../../constants/styles";
 
 export default function BackButton() {
     const navigation = useNavigation();
@@ -14,8 +15,8 @@ export default function BackButton() {
         <View style={styles.container}>
             <Pressable style={styles.backButtonContainer} onPress={onPressHandler}>
                 <Ionicons 
-                    name="ios-arrow-back" 
-                    color={'#fff'} 
+                    name="arrow-back-circle-outline" 
+                    color={Colors.primary100} 
                     size={30} 
                     style={styles.backButton}
                 />
@@ -27,8 +28,8 @@ export default function BackButton() {
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        height: '7%',
-        paddingLeft: '7%'
+        height: '20%',
+        paddingLeft: '7%',
     },
     backButtonContainer: {
         width: '10%',

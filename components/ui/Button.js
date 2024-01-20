@@ -6,7 +6,7 @@ function Button({ children, onPress, mode, styleButton }) {
     <View style={styleButton}>
       <Pressable
         onPress={onPress}
-        style={({ pressed }) => pressed && styles.pressed}
+        style={({ pressed }) => pressed && styles.pressed} 
       >
         <View style={[styles.button, mode === "flat" && styles.flat]}>
           <Text style={[styles.buttonText, mode === "flat" && styles.flatText]}>
@@ -23,8 +23,8 @@ export default Button;
 const styles = StyleSheet.create({
   button: {
     borderRadius: 12,
-    paddingVertical: "4%",
-    paddingHorizontal: '13%',
+    paddingVertical: '5%',
+    paddingHorizontal: '20%',
     backgroundColor: Colors.primary800,
   },
   flat: {

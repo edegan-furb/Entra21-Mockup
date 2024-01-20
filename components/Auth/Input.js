@@ -49,7 +49,7 @@ export default Input;
 const styles = StyleSheet.create({
   inputContent: {
   width: '100%',
-  height:'20%',
+  height:'18%',
   alignItems: "center",
   justifyContent: "center",
 },
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   flexDirection: 'row',
   borderBottomWidth: 1.5,
   borderColor: Colors.primary800,
-  height: '80%',
+  height: '65%',
   width: '85%',
   alignItems: "center",
   },

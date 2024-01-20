@@ -15,12 +15,10 @@ import {
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import BackButton from '../SignUp-Login-components/BackButton';
 
 import AuthForm from "./AuthForm";
 
 import { Colors } from "../../constants/styles";
-import { LinearGradient } from 'expo-linear-gradient';
 import PagesTitle from "../SignUp-Login-components/PagesTitle";
 
 function AuthContent({ isLogin, onAuthenticate }) {
@@ -32,14 +30,6 @@ function AuthContent({ isLogin, onAuthenticate }) {
     confirmEmail: false,
     confirmPassword: false,
   });
-
-  function switchAuthModeHandler() {
-    if (isLogin) {
-      navigation.replace("Signup");
-    } else {
-      navigation.replace("Login");
-    }
-  }
 
   function submitHandler(credentials) {
     let { email, confirmEmail, password, confirmPassword } = credentials;
@@ -70,21 +60,8 @@ function AuthContent({ isLogin, onAuthenticate }) {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <LinearGradient
-        colors={[
-          Colors.primary50,
-          Colors.primary50,
-          Colors.primary50,
-          Colors.primary50,
-          Colors.primary50,
-          Colors.primary50,
-        ]}
-        locations={[0.01, 0.05, 0.15, 0.3, 0.4, 0.5]}
-        style={styles.linearContainer}
-      >
         <SafeAreaView style={styles.rootContainer}>
-          <BackButton/>
-          <PagesTitle title={'Hello !'} subTitle={isLogin ? 'Sign in to continue' : 'Create a new account'}/>
+          <PagesTitle title={isLogin ? 'Wellcome back!' : 'Hello!'} subTitle={isLogin ? 'Hello there, login to continue' : 'Create a new account to continue'}/>
           <View style={styles.inputsContainer}>
             <AuthForm
               isLogin={isLogin}
@@ -93,7 +70,6 @@ function AuthContent({ isLogin, onAuthenticate }) {
             />
           </View>
         </SafeAreaView>
-      </LinearGradient>
     </TouchableWithoutFeedback>
   );
 }
@@ -101,16 +77,13 @@ function AuthContent({ isLogin, onAuthenticate }) {
 export default AuthContent;
 
 const styles = StyleSheet.create({
-  linearContainer: {
+  rootContainer: {
     width: wp("100%"),
     height: hp("100%"),
-    flexGrow: 1,
+    flex: 1,
+    backgroundColor: Colors.primary800
   },
-  rootContainer: {
-    width: '100%',
-    height: '100%',
-  },
-  buttons: {
-    height: '20%',
-  },
+  inputsContainer: {
+    height: '85%',
+  }
 });

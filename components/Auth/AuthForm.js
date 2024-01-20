@@ -6,9 +6,6 @@ import { useNavigation } from "@react-navigation/native";
 
 import Button from '../ui/Button';
 import Input from './Input';
-import ButtonGoogleLogin from "../SignUp-Login-components/ButtonGoogleLogin";
-
-
 
 function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
   const [enteredEmail, setEnteredEmail] = useState('');
@@ -98,29 +95,27 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
             isInvalid={passwordsDontMatch}
           />
         )}
-      </View>
-
-      <View style={styles.buttons}>
-        <Button 
-          onPress={submitHandler} 
-          styleButton={
-            isLogin ? 
-              styles.stylesButton 
-              :
-              [styles.stylesButton, styles.paddingButton]
-            }
-          >
-          {isLogin ? 'LOGIN' : 'SIGNUP'}
-        </Button>
-        <ButtonGoogleLogin/>
-        <View style={styles.signUpButton}>
-          <Text style={styles.signText}>{isLogin ? "Don't have an account?" : 'Do you have an account?'}</Text>
-          <Pressable
-            style={({ pressed }) => pressed && styles.pressed}
-            onPress={() => onPressHandler(isLogin ? "Signup" : 'Login')}
-          >
-            <Text style={styles.signTextButton}>{isLogin ? "SignUp" : 'LogIn'}</Text>
-          </Pressable>
+        <View style={styles.buttons}>
+          <Button 
+            onPress={submitHandler} 
+            styleButton={
+              isLogin ? 
+                styles.stylesButton 
+                :
+                [styles.stylesButton, styles.paddingButton]
+              }
+            >
+            {isLogin ? 'LOGIN' : 'SIGNUP'}
+          </Button>
+          <View style={styles.signUpButton}>
+            <Text style={styles.signText}>{isLogin ? "Don't have an account?" : 'Do you have an account?'}</Text>
+            <Pressable
+              style={({ pressed }) => pressed && styles.pressed}
+              onPress={() => onPressHandler(isLogin ? "Signup" : 'Login')}
+            >
+              <Text style={styles.signTextButton}>{isLogin ? "SignUp" : 'LogIn'}</Text>
+            </Pressable>
+          </View>
         </View>
       </View>
     </View>
@@ -134,30 +129,27 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '80%',
     alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: Colors.neutral100,
   },
   inputAreaLogin: {
-    height: '40%',
+    height: '70%',
     width: '100%',
     justifyContent: 'center',
-    gap: 30,
+    gap: 20,
   },
   inputAreaSignup: {
-    height: '60%',
+    height: '80%',
     width: '100%',
-    justifyContent: 'space-around',
-    marginTop: 90
+    justifyContent: 'center',
   },
   buttons: {
     width: '100%',
-    height: '35%',
-    marginTop: 10,
-    gap: 10,
+    height: '30%',
+    gap: 5,
   },
   stylesButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: '30%',
   },
   signUpButton: {
     height: "15%",
