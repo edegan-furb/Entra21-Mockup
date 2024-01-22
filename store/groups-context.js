@@ -7,7 +7,7 @@ export const GroupsContext = createContext({
   deleteGroup: (id) => { },
   updateGroup: (id, { title }) => { },
   setMembers: (groupId, members) => { },
-  deleteMember: (id) = {},
+  deleteMember: (id) => { },
 });
 
 function groupsReducer(state, action) {
@@ -39,7 +39,9 @@ function groupsReducer(state, action) {
         if (group.id === action.payload.groupId) {
           return {
             ...group,
-            members: action.payload.members,
+            members: [...action.payload.members].sort((a, b) =>
+              a.username.localeCompare(b.username)
+            )
           };
         }
         return group;
