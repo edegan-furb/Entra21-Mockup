@@ -25,7 +25,7 @@ function AllGroups() {
           if (initialLoad) {
             setIsLoading(false);
             setInitialLoad(false);
-          }
+          } 
         });
 
         // Return the cleanup function to stop listening when the component unmounts

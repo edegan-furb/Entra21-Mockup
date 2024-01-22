@@ -9,6 +9,7 @@ import {
   doc,
   deleteDoc,
   onSnapshot,
+  getDoc,
 } from "firebase/firestore";
 
 export async function createGroup(title) {
@@ -25,6 +26,8 @@ export async function createGroup(title) {
     const groupRef = group.id;
     //  Add the current user as a member to the newly created group
     await addMember(groupRef, userRef);
+    //  Add the current user as a admin to the newly created group
+    addAdminToMember(groupRef, userRef, true);
     //  Return the ID of the created group
     return groupRef;
   } catch (error) {
@@ -78,6 +81,69 @@ export async function updateGroup(groupId, newTitle) {
   }
 }
 
+export async function isAdmin(groupRef, userRef, callback) {
+  try {
+    const groupDocRef = doc(db, "groups", groupRef);
+    const userDocRef = doc(db, "users", userRef);
+
+    const q = query(
+      collection(db, "members"),
+      where("group", "==", groupDocRef),
+      where("user", "==", userDocRef)
+    );
+
+    const unsubscribe = onSnapshot(
+      q,
+      (querySnapshot) => {
+        if (!querySnapshot.empty) {
+          const memberData = querySnapshot.docs[0].data();
+          const isAdmin = memberData.admin;
+          console.log("Member admin info updated.");
+          callback(isAdmin);
+        } else {
+          console.log("Member document not found.");
+          callback(false);
+        }
+      },
+      (error) => {
+        console.error("Error listening to admin status:", error);
+        throw error;
+      }
+    );
+
+    return unsubscribe;
+  } catch (error) {
+    console.error("Error setting up admin status listener:", error.message);
+    throw error;
+  }
+}
+
+export async function addAdminToMember(groupRef, userRef, state) {
+  try {
+    const groupDocRef = doc(db, "groups", groupRef);
+    const userDocRef = doc(db, "users", userRef);
+
+    const querySnapshot = await getDocs(
+      query(
+        collection(db, "members"),
+        where("group", "==", groupDocRef),
+        where("user", "==", userDocRef)
+      )
+    );
+
+    const memberDocRef = querySnapshot.docs[0].ref;
+
+    await updateDoc(memberDocRef, {
+      admin: state,
+    });
+
+    console.log("Member document updated successfully.");
+  } catch (error) {
+    console.error("Error updating member document:", error.message);
+    throw error;
+  }
+}
+
 export async function addMember(groupRef, userRef) {
   try {
     //  Create Firestore document references for the group and user
@@ -97,57 +163,112 @@ export async function addMember(groupRef, userRef) {
   }
 }
 
-export async function fetchGroups(callback) {
-  //  Get the current user's UID
-  const userRef = auth.currentUser.uid;
-  //  Reference to the user document in Firestore
-  const userDocRef = doc(db, "users", userRef);
-  //  Collection reference for the "members" collection in Firestore
-  const membersCollection = collection(db, "members");
+export async function removeMember(memberId) {
+  try {
+    // Create a reference to the member document in the Firestore
+    const memberDocRef = doc(db, "members", memberId);
 
-  //  Get user memberships based on the user document reference
-  const userMembersQuery = query(
-    membersCollection,
-    where("user", "==", userDocRef)
+    // Delete the member document
+    await deleteDoc(memberDocRef);
+
+    console.log("Member removed successfully from Firestore");
+  } catch (error) {
+    console.error("Error removing member from Firestore:", error);
+    throw error;
+  }
+}
+
+export async function fetchGroups(callback) {
+  const userRef = auth.currentUser.uid;
+  const userDocRef = doc(db, "users", userRef);
+  const membersCollection = collection(db, "members");
+  const groupsCollectionRef = collection(db, "groups");
+
+  // Listen for changes in user memberships
+  const stopListeningUserMemberships = onSnapshot(
+    query(membersCollection, where("user", "==", userDocRef)),
+    (userMembersSnapshot) => {
+      // Get the group references from the user's memberships
+      const groupRefs = userMembersSnapshot.docs
+        .map((doc) => doc.data().group)
+        .filter(Boolean);
+
+      if (groupRefs.length === 0) {
+        callback([]);
+        return;
+      }
+
+      const groupIDs = groupRefs.map((groupRef) => groupRef.id);
+
+      // Listener for real-time updates on groups
+      const groupsQuery = query(
+        groupsCollectionRef,
+        where("__name__", "in", groupIDs)
+      );
+      const stopListeningGroups = onSnapshot(groupsQuery, (groupsSnapshot) => {
+        const groups = groupsSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        // Sort groups by title
+        const sortedGroups = groups.sort((a, b) =>
+          a.title.localeCompare(b.title)
+        );
+
+        // Callback function with the sorted groups data
+        callback(sortedGroups);
+      });
+
+      // This will return the stopListening function for the groups listener
+      return stopListeningGroups;
+    }
   );
 
-  //  Variable to store the stopListening function
-  let stopListening;
+  // Return a function to stop both listeners
+  return () => {
+    stopListeningUserMemberships();
+    // Call the stopListeningGroups function if it's defined
+    stopListeningGroups && stopListeningGroups();
+  };
+}
 
-  //  Listener for real-time updates on user memberships
-  onSnapshot(userMembersQuery, (userMembersSnapshot) => {
-    //  Extract group references from user memberships
-    const groupRefs = userMembersSnapshot.docs
-      .map((doc) => doc.data().group)
-      .filter((groupRef) => groupRef);
+export async function fetchGroupMembers(groupId, callback) {
+  const groupDocRef = doc(db, "groups", groupId);
 
-    //  If there are no group references, return early
-    if (groupRefs.length === 0) {
-      callback([]);
-      return;
+  const membersQuery = query(
+    collection(db, "members"),
+    where("group", "==", groupDocRef)
+  );
+
+  const stopListeningMembers = onSnapshot(
+    membersQuery,
+    async (membersSnapshot) => {
+      const membersData = await Promise.all(
+        membersSnapshot.docs.map(async (docSnapshot) => {
+          const memberData = docSnapshot.data();
+          const userDocRef = memberData.user;
+
+          // Fetch user data
+          const userSnapshot = await getDoc(userDocRef);
+          const userData = userSnapshot.data();
+
+          return {
+            id: docSnapshot.id,
+            admin: memberData.admin,
+            group: groupId,
+            user: memberData.user,
+            email: userData.email,
+            username: userData.username,
+          };
+        })
+      );
+
+      callback(membersData);
     }
+  );
 
-    //  Extract group IDs from group references
-    const groupIDs = groupRefs.map((groupRef) => groupRef.id);
-
-    //  Fetch groups from Firestore based on group IDs
-    const groupsQuery = query(
-      collection(db, "groups"),
-      where("__name__", "in", groupIDs)
-    );
-
-    //  Listener for real-time updates on groups
-    stopListening = onSnapshot(groupsQuery, (groupsSnapshot) => {
-      //  Extract and map group data from the snapshot
-      const groups = groupsSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        title: doc.data().title,
-      }));
-      //  Callback function with the fetched groups data
-      callback(groups);
-    });
-  });
-
-  //  Return the stopListening function or an empty function if undefined
-  return stopListening || (() => {});
+  return () => {
+    stopListeningMembers();
+  };
 }

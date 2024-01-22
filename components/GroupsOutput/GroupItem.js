@@ -19,9 +19,7 @@ function GroupItem({ id, title }) {
     >
       <View style={styles.groupItem}>
         <View>
-          <Text style={[styles.textBase, styles.title]}>
-            {title}
-          </Text>
+          <Text style={[styles.textBase, styles.title]}>{title}</Text>
         </View>
       </View>
     </Pressable>
@@ -56,18 +54,5 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     fontWeight: "bold",
     marginLeft: 15
-  },
-  amountContainer: {
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    backgroundColor: "white",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 4,
-    minWidth: 80,
-  },
-  amount: {
-    color: Colors.primary500,
-    fontWeight: "bold",
   },
 });

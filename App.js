@@ -207,6 +207,7 @@ function AuthenticatedStack() {
                 color={tintColor}
                 size={22}
               />
+              <IconButton icon={"exit-outline"} color={tintColor} size={24} />
             </View>
           ),
         })}

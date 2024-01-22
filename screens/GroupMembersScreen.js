@@ -1,50 +1,94 @@
-import { useLayoutEffect, useContext } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useLayoutEffect, useContext, useState, useEffect } from "react";
 import { GroupsContext } from "../store/groups-context";
+import MembersOutput from "../components/MembersOutput/MembersOutput";
+import { fetchGroupMembers, removeMember } from "../util/firestore";
+import Error from "../components/ui/Error";
+import LoadingOverlay from "../components/ui/LoadingOverlay";
 
 function GroupMembersScreen({ navigation, route }) {
-  const GroupId = route.params?.editedGroupId;
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState();
 
+  const isAdmin = route.params?.isAdmin;
+  const groupId = route.params?.editedGroupId;
   const groupsCtx = useContext(GroupsContext);
 
-  const selectGroup = groupsCtx.groups.find((group) => group.id === GroupId);
+  useEffect(() => {
+    let isMounted = true;
+    setIsLoading(true);
+
+    const getGroupMembers = async () => {
+      try {
+        const stopListening = await fetchGroupMembers(
+          groupId,
+          (fetchedMembers) => {
+            if (isMounted) {
+              groupsCtx.setMembers(groupId, fetchedMembers);
+              setIsLoading(false);
+            }
+          }
+        );
+
+        return () => {
+          isMounted = false;
+          stopListening();
+        };
+      } catch (err) {
+        if (isMounted) {
+          console.error("Error fetching group members:", err);
+          setError("Could not fetch group members. Please try again.");
+          setIsLoading(false);
+        }
+      }
+    };
+
+    getGroupMembers();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [groupId, groupsCtx]);
 
   useLayoutEffect(() => {
+    const selectGroup = groupsCtx.groups.find((group) => group.id === groupId);
     navigation.setOptions({
-      title: `${selectGroup.title}'s Members`,
+      title: `${selectGroup ? selectGroup.title : "Group"}'s Members`,
     });
-  }, [navigation]);
+  }, [navigation, groupId, groupsCtx.groups]);
+
+  if (error && !isLoading) {
+    return <Error message={error} />;
+  }
+
+  if (isLoading) {
+    return <LoadingOverlay />;
+  }
+
+  // Find the selected group to get its members
+  const selectedGroup = groupsCtx.groups.find((group) => group.id === groupId);
+  const groupMembers = selectedGroup ? selectedGroup.members : [];
+
+  const handleRemoveMember = (memberId) => {
+    removeMember(memberId)
+      .then(() => {
+        const updatedMembers = groupsCtx.groups
+          .find((group) => group.id === groupId)
+          .members.filter((member) => member.id !== memberId);
+        groupsCtx.setMembers(groupId, updatedMembers);
+      })
+      .catch((error) => {
+        console.error("Error removing member:", error);
+      });
+  };
 
   return (
-    <View style={styles.rootContainer}>
-      <Text style={styles.title}>Members Form - By email</Text>
-      <Text style={styles.text}>Add User Button</Text>
-      <Text style={styles.title}>Members Ouput - Current Users</Text>
-      <Text style={styles.text}>OnPress Remove User from Group</Text>
-      <Text style={styles.text}>Leave Group Button</Text>
-    </View>
+    <MembersOutput
+      members={groupMembers}
+      onRemoveMember={handleRemoveMember}
+      fallbackText="No members found!"
+      isAdmin={isAdmin}
+    />
   );
 }
 
 export default GroupMembersScreen;
-
-const styles = StyleSheet.create({
-  rootContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 32,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 8,
-    color: "red"
-  },
-  text: {
-    fontSize: 16,
-    fontWeight: "semibold",
-    marginBottom: 8,
-    color: "blue"
-  },
-});

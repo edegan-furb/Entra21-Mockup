@@ -6,15 +6,21 @@ export const GroupsContext = createContext({
   setGroups: (groups) => {},
   deleteGroup: (id) => {},
   updateGroup: (id, { title }) => {},
+  setMembers: (groupId, members) => {},
 });
 
 function groupsReducer(state, action) {
   switch (action.type) {
     case "ADD":
-      return [...state, { ...action.payload }];
+      return [...state, { ...action.payload }].sort((a, b) =>
+        a.title.localeCompare(b.title)
+      );
     case "SET":
-      const inverted = action.payload.reverse();
-      return inverted;
+      // Sort groups by name in ascending order
+      const sortedGroups = [...action.payload].sort((a, b) =>
+        a.title.localeCompare(b.title)
+      );
+      return sortedGroups;
     case "UPDATE":
       const updatableGroupIndex = state.findIndex(
         (group) => group.id === action.payload.id
@@ -23,9 +29,20 @@ function groupsReducer(state, action) {
       const updatedItem = { ...updatableGroup, ...action.payload.data };
       const updatedGroups = [...state];
       updatedGroups[updatableGroupIndex] = updatedItem;
-      return updatedGroups;
+      // Ensure the updated list is also sorted
+      return updatedGroups.sort((a, b) => a.title.localeCompare(b.title));
     case "DELETE":
       return state.filter((group) => group.id !== action.payload);
+    case "SET_MEMBERS":
+      return state.map((group) => {
+        if (group.id === action.payload.groupId) {
+          return {
+            ...group,
+            members: action.payload.members,
+          };
+        }
+        return group;
+      });
     default:
       return state;
   }
@@ -50,12 +67,17 @@ function GroupsContextProvider({ children }) {
     dispatch({ type: "UPDATE", payload: { id: id, data: groupData } });
   }
 
+  function setMembers(groupId, members) {
+    dispatch({ type: "SET_MEMBERS", payload: { groupId, members } });
+  }
+
   const value = {
     groups: groupsState,
     addGroup: addGroup,
     setGroups: setGroups,
     deleteGroup: deleteGroup,
     updateGroup: updateGroup,
+    setMembers: setMembers,
   };
 
   return (
