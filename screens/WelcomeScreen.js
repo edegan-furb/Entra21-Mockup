@@ -4,6 +4,8 @@ import { useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { AuthContext } from "../store/auth-context";
 import { auth } from "../util/auth";
+import TotalTasks from "../components/analitics/TotalTasks";
+
 
 function WelcomeScreen() {
   const [fetchedMessage, setFetchedMesssage] = useState("");
@@ -29,6 +31,7 @@ function WelcomeScreen() {
       <Text style={styles.title}>Welcome!</Text>
       <Text>You authenticated successfully!</Text>
       <Text>{fetchedMessage}</Text>
+      <TotalTasks numberOfTasks={0}/>
     </View>
   );
 }

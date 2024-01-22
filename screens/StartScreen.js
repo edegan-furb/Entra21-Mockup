@@ -63,7 +63,7 @@ function StartScreen() {
   export default StartScreen;
   
   const styles = StyleSheet.create({
-    rootContainer: {
+    rootContainer: { 
       flex: 1,
       backgroundColor: Colors.neutral100,
       width: wp('100%'),
