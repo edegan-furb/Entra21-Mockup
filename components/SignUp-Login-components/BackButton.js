@@ -15,7 +15,7 @@ export default function BackButton() {
         <View style={styles.container}>
             <Pressable style={styles.backButtonContainer} onPress={onPressHandler}>
                 <Ionicons 
-                    name="arrow-back-circle-outline" 
+                    name="chevron-back-circle-outline" 
                     color={Colors.primary100} 
                     size={30} 
                     style={styles.backButton}
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     container: {
         width: '100%',
         height: '20%',
-        paddingLeft: '7%',
+        paddingLeft: '6%',
     },
     backButtonContainer: {
         width: '10%',

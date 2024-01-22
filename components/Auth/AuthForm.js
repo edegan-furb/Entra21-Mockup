@@ -152,11 +152,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   signUpButton: {
-    height: "15%",
+    height: "20%",
     flexDirection: "row",
-    alignItems: 'flex-end',
+    alignItems: 'center',
     justifyContent: "center",
-    gap: 5
+    gap: 5,
   },
   signText: {
     fontSize: 13,
