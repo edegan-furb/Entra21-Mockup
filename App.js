@@ -20,6 +20,7 @@ import GroupsContextProvider from "./store/groups-context";
 import GroupScreen from "./screens/GroupScreen";
 import { View } from "react-native";
 import GroupMembersScreen from "./screens/GroupMembersScreen";
+import AddMemberScreen from "./screens/AddMemberScreen";
 
 const BottomTabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -123,17 +124,27 @@ function AuthenticatedStack() {
         }}
       />
       <Stack.Screen
+        name="Add Member"
+        component={AddMemberScreen}
+        options={{
+          presentation: "modal",
+        }}
+      />
+      <Stack.Screen
         name="GroupMembersScreen"
         component={GroupMembersScreen}
         options={({ route, navigation }) => ({
           presentation: "modal",
           headerRight: ({ tintColor }) => (
             <View style={{ flexDirection: "row" }}>
-              <IconButton
+              {/* <IconButton
                 icon={"person-add-outline"}
                 color={tintColor}
                 size={24}
-              />
+                onPress={() => {
+                  navigation.navigate("Add Member");
+                }}
+              /> */}
               <IconButton icon={"exit-outline"} color={tintColor} size={24} />
             </View>
           ),

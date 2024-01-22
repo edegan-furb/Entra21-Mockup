@@ -2,16 +2,28 @@ import { StyleSheet, Text, View } from "react-native";
 import { Colors } from "../../constants/styles";
 import IconButton from "../ui/IconButton";
 import { auth } from "../../util/auth";
+import { GroupsContext } from "../../store/groups-context";
+import { useContext } from "react";
 
-function MemberItem({ id, email, username, onRemoveMember, user, isAdmin, admin }) {
+function MemberItem({ id, email, username, onRemoveMember, user, admin }) {
   const currentUser = auth.currentUser.uid;
+  const groupsCtx = useContext(GroupsContext);
+  let foundMember = null;
+
+  groupsCtx.groups.forEach(group => {
+    group.members.forEach(member => {
+      if (member.user?._key?.path?.segments[user._key.path.segments.length - 1] === currentUser) {
+        foundMember = member;
+      }
+    });
+  });
   const userId = user?._key?.path?.segments[user._key.path.segments.length - 1];
   const isCurrentUser = currentUser === userId;
 
   const removeMemberHandler = () => {
     onRemoveMember(id);
   };
-  
+
   return (
     <View style={styles.memberItem}>
       <View>
@@ -19,6 +31,16 @@ function MemberItem({ id, email, username, onRemoveMember, user, isAdmin, admin 
         <Text style={[styles.textBase, styles.subtitle]}>{email}</Text>
       </View>
       <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row', }}>
+        {isCurrentUser ? (
+          <Text style={styles.currentUserText}>You</Text>
+        ) : foundMember.admin === true ? (
+          <IconButton
+            icon={"person-remove-outline"}
+            color={"white"}
+            size={24}
+            onPress={removeMemberHandler}
+          />
+        ) : null}
         {admin ? (
           <IconButton
             icon={"key"}
@@ -30,16 +52,6 @@ function MemberItem({ id, email, username, onRemoveMember, user, isAdmin, admin 
           color={"white"}
           size={24}
         />}
-        {isCurrentUser ? (
-          <Text style={styles.currentUserText}>You</Text>
-        ) : isAdmin ? (
-          <IconButton
-            icon={"person-remove-outline"}
-            color={"white"}
-            size={24}
-            onPress={removeMemberHandler}
-          />
-        ) : null}
       </View>
     </View>
   );
@@ -75,8 +87,8 @@ const styles = StyleSheet.create({
   currentUserText: {
     color: Colors.primary100,
     fontSize: 16,
-    fontWeight: "bold",
-    margin: 8,
+    //fontWeight: "bold",
+    margin: 6,
     borderRadius: 20,
   },
 });

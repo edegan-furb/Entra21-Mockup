@@ -1,9 +1,12 @@
-import React, { useLayoutEffect, useContext, useState, useEffect } from "react";
+import React, { useLayoutEffect, useContext, useState, useEffect, useCallback } from "react";
 import { GroupsContext } from "../store/groups-context";
 import MembersOutput from "../components/MembersOutput/MembersOutput";
 import { fetchGroupMembers, removeMember } from "../util/firestore";
 import Error from "../components/ui/Error";
 import LoadingOverlay from "../components/ui/LoadingOverlay";
+import { View } from "react-native";
+import IconButton from "../components/ui/IconButton";
+import { Colors } from "../constants/styles";
 
 function GroupMembersScreen({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -55,8 +58,26 @@ function GroupMembersScreen({ navigation, route }) {
     const selectGroup = groupsCtx.groups.find((group) => group.id === groupId);
     navigation.setOptions({
       title: `${selectGroup ? selectGroup.title : "Group"}'s Members`,
+      headerRight: renderHeaderButtons,
     });
-  }, [navigation, groupId, groupsCtx.groups]);
+  }, [navigation, groupId, groupsCtx.groups, renderHeaderButtons]);
+
+  const renderHeaderButtons = useCallback(() => {
+    return (
+      <View style={{ flexDirection: "row" }}>
+        {isAdmin ? (
+          <IconButton
+            icon={"person-add-outline"}
+            color={Colors.primary100}
+            size={24}
+            onPress={() => {
+              navigation.navigate("Add Member");
+            }}
+          />
+        ) : null}
+      </View>
+    );
+  }, [isAdmin, navigation]);
 
   if (error && !isLoading) {
     return <Error message={error} />;

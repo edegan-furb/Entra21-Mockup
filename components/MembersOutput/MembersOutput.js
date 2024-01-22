@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { Colors } from "../../constants/styles";
 import MembersList from "./MembersList";
 
-function MembersOutput({ members, fallbackText, onRemoveMember, isAdmin }) {
+function MembersOutput({ members, fallbackText, onRemoveMember }) {
   let content = <Text style={styles.infoText}>{fallbackText}</Text>;
 
   if (Array.isArray(members) && members.length > 0) {
@@ -10,7 +10,6 @@ function MembersOutput({ members, fallbackText, onRemoveMember, isAdmin }) {
       <MembersList
         members={members}
         onRemoveMember={onRemoveMember}
-        isAdmin={isAdmin}
       />
     );
   }
