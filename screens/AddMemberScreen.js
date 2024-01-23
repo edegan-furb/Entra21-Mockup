@@ -1,15 +1,24 @@
 import { View, StyleSheet } from "react-native";
 import { Colors } from "../constants/styles";
-;
+import AddMemberForm from "../components/AddMembers/AddMemberForm";
 
-function AddMembersScreen({ navigation, route }) {
+function AddMembersScreen({ navigation }) {
+
+    function cancelHandler() {
+        navigation.goBack();
+    }
+
+    function confirmHandler() {
+        navigation.goBack();
+    }
 
     return (
         <View style={styles.container}>
-
+            <AddMemberForm onCancel={cancelHandler} onSubmit={confirmHandler}/>
         </View>
     );
 }
+
 
 export default AddMembersScreen;
 
