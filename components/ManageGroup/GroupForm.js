@@ -42,7 +42,7 @@ function GroupForm({
       title: inputs.title.value,
     };
 
-    const titleIsValid = groupData.title.trim().length > 0;
+    const titleIsValid = groupData.title.trim().length > 0 && groupData.title.trim().length <= 30;
 
     if (!titleIsValid) {
       setInputs((currentInputs) => {

@@ -3,16 +3,10 @@ import { useNavigation } from "@react-navigation/native";
 
 import { Colors } from "../../constants/styles";
 import { Ionicons, Foundation } from '@expo/vector-icons';
-import { GroupsContext } from "../../store/groups-context";
-import CompletedTasks from "../graphComponents/completedTasks";
+import GroupDounnut from '../GroupsOutput/GroupDounnut';
 
-
-
-
-function GroupItem({ id, title }) {
+function GroupItem({ id, title, }) {
   const navigation = useNavigation();
-
-  GroupsContext
 
   function groupPressHandler() {
     navigation.navigate("GroupScreen", {
@@ -46,7 +40,9 @@ function GroupItem({ id, title }) {
               </View>  
             </View>
           </View>
-        <CompletedTasks concludedTasks={60} pendingTasks={40} />  
+          <View style={styles.graphiContainer}>
+            <GroupDounnut concludedTasks={60} pendingTasks={10}/>
+          </View>
         </View>
       </View>
     </Pressable>
@@ -59,9 +55,6 @@ const styles = StyleSheet.create({
   pressed: {
     opacity: 0.75,
   },
-  container: {
-    backgroundColor: 'red'
-  },
   groupItem: {
     width: '100%',
     height: 100,
@@ -71,21 +64,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginVertical: 8,
     borderRadius: 5,
-    elevation: 3,
-    shadowColor: Colors.primary100,
-    shadowRadius: 4,
-    shadowOffset: { width: 1, height: 1 },
-    shadowOpacity: 0.4,
   },
   content: {
+    width: '100%',
+    height: '100%',
+    flexDirection: 'row',
+  },
+  container: {
     paddingLeft: '10%',
-    backgroundColor: '#333',
-    flexDirection: 'row'
+    width: '55%',
+    alignItems: "center",
+    justifyContent: "center"
   },
   titleContainer: {
-    width: '50%',
-    height: '55%',
-    backgroundColor: '#999'
+    width: '100%',
+    height: '45%',
   },
   textBase: {
     color: Colors.primary100,
@@ -95,9 +88,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   infGroupsContainer: {
-    width: '50%',
+    width: '100%',
     flexDirection: "row",
-    backgroundColor: '#666'
+    justifyContent: "space-between",
   },
   infGroups: {
     width: '50%',
@@ -108,5 +101,10 @@ const styles = StyleSheet.create({
   infTitleGroup: {
     color: '#fff',
     fontSize: 13
+  },
+  graphiContainer: {
+    width: '45%',
+    alignItems: "center",
+    justifyContent: "center"
   }
 });
