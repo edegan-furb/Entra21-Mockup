@@ -41,7 +41,8 @@ function GroupItem({ id, title, }) {
             </View>
           </View>
           <View style={styles.graphiContainer}>
-            <GroupDounnut concludedTasks={60} pendingTasks={10}/>
+            <Text style={styles.graphiTextInf}>Concluido</Text>
+            <GroupDounnut concludedTasks={100} pendingTasks={10}/>
           </View>
         </View>
       </View>
@@ -106,5 +107,10 @@ const styles = StyleSheet.create({
     width: '45%',
     alignItems: "center",
     justifyContent: "center"
+  },
+  graphiTextInf: {
+    color: Colors.primary100,
+    paddingVertical: 5,
+    fontSize: 11
   }
 });
