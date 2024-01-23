@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { GroupsContext } from "../store/groups-context";
 import MembersOutput from "../components/MembersOutput/MembersOutput";
-import { fetchGroupMembers, removeMember, isAdmin } from "../util/firestore";
+import { fetchGroupMembers, removeMember, isAdmin, updateAdminStatus } from "../util/firestore";
 import Error from "../components/ui/Error";
 import LoadingOverlay from "../components/ui/LoadingOverlay";
 import { View } from "react-native";
@@ -145,6 +145,17 @@ function GroupMembersScreen({ navigation, route }) {
     }
   }
 
+  async function onChangeAdminStatusHandler(memberId) {
+    setIsLoading(true);
+    try {
+      await updateAdminStatus(memberId);
+      groupsCtx.updateAdmin(groupId, memberId);
+    } catch {
+      setError("Could not delete member - please try again later");
+      setIsLoading(false);
+    }
+  }
+
   // const handleRemoveMember = (memberId) => {
   //   removeMember(memberId)
   //     .then(() => {
@@ -162,6 +173,7 @@ function GroupMembersScreen({ navigation, route }) {
     <MembersOutput
       members={groupMembers}
       onRemoveMember={deleteMemberHandler}
+      onChangeAdminStatus={onChangeAdminStatusHandler}
     />
   );
 }

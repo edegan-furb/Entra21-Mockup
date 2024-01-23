@@ -1,16 +1,24 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import { Colors } from "../../constants/styles";
 import IconButton from "../ui/IconButton";
 import { auth } from "../../util/auth";
 import { GroupsContext } from "../../store/groups-context";
 import { useContext } from "react";
 
-function MemberItem({ id, email, username, onRemoveMember, user, admin }) {
+function MemberItem({
+  id,
+  email,
+  username,
+  onRemoveMember,
+  user,
+  admin,
+  onChangeAdminStatus,
+}) {
   const currentUser = auth.currentUser.uid;
   const groupsCtx = useContext(GroupsContext);
   let foundMember = null;
 
-  if (groupsCtx.groups) { 
+  if (groupsCtx.groups) {
     groupsCtx.groups?.forEach((group) => {
       group.members?.forEach((member) => {
         if (
@@ -31,6 +39,21 @@ function MemberItem({ id, email, username, onRemoveMember, user, admin }) {
   const removeMemberHandler = () => {
     onRemoveMember(id);
   };
+
+  const changeAdminStatus = () => {
+    if (!isAdmin) {
+      Alert.alert(
+        "Access Denied",
+        "You are not an administrator.",
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+        { cancelable: false }
+      );
+    } else {
+      onChangeAdminStatus(id);
+    }
+  };
+
+  console.log(isAdmin);
 
   return (
     <View style={styles.memberItem}>
@@ -56,9 +79,19 @@ function MemberItem({ id, email, username, onRemoveMember, user, admin }) {
           />
         ) : null}
         {admin ? (
-          <IconButton icon={"key"} color={"white"} size={24} />
+          <IconButton
+            icon={"key"}
+            color={"white"}
+            size={24}
+            onPress={changeAdminStatus}
+          />
         ) : (
-          <IconButton icon={"key-outline"} color={"white"} size={24} />
+          <IconButton
+            icon={"key-outline"}
+            color={"white"}
+            size={24}
+            onPress={changeAdminStatus}
+          />
         )}
       </View>
     </View>
