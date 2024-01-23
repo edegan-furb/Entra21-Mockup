@@ -249,7 +249,6 @@ export async function fetchGroupMembers(groupId, callback) {
           const memberData = docSnapshot.data();
           const userDocRef = memberData.user;
 
-          // Fetch user data
           const userSnapshot = await getDoc(userDocRef);
           const userData = userSnapshot.data();
 
@@ -264,11 +263,37 @@ export async function fetchGroupMembers(groupId, callback) {
         })
       );
 
-      callback(membersData);
+      const sortedMembers = membersData.sort((a, b) =>
+        a.username.localeCompare(b.username)
+      );
+
+      callback(sortedMembers);
     }
   );
 
   return () => {
     stopListeningMembers();
   };
+}
+
+export async function updateAdminStatus(memberId) {
+  try {
+    const memberDocRef = doc(db, "members", memberId);
+
+    const memberDoc = await getDoc(memberDocRef);
+    if (!memberDoc.exists()) {
+      throw new Error("Member document not found.");
+    }
+
+    const currentAdminStatus = memberDoc.data().admin;
+
+    await updateDoc(memberDocRef, {
+      admin: !currentAdminStatus,
+    });
+
+    console.log("Member admin status toggled successfully.");
+  } catch (error) {
+    console.error("Error toggling member admin status:", error.message);
+    throw error;
+  }
 }

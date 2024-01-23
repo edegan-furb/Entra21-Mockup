@@ -7,6 +7,8 @@ export const GroupsContext = createContext({
   deleteGroup: (id) => {},
   updateGroup: (id, { title }) => {},
   setMembers: (groupId, members) => {},
+  deleteMember: (id) => {},
+  updateAdmin: (id) => {},
 });
 
 function groupsReducer(state, action) {
@@ -38,7 +40,37 @@ function groupsReducer(state, action) {
         if (group.id === action.payload.groupId) {
           return {
             ...group,
-            members: action.payload.members,
+            members: [...action.payload.members].sort((a, b) =>
+              a.username.localeCompare(b.username)
+            ),
+          };
+        }
+        return group;
+      });
+    case "DELETE_MEMBER":
+      return state.map((group) => {
+        if (group.id === action.payload.groupId) {
+          return {
+            ...group,
+            members: group.members.filter(
+              (member) => member.id !== action.payload.memberId
+            ),
+          };
+        }
+        return group;
+      });
+    case "UPDATE_ADMIN":
+      return state.map((group) => {
+        if (group.id === action.payload.groupId) {
+          const members = Array.isArray(group.members) ? group.members : [];
+          return {
+            ...group,
+            members: members.map((member) => {
+              if (member.id === action.payload.memberId) {
+                return { ...member, admin: !member.admin };
+              }
+              return member;
+            }),
           };
         }
         return group;
@@ -70,6 +102,12 @@ function GroupsContextProvider({ children }) {
   function setMembers(groupId, members) {
     dispatch({ type: "SET_MEMBERS", payload: { groupId, members } });
   }
+  function deleteMember(groupId, memberId) {
+    dispatch({ type: "DELETE_MEMBER", payload: { groupId, memberId } });
+  }
+  function updateAdmin(groupId, memberId) {
+    dispatch({ type: "UPDATE_ADMIN", payload: { groupId, memberId } });
+  }
 
   const value = {
     groups: groupsState,
@@ -78,6 +116,8 @@ function GroupsContextProvider({ children }) {
     deleteGroup: deleteGroup,
     updateGroup: updateGroup,
     setMembers: setMembers,
+    deleteMember: deleteMember,
+    updateAdmin: updateAdmin,
   };
 
   return (
