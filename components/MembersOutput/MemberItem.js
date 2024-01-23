@@ -53,7 +53,7 @@ function MemberItem({
     }
   };
 
-  console.log(isAdmin);
+  //console.log(isAdmin);
 
   return (
     <View style={styles.memberItem}>

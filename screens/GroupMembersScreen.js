@@ -148,8 +148,8 @@ function GroupMembersScreen({ navigation, route }) {
   async function onChangeAdminStatusHandler(memberId) {
     setIsLoading(true);
     try {
-      await updateAdminStatus(memberId);
       groupsCtx.updateAdmin(groupId, memberId);
+      await updateAdminStatus(memberId);
     } catch {
       setError("Could not delete member - please try again later");
       setIsLoading(false);
