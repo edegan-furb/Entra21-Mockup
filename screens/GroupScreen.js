@@ -59,7 +59,6 @@ function GroupScreen({ route, navigation }) {
           onPress={() => {
             navigation.navigate("GroupMembersScreen", {
               editedGroupId: groupId,
-              isAdmin: isAdminStatus
             });
           }}
         />

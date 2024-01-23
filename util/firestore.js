@@ -264,7 +264,11 @@ export async function fetchGroupMembers(groupId, callback) {
         })
       );
 
-      callback(membersData);
+      const sortedMembers = membersData.sort((a, b) =>
+        a.username.localeCompare(b.username)
+      );
+
+      callback(sortedMembers);
     }
   );
 

@@ -2,8 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { Colors } from "../../constants/styles";
 import MembersList from "./MembersList";
 
-function MembersOutput({ members, fallbackText, onRemoveMember }) {
-  let content = <Text style={styles.infoText}>{fallbackText}</Text>;
+function MembersOutput({ members, onRemoveMember }) {
 
   if (Array.isArray(members) && members.length > 0) {
     content = (
