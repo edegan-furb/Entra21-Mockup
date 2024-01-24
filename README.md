@@ -51,3 +51,10 @@ $ npx expo start
 - [Expo](https://expo.dev/) - Platform for making universal native apps for Android, iOS, and the web.
 - [React-Navigation](https://reactnavigation.org) - Routing and navigation for React Native apps.
 
+## Acknowledgments
+
+* [Ariel](https://github.com/Ariel-Alejandr0)
+* [Eduardo](https://github.com/edegan-furb)
+* [Julio](https://github.com/jcvanzs)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
