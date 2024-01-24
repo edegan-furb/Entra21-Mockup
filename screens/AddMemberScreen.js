@@ -2,7 +2,7 @@ import { View, StyleSheet, Alert } from "react-native";
 import { Colors } from "../constants/styles";
 import AddMemberForm from "../components/AddMembers/AddMemberForm";
 import {
-  addAdminToMember,
+  setAdminStatus,
   addMember,
   getUserIdByEmail,
 } from "../util/firestore";
@@ -44,7 +44,7 @@ function AddMembersScreen({ route, navigation }) {
           group: groupId,
         });
         await addMember(groupId, userId);
-        await addAdminToMember(groupId, userId, memberData.isAdmin);
+        await setAdminStatus(groupId, userId, memberData.isAdmin);
         navigation.goBack();
       }
       setIsLoading(false);

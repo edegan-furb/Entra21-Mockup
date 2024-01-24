@@ -5,7 +5,6 @@ import Button from "../ui/Button";
 import { useState } from "react";
 
 function AddMemberForm({ onCancel, onSubmit }) {
-
   const [isChecked, setIsChecked] = useState(false);
   const [inputs, setInputs] = useState({
     email: {
@@ -14,7 +13,7 @@ function AddMemberForm({ onCancel, onSubmit }) {
     },
   });
 
-  const toggleSwitch = () => setIsChecked(previousState => !previousState);
+  const toggleSwitch = () => setIsChecked((previousState) => !previousState);
 
   function inputChangeHandler(inputIdentifier, enteredValue) {
     setInputs((currentInputs) => {
@@ -44,14 +43,10 @@ function AddMemberForm({ onCancel, onSubmit }) {
       });
       return;
     }
-
-    console.log(memberData);
     onSubmit(memberData);
   }
 
-
   const formIsInvalid = !inputs.email.isValid;
-
 
   return (
     <View style={styles.form}>
@@ -89,8 +84,6 @@ function AddMemberForm({ onCancel, onSubmit }) {
   );
 }
 
-
-
 export default AddMemberForm;
 
 const styles = StyleSheet.create({
@@ -98,8 +91,8 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   switch: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginVertical: 12,
     paddingHorizontal: 10,
   },
@@ -143,5 +136,3 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
   },
 });
-
-
