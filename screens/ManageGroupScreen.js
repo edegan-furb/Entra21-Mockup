@@ -65,7 +65,7 @@ function ManageGroupScreen({ navigation, route }) {
     return <Error message={error} />;
   }
   if (isLoading) {
-    return <Loading />;
+    return <Loading style={{ backgroundColor: Colors.primary800 }} />;
   }
 
   return (
