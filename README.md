@@ -45,10 +45,10 @@ $ npx expo start
 
 ## Built with 
 
-- [React-Native](https://reactnative.dev/) -  Framework for making apps for Cross-platform mobile devices.
+- [![React-Native][React-Native]][React-Native-url] - Framework for making apps for Cross-platform mobile devices.
 - [Firebase-Auth](https://firebase.google.com/docs/auth) - Authenticate and manage users from a variety of providers without server-side code.
 - [Cloud-Firestore](https://firebase.google.com/docs/firestore) - Flexible, scalable database for mobile development.
--  [![Expo][Expo]][Expo-url] - Platform for making universal native apps for Android, iOS, and the web.
+- [![Expo][Expo]][Expo-url] - Platform for making universal native apps for Android, iOS, and the web.
 - [React-Navigation](https://reactnavigation.org) - Routing and navigation for React Native apps.
 
 <!-- MARKDOWN LINKS & IMAGES -->
