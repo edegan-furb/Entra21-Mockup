@@ -7,6 +7,7 @@ export const GroupsContext = createContext({
   deleteGroup: (id) => {},
   updateGroup: (id, { title }) => {},
   setMembers: (groupId, members) => {},
+  addMember: ({ admin, group, user }) => {},
   deleteMember: (id) => {},
   updateAdmin: (id) => {},
 });
@@ -41,6 +42,19 @@ function groupsReducer(state, action) {
           return {
             ...group,
             members: [...action.payload.members].sort((a, b) =>
+              a.username.localeCompare(b.username)
+            ),
+          };
+        }
+        return group;
+      });
+    case "ADD_MEMBER":
+      return state.map((group) => {
+        if (group.id === action.payload.groupId) {
+          const newMember = action.payload.member;
+          return {
+            ...group,
+            members: [...group.members, newMember].sort((a, b) =>
               a.username.localeCompare(b.username)
             ),
           };
@@ -102,6 +116,9 @@ function GroupsContextProvider({ children }) {
   function setMembers(groupId, members) {
     dispatch({ type: "SET_MEMBERS", payload: { groupId, members } });
   }
+  function addMember(memberData) {
+    dispatch({ type: "ADD_MEMBER", payload: memberData });
+  }
   function deleteMember(groupId, memberId) {
     dispatch({ type: "DELETE_MEMBER", payload: { groupId, memberId } });
   }
@@ -116,6 +133,7 @@ function GroupsContextProvider({ children }) {
     deleteGroup: deleteGroup,
     updateGroup: updateGroup,
     setMembers: setMembers,
+    addMember: addMember,
     deleteMember: deleteMember,
     updateAdmin: updateAdmin,
   };

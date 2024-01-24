@@ -118,6 +118,31 @@ export async function isAdmin(groupRef, userRef, callback) {
   }
 }
 
+export async function getUserIdByEmail(email) {
+  try {
+    const usersQuery = query(
+      collection(db, "users"),
+      where("email", "==", email)
+    );
+
+    const querySnapshot = await getDocs(usersQuery);
+
+    if (querySnapshot.empty) {
+      console.log("No user found with the specified email.");
+      return null;
+    }
+
+    const userDoc = querySnapshot.docs[0];
+    const userId = userDoc.id;
+
+    console.log("User ID retrieved successfully.");
+    return userId;
+  } catch (error) {
+    console.error("Error retrieving user ID by email:", error.message);
+    throw error;
+  }
+}
+
 export async function addAdminToMember(groupRef, userRef, state) {
   try {
     const groupDocRef = doc(db, "groups", groupRef);

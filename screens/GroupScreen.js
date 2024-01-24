@@ -58,7 +58,7 @@ function GroupScreen({ route, navigation }) {
           size={24}
           onPress={() => {
             navigation.navigate("GroupMembersScreen", {
-              editedGroupId: groupId,
+              groupId: groupId,
             });
           }}
         />
