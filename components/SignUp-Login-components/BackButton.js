@@ -12,7 +12,7 @@ export default function BackButton() {
     }
 
     return(
-        <View style={styles.container}>
+        <View style={styles.container} >
             <Pressable style={styles.backButtonContainer} onPress={onPressHandler}>
                 <Ionicons 
                     name="chevron-back-circle-outline" 
@@ -28,7 +28,7 @@ export default function BackButton() {
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        height: '20%',
+        height: '25%',
         paddingLeft: '6%',
     },
     backButtonContainer: {

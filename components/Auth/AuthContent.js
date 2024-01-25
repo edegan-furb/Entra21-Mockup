@@ -4,7 +4,7 @@ import {
   View, 
   Keyboard, 
   Platform, 
-  StatusBar,
+  KeyboardAvoidingView,
 } from "react-native";
 
 import {
@@ -60,8 +60,16 @@ function AuthContent({ isLogin, onAuthenticate }) {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <KeyboardAvoidingView 
+        keyboardVerticalOffset={isLogin ? -260 : -170} 
+        behavior={Platform.OS == 'ios' ? "padding" : "height"} 
+        style={{flex: 1}} 
+      >
         <SafeAreaView style={styles.rootContainer}>
-          <PagesTitle title={isLogin ? 'Wellcome back!' : 'Hello!'} subTitle={isLogin ? 'Hello there, login to continue' : 'Create a new account to continue'}/>
+          <PagesTitle 
+            title={isLogin ? 'Wellcome back!' : 'Hello!'} 
+            subTitle={isLogin ? 'Hello there, login to continue' : 'Create a new account to continue'}
+          />
           <View style={styles.inputsContainer}>
             <AuthForm
               isLogin={isLogin}
@@ -70,6 +78,7 @@ function AuthContent({ isLogin, onAuthenticate }) {
             />
           </View>
         </SafeAreaView>
+      </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
 }
@@ -78,8 +87,6 @@ export default AuthContent;
 
 const styles = StyleSheet.create({
   rootContainer: {
-    width: wp("100%"),
-    height: hp("100%"),
     flex: 1,
     backgroundColor: Colors.primary800
   },
