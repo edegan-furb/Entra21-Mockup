@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { PieChart } from "react-native-gifted-charts";
 
-export default function Donut({concludedTasks}) {
+export default ({concludedTasks}) => {
     
     const pendingTasks = 100 - concludedTasks
 
@@ -21,7 +21,7 @@ export default function Donut({concludedTasks}) {
                 return <Text style={{fontSize: 12}}>{concludedTasks }%</Text>;
                 }}
             />
-            <Text style={styles.texto}>Tarefas completas</Text>
+            <Text style={styles.texto}>Completed Tasks</Text>
         </View>
     
     
