@@ -2,24 +2,47 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { PieChart } from "react-native-gifted-charts";
 
-export default function Donut({concludedTasks, pendingTasks}) {
+export default function Donut({concludedTasks}) {
+    
+    const pendingTasks = 100 - concludedTasks
+
     const pieData = [
-        {value: concludedTasks, color: '#177AD5'},
+        {value: concludedTasks, color: 'green'},
         {value: pendingTasks, color: 'lightgray'}
     ];
     return(
-        <View>
+        <View style={styles.container}>
             <PieChart
                 donut
-                radius={20}
-                innerRadius={10}
+                radius={50}
+                innerRadius={30}
                 data={pieData}
                 centerLabelComponent={() => {
                 return <Text style={{fontSize: 12}}>{concludedTasks }%</Text>;
                 }}
             />
+            <Text style={styles.texto}>Tarefas completas</Text>
         </View>
     
     
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        height: '25%',
+        width: '40%',
+        borderBlockColor: 'black',
+        borderWidth: 1,
+        justifyContent: "center",
+        alignItems: 'center',
+        padding: '2%',
+        borderRadius: 8,
+        backgroundColor: '#ffffff'
+    },
+    texto: {
+        textAlign: "center",
+        fontWeight: 'bold',
+        fontSize: 16
+    }
+})
