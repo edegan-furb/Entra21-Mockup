@@ -66,6 +66,11 @@ function GroupScreen({ route, navigation }) {
           icon={"add-circle-outline"}
           color={Colors.primary100}
           size={24}
+          onPress={() => {
+            navigation.navigate("ManageTasksScreen", {
+              groupId: groupId,
+            });
+          }}
         />
       </View>
     );

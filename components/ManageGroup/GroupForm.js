@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   button: {
+    paddingTop: 8,
     minWidth: 120,
     marginHorizontal: 8,
   },
