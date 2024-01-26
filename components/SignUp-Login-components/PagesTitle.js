@@ -9,7 +9,7 @@ export default function PagesTitle({ title, subTitle }) {
         <BackButton/>
         <View style={styles.imgContainer}>
           <Image 
-            resizeMethod="auto"
+            resizeMethod="scale"
             resizeMode="center"
             style={styles.bannerImage}
             source={require("../../assets/images/teams4.png")}
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   },
   imgContainer: {
     width: '100%',
-    height: '90%',
+    height: '85%',
     alignItems:"center"
   },
   bannerImage: {
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     width: '100%',
-    height: '50%',
+    height: '40%',
     backgroundColor: Colors.primary800
   },
   titleContent: {

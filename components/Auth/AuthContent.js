@@ -60,25 +60,20 @@ function AuthContent({ isLogin, onAuthenticate }) {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <KeyboardAvoidingView 
-        behavior={Platform.OS == 'ios' ? "height" : "height"} 
-        style={{flex: 1}} 
-      >
-        <SafeAreaView style={styles.rootContainer}>
-          <PagesTitle 
-            title={isLogin ? 'Wellcome back!' : 'Hello!'} 
-            subTitle={isLogin ? 'Hello there, login to continue' : 'Create a new account to continue'}
+      <SafeAreaView style={styles.rootContainer}>
+        <PagesTitle 
+          title={isLogin ? 'Wellcome back!' : 'Hello!'} 
+          subTitle={isLogin ? 'Hello there, login to continue' : 'Create a new account to continue'}
+        />
+        <View style={styles.inputsContainer}>
+          <AuthForm
+            isLogin={isLogin}
+            onSubmit={submitHandler}
+            credentialsInvalid={credentialsInvalid}
           />
-          <View style={styles.inputsContainer}>
-            <AuthForm
-              isLogin={isLogin}
-              onSubmit={submitHandler}
-              credentialsInvalid={credentialsInvalid}
-            />
-          </View>
-        </SafeAreaView>
-      </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
+        </View>
+      </SafeAreaView>
+    </TouchableWithoutFeedback> 
   );
 }
 
@@ -86,7 +81,8 @@ export default AuthContent;
 
 const styles = StyleSheet.create({
   rootContainer: {
-    flex: 1,
+    width: wp('100%'),
+    height: hp('100%'),
     backgroundColor: Colors.primary800
   },
   inputsContainer: {
