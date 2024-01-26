@@ -35,7 +35,7 @@ function WelcomeScreen() {
       <Text>You authenticated successfully!</Text>
       <Text>{fetchedMessage}</Text>
       <TotalTasks total={99}/>
-      <View>
+      <View style={styles.containerRow2}>
         
         <CompletedTasks concludedTasks={70} pendingTasks={30}/>
 
@@ -58,6 +58,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 32,
+  },
+  containerRow2: {
+    flexDirection: "row",
   },
   title: {
     fontSize: 20,
