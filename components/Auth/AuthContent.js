@@ -61,8 +61,7 @@ function AuthContent({ isLogin, onAuthenticate }) {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <KeyboardAvoidingView 
-        keyboardVerticalOffset={isLogin ? -260 : -170} 
-        behavior={Platform.OS == 'ios' ? "padding" : "height"} 
+        behavior={Platform.OS == 'ios' ? "height" : "height"} 
         style={{flex: 1}} 
       >
         <SafeAreaView style={styles.rootContainer}>

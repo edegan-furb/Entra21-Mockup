@@ -7,7 +7,12 @@ import React, {
 } from "react";
 import { GroupsContext } from "../store/groups-context";
 import MembersOutput from "../components/MembersOutput/MembersOutput";
-import { fetchGroupMembers, removeMember, isAdmin, updateAdminStatus } from "../util/firestore";
+import {
+  fetchGroupMembers,
+  removeMember,
+  isAdmin,
+  updateAdminStatus,
+} from "../util/firestore";
 import Error from "../components/ui/Error";
 import LoadingOverlay from "../components/ui/LoadingOverlay";
 import { View } from "react-native";
@@ -21,7 +26,7 @@ function GroupMembersScreen({ navigation, route }) {
   const [initialLoad, setInitialLoad] = useState(true);
   const [isAdminStatus, setIsAdminStatus] = useState(false);
 
-  const groupId = route.params?.editedGroupId;
+  const groupId = route.params?.groupId;
   const groupsCtx = useContext(GroupsContext);
   const currentUser = auth.currentUser.uid;
 
@@ -114,7 +119,9 @@ function GroupMembersScreen({ navigation, route }) {
             color={Colors.primary100}
             size={24}
             onPress={() => {
-              navigation.navigate("Add Member");
+              navigation.navigate("Add Member", {
+                groupId: groupId,
+              });
             }}
           />
         ) : null}
@@ -148,8 +155,8 @@ function GroupMembersScreen({ navigation, route }) {
   async function onChangeAdminStatusHandler(memberId) {
     setIsLoading(true);
     try {
-      await updateAdminStatus(memberId);
       groupsCtx.updateAdmin(groupId, memberId);
+      await updateAdminStatus(memberId);
     } catch {
       setError("Could not delete member - please try again later");
       setIsLoading(false);
