@@ -9,6 +9,8 @@ import CompletedTasks from '../components/graphComponents/CompletedTasks';
 import TotalTasks from "../components/graphComponents/TotalTasks";
 import MissedDeadlines from "../components/graphComponents/MissedDeadlines";
 import NumberOfGroups from "../components/graphComponents/NumberOfGroups";
+import HiComp from "../components/homeComponents/HiComp";
+import WelcomeComp from "../components/homeComponents/WelcomeComp";
 
 function WelcomeScreen() {
   const [fetchedMessage, setFetchedMesssage] = useState("");
@@ -30,22 +32,27 @@ function WelcomeScreen() {
   }, [token]);
 
   return (
-    <View style={styles.rootContainer}>
-      <Text style={styles.title}>Welcome!</Text>
-      <Text>You authenticated successfully!</Text>
-      <Text>{fetchedMessage}</Text>
-      <TotalTasks total={99}/>
-      <View style={styles.containerRow2}>
-        
-        <CompletedTasks concludedTasks={70} pendingTasks={30}/>
+    <View >
 
-        <View>
-          <MissedDeadlines number={10}/>
-          <NumberOfGroups number={5}/>
-        </View>
-        
+      <View>
+        <HiComp name="Ariel"/>
       </View>
+
+      <View style={styles.rootContainer}> 
+        <WelcomeComp/>
+
+        <TotalTasks total={99}/>
+        <View style={styles.containerRow2}>
         
+          <CompletedTasks concludedTasks={70} pendingTasks={30}/>
+
+          <View>
+            <MissedDeadlines number={10}/>
+            <NumberOfGroups number={5}/>
+          </View>
+        
+        </View>
+      </View>
     </View>
   );
 }
