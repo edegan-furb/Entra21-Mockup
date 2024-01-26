@@ -35,12 +35,16 @@ function WelcomeScreen() {
       <Text>You authenticated successfully!</Text>
       <Text>{fetchedMessage}</Text>
       <TotalTasks total={99}/>
-      <View style={{backgroundColor: 'red'}}>
+      <View>
+        
+        <CompletedTasks concludedTasks={70} pendingTasks={30}/>
+
+        <View>
+          <MissedDeadlines number={10}/>
+          <NumberOfGroups number={5}/>
+        </View>
+        
       </View>
-      <CompletedTasks concludedTasks={70} pendingTasks={30}/>
-      
-      <MissedDeadlines number={10}/>
-      <NumberOfGroups number={5}/>
         
     </View>
   );

@@ -1,6 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-
+import { 
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+}from "react-native-responsive-screen";
 
 export default ({number}) => {
     
@@ -19,8 +22,8 @@ export default ({number}) => {
 
 const styles = StyleSheet.create({
     container: {
-        width: '45%',
-        height: '10%',
+        width: wp('40%'),
+        height: hp('8%'),
         borderColor: 'black',
         borderRadius: 8,
         borderWidth: 1,

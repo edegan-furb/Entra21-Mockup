@@ -1,6 +1,10 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { PieChart } from "react-native-gifted-charts";
+import { 
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+}from "react-native-responsive-screen";
 
 export default ({concludedTasks}) => {
     
@@ -14,8 +18,8 @@ export default ({concludedTasks}) => {
         <View style={styles.container}>
             <PieChart
                 donut
-                radius={50}
-                innerRadius={30}
+                radius={hp('6%')}
+                innerRadius={hp('4%')}
                 data={pieData}
                 centerLabelComponent={() => {
                 return <Text style={{fontSize: 12}}>{concludedTasks }%</Text>;
@@ -30,8 +34,8 @@ export default ({concludedTasks}) => {
 
 const styles = StyleSheet.create({
     container: {
-        height: '25%',
-        width: '40%',
+        height: hp('20%'),
+        width: wp('35%'),
         borderBlockColor: 'black',
         borderWidth: 1,
         justifyContent: "center",
