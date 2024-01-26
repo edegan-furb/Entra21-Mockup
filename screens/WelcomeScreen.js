@@ -7,6 +7,8 @@ import { auth } from "../util/auth";
 
 import CompletedTasks from '../components/graphComponents/CompletedTasks';
 import TotalTasks from "../components/graphComponents/TotalTasks";
+import MissedDeadlines from "../components/graphComponents/MissedDeadlines";
+import NumberOfGroups from "../components/graphComponents/NumberOfGroups";
 
 function WelcomeScreen() {
   const [fetchedMessage, setFetchedMesssage] = useState("");
@@ -33,7 +35,13 @@ function WelcomeScreen() {
       <Text>You authenticated successfully!</Text>
       <Text>{fetchedMessage}</Text>
       <TotalTasks total={99}/>
+      <View style={{backgroundColor: 'red'}}>
+      </View>
       <CompletedTasks concludedTasks={70} pendingTasks={30}/>
+      
+      <MissedDeadlines number={10}/>
+      <NumberOfGroups number={5}/>
+        
     </View>
   );
 }

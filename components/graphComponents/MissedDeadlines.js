@@ -2,16 +2,16 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
 
-export default ({total}) => {
+export default ({number}) => {
     
     return(
         <View style={styles.container}>
             <View style={styles.textView}>
-                <Text style={styles.text}>Total tasks:</Text>
+                <Text style={styles.text}>Missed deadlines:</Text>
             </View>
 
-            <View style={styles.totalView}>
-                <Text style={styles.total}>{total}</Text>
+            <View style={styles.numberView}>
+                <Text style={styles.number}>{number}</Text>
             </View>
         </View>
     )
@@ -19,25 +19,27 @@ export default ({total}) => {
 
 const styles = StyleSheet.create({
     container: {
-        width: '90%',
+        width: '45%',
         height: '10%',
         borderColor: 'black',
         borderRadius: 8,
         borderWidth: 1,
         backgroundColor: 'lightgray',
-        paddingLeft: '5%',
+        paddingLeft: '2%',
         flexDirection: 'row'
     },
     textView: {
-        width: '70%',
+        width: '60%',
         height: '100%',
         justifyContent: 'center'
     },
     text: {
-        fontSize: 25
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'justify'
     },
-    totalView: {
-        width: '30%',
+    numberView: {
+        width: '40%',
         height: '100%',
         backgroundColor: '#fff',
         justifyContent: 'center',
@@ -46,9 +48,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 8
     },
-    total: {
+    number: {
         fontSize: 30,
         fontWeight: "bold",
-        color: 'blue'
+        color: '#EC241D'
     }
 })
