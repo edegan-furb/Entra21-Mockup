@@ -25,10 +25,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingVertical: '5%',
     paddingHorizontal: '20%',
-    backgroundColor: Colors.primary800,
+    backgroundColor: Colors.primary900,
   },
   flat: {
-    backgroundColor: "transparent",
+    backgroundColor: Colors.primary900,
   },
   buttonText: {
     color: '#fff',

@@ -6,11 +6,7 @@ function CustomButton({ title, onPress, styleButton, styleText }) {
   return (
     <View style={styles.buttonOuterContainer}>
       <Pressable
-        style={({ pressed }) =>
-          pressed
-            ? [styles.buttonInnerContainer, styles.pressade, styleButton]
-            : [styles.buttonInnerContainer, styleButton]
-        }
+        style={ [styles.buttonInnerContainer, styleButton]}
         onPress={onPress}
         android_ripple={{ color: Colors.primary950 }}
       >

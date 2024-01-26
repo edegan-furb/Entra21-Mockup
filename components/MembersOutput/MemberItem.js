@@ -73,7 +73,7 @@ function MemberItem({
         ) : isAdmin === true ? (
           <IconButton
             icon={"person-remove-outline"}
-            color={"white"}
+            color={Colors.primary100}
             size={24}
             onPress={removeMemberHandler}
           />
@@ -81,14 +81,14 @@ function MemberItem({
         {admin ? (
           <IconButton
             icon={"key"}
-            color={"white"}
+            color={Colors.primary100}
             size={24}
             onPress={changeAdminStatus}
           />
         ) : (
           <IconButton
             icon={"key-outline"}
-            color={"white"}
+            color={Colors.primary100}
             size={24}
             onPress={changeAdminStatus}
           />
@@ -102,17 +102,17 @@ export default MemberItem;
 
 const styles = StyleSheet.create({
   memberItem: {
-    padding: 12,
-    marginVertical: 8,
-    backgroundColor: Colors.primary800,
+    padding: 10,
+    marginVertical: 4,
     flexDirection: "row",
     justifyContent: "space-between",
-    borderRadius: 6,
-    elevation: 3,
-    shadowColor: Colors.primary100,
-    shadowRadius: 4,
-    shadowOffset: { width: 1, height: 1 },
-    shadowOpacity: 0.4,
+    
+    backgroundColor: Colors.primary950
+    // elevation: 4,
+    // shadowColor: Colors.primary900,
+    // shadowRadius: 1,
+    // shadowOffset: { width: 1, height: 1 },
+    // shadowOpacity: 0.4,
   },
   textBase: {
     color: Colors.primary100,
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   currentUserText: {
     color: Colors.primary100,
     fontSize: 16,
-    //fontWeight: "bold",
+    fontWeight: "bold",
     margin: 6,
     borderRadius: 20,
   },

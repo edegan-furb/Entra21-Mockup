@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import Input from "./Input";
 import { Colors } from "../../constants/styles";
+import Button from "../ui/Button";
 
 function GroupForm({ 
   onCancel, 
@@ -86,16 +87,16 @@ function GroupForm({
           </View>
           <View style={styleButtons}>
             <View style={buttonsContent}>
-              <Pressable style={styles.button} onPress={submitHandler}>
+              <Button styleButton={styles.button} onPress={submitHandler}>
                 <Text style={styles.textbutton}>{submitButtonLabel}</Text>
-              </Pressable>
-              <Pressable style={styles.button} mode="flat" onPress={onCancel}>
+              </Button>
+              <Button styleButton={styles.button} mode="flat" onPress={onCancel}>
                 <Text style={styles.textbutton}>Cancel</Text>
-              </Pressable>
+              </Button>
             </View>
             <View style={styleDeleteContainer}>
             <View style={styles.divider}></View>
-              <Pressable style={styles.buttonDelete} onPress={deleteHandler}>
+              <Button styleButton={styles.buttonDelete}  onPress={deleteHandler}>
                 <Ionicons
                   name="trash"
                   color={'#fff'}
@@ -104,12 +105,12 @@ function GroupForm({
                 <View style={styles.textContainer}>
                   <Text style={styles.textbutton}>Delete group</Text>                
                 </View>
-              </Pressable>
+              </Button>
             </View>
           </View>
         </View>
       </View>
-    </TouchableWithoutFeedback>
+    </TouchableWithoutFeedback> 
   );
 }
 
@@ -122,8 +123,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: Colors.primary900,
-    borderTopLeftRadius: 5,
-    borderTopRightRadius: 5,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
   title: {
     fontSize: 26,
@@ -138,12 +139,10 @@ const styles = StyleSheet.create({
     height: '25%',
   },
   button : {
-    width: '40%',
-    height: '100%',
-    borderRadius: 12,
     alignItems: "center",
     justifyContent: 'center',
-    backgroundColor: Colors.primary900,
+    width: '70%',
+    height: '100%',
   },
   divider: {
     alignItems: "center",
@@ -154,14 +153,13 @@ const styles = StyleSheet.create({
     marginVertical: 15
   },
   textbutton: {
-    color: '#fff',
     fontWeight: "bold"
   },
   buttonDelete: {
-    width: '50%',
-    height: '70%',
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: 'center',
+    width: '60%',
+    height: '90%',
     flexDirection: "row",
     backgroundColor: Colors.primary900,
     borderRadius: 12
@@ -171,5 +169,6 @@ const styles = StyleSheet.create({
     height: '100%',
     alignItems: "center",
     justifyContent: "center",
+    color: Colors.primary100
   },
 });

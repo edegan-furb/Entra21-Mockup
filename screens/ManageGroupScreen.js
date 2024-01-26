@@ -100,14 +100,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-    backgroundColor: Colors.primary800,
+    backgroundColor: Colors.primary1000,
     alignItems: "center",
   },
   formCreate: {
     marginTop: 40,
     height: hp('35%'),
     width: wp('90%'),
-    borderRadius: 5,
+    borderRadius: 20,
     backgroundColor: Colors.primary100,
   },
   contentCreate: {
@@ -129,16 +129,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonCreate: {
-    width: '100%',
-    height: '80%',
+    width: '90%',
+    height: '100%',
+    borderRadius: 12,
     flexDirection: "row",
     justifyContent: "space-evenly",
   },
   formEditing: {
     marginTop: 40,
-    height: hp('40%'),
+    height: hp('45%'),
     width: wp('90%'),
-    borderRadius: 5,
+    borderRadius: 20,
     backgroundColor: Colors.primary100,
   },
   contentEdit: {
@@ -158,14 +159,15 @@ const styles = StyleSheet.create({
   },
   buttonEdit: {
     width: '100%',
-    height: '35%',
+    height: '40%',
+    alignItems: "center",
+    justifyContent: 'space-around',
     flexDirection: "row",
-    justifyContent: "space-evenly",
   },
   deleteContainer: {
     alignItems: "center",
     justifyContent: "center",
     width: '90%',
-    height: '50%',
+    height: '35%',
   },
 });
