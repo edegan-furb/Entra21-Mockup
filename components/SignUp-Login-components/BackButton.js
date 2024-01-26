@@ -15,7 +15,7 @@ export default function BackButton() {
         <View style={styles.container} >
             <Pressable style={styles.backButtonContainer} onPress={onPressHandler}>
                 <Ionicons 
-                    name="chevron-back-circle-outline" 
+                    name="arrow-back-circle-outline" 
                     color={Colors.primary100} 
                     size={30} 
                     style={styles.backButton}
