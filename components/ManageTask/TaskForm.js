@@ -41,7 +41,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
     const dateIsValid = taskData.date.toString() !== "Invalid Date";
     const descriptionIsValid = taskData.description.trim().length > 0;
 
-    if (!titleIsValid || dateIsValid || !descriptionIsValid) {
+    if (!titleIsValid || !dateIsValid || !descriptionIsValid) {
       setInputs((currentInputs) => {
         return {
           title: {

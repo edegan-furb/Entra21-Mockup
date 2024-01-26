@@ -18,7 +18,15 @@ function ManageTasksScreen({ navigation, route }) {
 
   const isEditing = !!editedTaskId;
 
+  // const selectTask = groupsCtx.groups.tasks.find(
+  //   (task) => task.id === editedTaskId
+  // );
+
   function cancelHandler() {
+    navigation.goBack();
+  }
+
+  function confirmHandler() {
     navigation.goBack();
   }
 
@@ -41,7 +49,7 @@ function ManageTasksScreen({ navigation, route }) {
       <TaskForm
         onCancel={cancelHandler}
         submitButtonLabel={isEditing ? "Update" : "Add"}
-        // onSubmit={confirmHandler}
+        onSubmit={confirmHandler}
         defaultValues={null}
       />
     </View>
