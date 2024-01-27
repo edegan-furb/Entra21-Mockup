@@ -173,6 +173,7 @@ function AuthenticatedStack() {
         component={AddMemberScreen}
         options={{
           presentation: "modal",
+          headerShown: false,
         }}
       />
       <Stack.Screen

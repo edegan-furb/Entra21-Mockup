@@ -1,4 +1,4 @@
-import { StyleSheet, Text, Switch, View } from "react-native";
+import { StyleSheet, Text, Switch, View, TouchableWithoutFeedback, Keyboard } from "react-native";
 import Input from "../AddMembers/Input";
 import { Colors } from "../../constants/styles";
 import Button from "../ui/Button";
@@ -49,38 +49,43 @@ function AddMemberForm({ onCancel, onSubmit }) {
   const formIsInvalid = !inputs.email.isValid;
 
   return (
-    <View style={styles.form}>
-      <Input
-        label={"User by Email"}
-        textInputConfig={{
-          multiline: false,
-          onChangeText: inputChangeHandler.bind(this, "email"),
-        }}
-      />
-      {formIsInvalid && (
-        <Text style={styles.errorText}>
-          Invalid email - please check your entered data
-        </Text>
-      )}
-      <View style={styles.switch}>
-        <Text style={styles.text}>Set as Admin</Text>
-        <Switch
-          trackColor={{ false: Colors.error400, true: Colors.primary500 }}
-          thumbColor={Colors.primary100}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={toggleSwitch}
-          value={isChecked}
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={styles.form}>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Add Members</Text>
+        </View>
+        <Input
+          label={"User by Email"}
+          textInputConfig={{
+            multiline: false,
+            onChangeText: inputChangeHandler.bind(this, "email"),
+          }}
         />
+        {formIsInvalid && (
+          <Text style={styles.errorText}>
+            Invalid email - please check your entered data
+          </Text>
+        )}
+        <View style={styles.switch}>
+          <Text style={styles.text}>Set as Admin</Text>
+          <Switch
+            trackColor={{ false: Colors.error400, true: Colors.primary800 }}
+            thumbColor={Colors.primary100}
+            ios_backgroundColor="#c4c4c4"
+            onValueChange={toggleSwitch}
+            value={isChecked}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button style={styles.button} onPress={submitHandler}>
+            Add
+          </Button>
+          <Button style={styles.button} onPress={onCancel}>
+            Cancel
+          </Button>
+        </View>
       </View>
-      <View style={styles.buttons}>
-        <Button style={styles.button} mode="flat" onPress={onCancel}>
-          Cancel
-        </Button>
-        <Button style={styles.button} onPress={submitHandler}>
-          Add
-        </Button>
-      </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -89,12 +94,22 @@ export default AddMemberForm;
 const styles = StyleSheet.create({
   form: {
     marginTop: 40,
+    width: '100%',
+    height: '50%',
+    backgroundColor: Colors.primary100,
+    borderRadius: 20,
+  },
+  titleContainer: {
+    backgroundColor: Colors.primary900,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20
   },
   switch: {
     flexDirection: "row",
     alignItems: "center",
-    marginVertical: 12,
-    paddingHorizontal: 10,
+    gap: 10,
+    marginVertical: 10,
+    paddingHorizontal: 12,
   },
   title: {
     fontSize: 24,
@@ -104,35 +119,23 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   text: {
-    fontSize: 14,
-    color: Colors.primary100,
+    fontSize: 15,
+    color: Colors.primary900,
     marginVertical: 24,
-    textAlign: "center",
-  },
-  inputRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  rowInput: {
-    flex: 1,
   },
   errorText: {
     textAlign: "center",
     color: Colors.error500,
     margin: 8,
   },
-  buttons: {
-    marginTop: 10,
-    paddingTop: 25,
-    borderTopWidth: 2,
-    borderTopColor: Colors.primary500,
+  buttonContainer: {
     alignItems: "center",
+    justifyContent: 'center',
     flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    width: '100%',
+    height: '20%',
   },
   button: {
-    minWidth: 120,
-    marginHorizontal: 8,
+    
   },
 });
