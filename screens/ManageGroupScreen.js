@@ -137,10 +137,10 @@ const styles = StyleSheet.create({
   },
   formEditing: {
     marginTop: 40,
-    height: hp('45%'),
     width: wp('90%'),
-    borderRadius: 20,
+    height: hp('50%'),
     backgroundColor: Colors.primary100,
+    borderRadius: 20,
   },
   contentEdit: {
     width: '100%',

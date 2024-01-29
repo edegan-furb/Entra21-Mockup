@@ -3,6 +3,10 @@ import Input from "../AddMembers/Input";
 import { Colors } from "../../constants/styles";
 import Button from "../ui/Button";
 import { useState } from "react";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 function AddMemberForm({ onCancel, onSubmit }) {
   const [isChecked, setIsChecked] = useState(false);
@@ -77,10 +81,10 @@ function AddMemberForm({ onCancel, onSubmit }) {
           />
         </View>
         <View style={styles.buttonContainer}>
-          <Button style={styles.button} onPress={submitHandler}>
+          <Button styleButton={styles.button} onPress={submitHandler}>
             Add
           </Button>
-          <Button style={styles.button} onPress={onCancel}>
+          <Button styleButton={styles.button} onPress={onCancel}>
             Cancel
           </Button>
         </View>
@@ -94,8 +98,8 @@ export default AddMemberForm;
 const styles = StyleSheet.create({
   form: {
     marginTop: 40,
-    width: '100%',
-    height: '50%',
+    width: wp('90%'),
+    height: hp('50%'),
     backgroundColor: Colors.primary100,
     borderRadius: 20,
   },
@@ -108,14 +112,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
-    marginVertical: 10,
     paddingHorizontal: 12,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
     color: Colors.primary100,
-    marginVertical: 24,
+    marginVertical: 20,
     textAlign: "center",
   },
   text: {
@@ -129,13 +132,16 @@ const styles = StyleSheet.create({
     margin: 8,
   },
   buttonContainer: {
-    alignItems: "center",
-    justifyContent: 'center',
-    flexDirection: "row",
     width: '100%',
     height: '20%',
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
   },
   button: {
-    
+    width: '40%',
+    alignItems: "center",
+    justifyContent: "center",
+    height: '100%',
   },
 });
