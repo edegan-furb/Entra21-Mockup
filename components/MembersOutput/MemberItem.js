@@ -102,11 +102,11 @@ export default MemberItem;
 
 const styles = StyleSheet.create({
   memberItem: {
-    padding: 10,
+    padding: 20,
     marginVertical: 4,
     flexDirection: "row",
     justifyContent: "space-between",
-    
+    borderRadius: 10,
     backgroundColor: Colors.primary950
     // elevation: 4,
     // shadowColor: Colors.primary900,
