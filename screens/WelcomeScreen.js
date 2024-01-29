@@ -32,14 +32,15 @@ function WelcomeScreen() {
   }, [token]);
 
   return (
-    <View >
+    <View style={styles.rootContainer}>
 
       <View>
         <HiComp name="Ariel"/>
       </View>
 
-      <View style={styles.rootContainer}> 
-        <WelcomeComp/>
+      <View style={styles.container}> 
+        
+        <WelcomeComp welcomeMsg={fetchedMessage}/>
 
         <TotalTasks total={99}/>
         <View style={styles.containerRow2}>
@@ -61,10 +62,14 @@ export default WelcomeScreen;
 
 const styles = StyleSheet.create({
   rootContainer: {
+    flex: 1
+  },
+  container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: 32,
+    marginTop: '10%'
   },
   containerRow2: {
     flexDirection: "row",
