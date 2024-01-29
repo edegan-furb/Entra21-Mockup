@@ -5,7 +5,7 @@ import {
     widthPercentageToDP as wp
 }from "react-native-responsive-screen";
 
-export default ({total}) => {
+export default function TotalTasks ({total}) {
     
     return(
         <View style={styles.container}>

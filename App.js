@@ -88,6 +88,7 @@ function AuthenticatedBottomTab() {
         name="Welcome"
         component={WelcomeScreen}
         options={{
+          headerShown: false,
           tabBarIcon: ({ focused }) => {
             if(focused) {
               return <Ionicons 

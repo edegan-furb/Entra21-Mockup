@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import { AuthContext } from "../store/auth-context";
 import { auth } from "../util/auth";
 
@@ -32,15 +32,15 @@ function WelcomeScreen() {
   }, [token]);
 
   return (
-    <View style={styles.rootContainer}>
+    <SafeAreaView style={styles.rootContainer}>
 
-      <View>
+      <View style={styles.hiContainer}>
         <HiComp name="Ariel"/>
       </View>
 
       <View style={styles.container}> 
         
-        <WelcomeComp welcomeMsg={fetchedMessage}/>
+        <WelcomeComp/>
 
         <TotalTasks total={99}/>
         <View style={styles.containerRow2}>
@@ -54,7 +54,7 @@ function WelcomeScreen() {
         
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -62,17 +62,22 @@ export default WelcomeScreen;
 
 const styles = StyleSheet.create({
   rootContainer: {
+    height: '100%',
     flex: 1
   },
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 32,
-    marginTop: '10%'
+    padding: 32
   },
   containerRow2: {
     flexDirection: "row",
+  },
+  hiContainer: {
+    marginTop: '15%',
+    marginBottom: '8%',
+    marginLeft: '5%',
   },
   title: {
     fontSize: 20,

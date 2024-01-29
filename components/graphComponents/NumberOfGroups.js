@@ -5,7 +5,7 @@ import {
     widthPercentageToDP as wp
 }from "react-native-responsive-screen";
 
-export default ({number}) => {
+export default function NumberOfGroups({number}) {
     
     return(
         <View style={styles.container}>

@@ -1,14 +1,16 @@
 import React from "react";
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, Pressable} from 'react-native';
 import { 
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
 }from "react-native-responsive-screen";
 import { Colors } from '../../constants/styles';
 
-export default props => {
+export default function WelcomeComp() {
+
+
     return(
-        <View style={styles.container}>
+        <Pressable style={styles.container} >
             <View style={styles.textContainer}>
                 <Text style={styles.title}>
                    Welcome!  
@@ -24,7 +26,7 @@ export default props => {
                     source={require('../../assets/images/productivity.png')}
                 />
             </View>
-        </View>
+        </Pressable>
     )
 }
 

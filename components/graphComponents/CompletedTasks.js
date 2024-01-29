@@ -6,7 +6,7 @@ import {
     widthPercentageToDP as wp
 }from "react-native-responsive-screen";
 
-export default ({concludedTasks}) => {
+export default function CompletedTasks ({concludedTasks}) {
     
     const pendingTasks = 100 - concludedTasks
 
