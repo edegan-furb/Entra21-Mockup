@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     color: Colors.primary800,
     padding: 6,
     borderRadius: 6,
-    fontSize: 17,
+    fontSize: 16,
   },
   inputMultine: {
     minHeight: 100,
