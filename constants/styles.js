@@ -16,6 +16,7 @@ export const Colors = {
   primary900: "#4c1d95",
   primary950: "#2e1065",
   primary1000: "#160633",
+
   //  Neutral
   neutral50: "#fafafa",
   neutral100: "#f5f5f5",

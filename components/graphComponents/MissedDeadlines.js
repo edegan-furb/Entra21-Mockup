@@ -24,6 +24,8 @@ const styles = StyleSheet.create({
     container: {
         width: wp('40%'),
         height: hp('8%'),
+        marginTop: hp('2%'),
+        marginBottom: hp('4%'),
         borderColor: 'black',
         borderRadius: 8,
         borderWidth: 1,

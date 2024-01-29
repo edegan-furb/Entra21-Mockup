@@ -36,6 +36,8 @@ const styles = StyleSheet.create({
     container: {
         height: hp('20%'),
         width: wp('35%'),
+        marginTop: hp('2%'),
+        marginRight: wp('4%'),
         borderBlockColor: 'black',
         borderWidth: 1,
         justifyContent: "center",
