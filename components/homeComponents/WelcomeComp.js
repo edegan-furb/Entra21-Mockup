@@ -1,19 +1,21 @@
 import React from "react";
-import {View, Text, StyleSheet, Image, Pressable} from 'react-native';
-import { 
+import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
+import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
-}from "react-native-responsive-screen";
+} from "react-native-responsive-screen";
 import { Colors } from '../../constants/styles';
 
-export default function WelcomeComp() {
+export default function WelcomeComp({ onPress }) {
 
+    return (
+        <Pressable 
+            style={({ pressed }) => pressed ? [styles.pressed, styles.container] : styles.container}
+            onPress={onPress}>
 
-    return(
-        <Pressable style={styles.container} >
             <View style={styles.textContainer}>
                 <Text style={styles.title}>
-                   Welcome!  
+                    Welcome!
                 </Text>
                 <Text style={styles.text}>
                     Let's make today productive!
@@ -34,14 +36,13 @@ const styles = StyleSheet.create({
     container: {
         width: wp('90%'),
         height: hp('15%'),
-        borderRadius: 8,
+        borderRadius: 20,
         borderWidth: 1,
-        margin: hp('2%'),
         padding: '2%',
         backgroundColor: '#fff',
         flexDirection: 'row'
     },
-    textContainer:{
+    textContainer: {
         height: '100%',
         width: '50%',
         justifyContent: 'center',
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
         color: Colors.primary950
     },
     text: {
-        fontSize: 18,
+        fontSize: 14,
         color: Colors.primary800,
         textAlign: 'center'
     },
@@ -64,5 +65,9 @@ const styles = StyleSheet.create({
     image: {
         height: '100%',
         width: '100%'
-    }
+    },
+    pressed: {
+        opacity: 0.75,
+        backgroundColor: Colors.primary100,
+    },
 })

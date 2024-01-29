@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 
+
 import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import { AuthContext } from "../store/auth-context";
 import { auth } from "../util/auth";
@@ -12,7 +13,9 @@ import NumberOfGroups from "../components/graphComponents/NumberOfGroups";
 import HiComp from "../components/homeComponents/HiComp";
 import WelcomeComp from "../components/homeComponents/WelcomeComp";
 
-function WelcomeScreen() {
+function WelcomeScreen({ navigation, route }) {
+
+
   const [fetchedMessage, setFetchedMesssage] = useState("");
 
   const authCtx = useContext(AuthContext);
@@ -31,6 +34,13 @@ function WelcomeScreen() {
       });
   }, [token]);
 
+
+  function goToGroups() {
+    navigation.navigate("Groups", {
+        editedGroupId: route.params?.groupId,
+    });
+  }
+
   return (
     <SafeAreaView style={styles.rootContainer}>
 
@@ -39,8 +49,11 @@ function WelcomeScreen() {
       </View>
 
       <View style={styles.container}> 
+      
+      <View style={styles.containerRow1}>
+        <WelcomeComp onPress={goToGroups}/>
+      </View>
         
-        <WelcomeComp/>
 
         <TotalTasks total={99}/>
         <View style={styles.containerRow2}>
@@ -67,12 +80,15 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
-    padding: 32
+    padding: 32, 
   },
   containerRow2: {
     flexDirection: "row",
+  },
+  containerRow1:{
+    marginBottom: '5%'
   },
   hiContainer: {
     marginTop: '15%',
