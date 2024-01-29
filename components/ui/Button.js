@@ -22,9 +22,9 @@ export default Button;
 
 const styles = StyleSheet.create({
   button: {
+    paddingHorizontal: 40,
+    paddingVertical: 15,
     borderRadius: 12,
-    paddingVertical: '5%',
-    paddingHorizontal: '20%',
     backgroundColor: Colors.primary900,
   },
   flat: {

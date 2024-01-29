@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   input: {
-    padding: 15,
+    padding: 8,
     borderRadius: 6,
     fontSize: 15,
     paddingLeft: 5,

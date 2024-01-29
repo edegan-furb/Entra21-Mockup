@@ -96,16 +96,14 @@ function GroupForm({
             </View>
             <View style={styleDeleteContainer}>
             <View style={styles.divider}></View>
-              <Button styleButton={styles.buttonDelete}  onPress={deleteHandler}>
+              <Pressable style={styles.buttonDelete} onPress={deleteHandler}>
                 <Ionicons
                   name="trash"
                   color={'#fff'}
                   size={20}
                 />
-                <View style={styles.textContainer}>
-                  <Text style={styles.textbutton}>Delete group</Text>                
-                </View>
-              </Button>
+                <Text style={styles.textbutton}>Delete group</Text>                
+              </Pressable>
             </View>
           </View>
         </View>
@@ -153,7 +151,8 @@ const styles = StyleSheet.create({
     marginVertical: 15
   },
   textbutton: {
-    fontWeight: "bold"
+    color: Colors.primary100,
+    fontWeight: "bold",
   },
   buttonDelete: {
     alignItems: "center",
@@ -162,13 +161,7 @@ const styles = StyleSheet.create({
     height: '90%',
     flexDirection: "row",
     backgroundColor: Colors.primary900,
+    gap: 5,
     borderRadius: 12
-  },
-  textContainer: {
-    width: '65%',
-    height: '100%',
-    alignItems: "center",
-    justifyContent: "center",
-    color: Colors.primary100
   },
 });

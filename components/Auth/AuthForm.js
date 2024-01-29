@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   signUpButton: {
-    height: "20%",
+    height: "25%",
     flexDirection: "row",
     alignItems: 'center',
     justifyContent: "center",
