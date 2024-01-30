@@ -13,7 +13,7 @@ import LoginScreen from "./screens/LoginScreen";
 import SignupScreen from "./screens/SignupScreen";
 import WelcomeScreen from "./screens/WelcomeScreen";
 import AllGroupsScreen from "./screens/AllGroupsScreen";
-import SettingsScreen from "./screens/SetttingsScreen";
+import SettingsScreen from "./screens/SettingsScreen";
 import ManageGroupScreen from "./screens/ManageGroupScreen";
 import { Colors } from "./constants/styles";
 import AuthContextProvider, { AuthContext } from "./store/auth-context";
@@ -72,7 +72,6 @@ function AuthStack() {
 }
 
 function AuthenticatedBottomTab() {
-  const authCtx = useContext(AuthContext);
   return (
     <BottomTabs.Navigator
       sceneContainerStyle={{ backgroundColor: Colors.primary100 }}
@@ -123,14 +122,7 @@ function AuthenticatedBottomTab() {
         name="Settings"
         component={SettingsScreen}
         options={{
-          headerRight: ({ tintColor }) => (
-            <IconButton
-              icon={"exit"}
-              color={tintColor}
-              size={24}
-              onPress={authCtx.logout}
-            />
-          ),
+          headerShown: false,
           tabBarIcon: ({focused}) => {
             if(focused) {
             return <Ionicons 
@@ -185,14 +177,6 @@ function AuthenticatedStack() {
           headerShown: true,
           headerRight: ({ tintColor }) => (
             <View style={{ flexDirection: "row" }}>
-              {/* <IconButton
-                icon={"person-add-outline"}
-                color={tintColor}
-                size={24}
-                onPress={() => {
-                  navigation.navigate("Add Member");
-                }}
-              /> */}
               <IconButton icon={"exit-outline"} color={tintColor} size={24} />
             </View>
           ),
