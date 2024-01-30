@@ -97,9 +97,9 @@ export async function isMember(groupId, userId) {
     const userRef = doc(db, "users", userId);
     const groupRef = doc(db, "groups", groupId);
 
-    // Query the 'memberships' collection for documents matching both userId and groupId
+    // Query the 'members' collection for documents matching both userId and groupId
     const membershipQuery = query(
-      collection(db, "memberships"),
+      collection(db, "members"),
       where("user", "==", userRef),
       where("group", "==", groupRef)
     );
@@ -413,10 +413,10 @@ export async function createtask(groupId, taskData) {
     const designatedUser = doc(db, "users", taskData.designatedUser);
 
     // Destructure the task data
-    const { title, description, date, objectives } = taskData;
+    const { title, description, date, objectives, completed } = taskData;
 
-    // Initial completed status of the task
-    const completed = false;
+    // // Initial completed status of the task
+    // const completed = false;
 
     // Create a new task in the 'tasks' collection
     const taskRef = await addDoc(collection(db, "tasks"), {

@@ -47,12 +47,13 @@ function ManageTasksScreen({ navigation, route }) {
         return;
       }
 
-      const updatedTaskData = { ...taskData, designatedUser: userId };
+      let updatedTaskData = { ...taskData, designatedUser: userId };
 
       if (isEditing) {
         // groupsCtx.updateTask(editedTaskId, updatedTaskData);
         // await updateTask(editedTaskId, updatedTaskData);
       } else {
+        updatedTaskData = { ...taskData, designatedUser: userId, completed: false };
         const taskId = await createtask(groupId, updatedTaskData);
         console.log(taskId);
         //groupsCtx.addTask(groupId, { ...taskData, id: taskId });
