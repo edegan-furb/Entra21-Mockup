@@ -156,7 +156,7 @@ function GroupsContextProvider({ children }) {
     dispatch({ type: "ADD_TASK", payload: taskData });
   }
   function setTasks(groupId, tasks) {
-    dispatch({ type: "SET_TAsKS", payload: { groupId, tasks } });
+    dispatch({ type: "SET_TASKS", payload: { groupId, tasks } });
   }
 
   const value = {
@@ -170,7 +170,7 @@ function GroupsContextProvider({ children }) {
     deleteMember: deleteMember,
     updateAdmin: updateAdmin,
     addTask: addTask,
-    setMembers: setMembers,
+    setTasks: setTasks,
   };
 
   return (

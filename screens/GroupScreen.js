@@ -34,7 +34,8 @@ function GroupScreen({ route, navigation }) {
         const stopListening = await fetchGroupTasks(
           groupId,
           (fetchedTasks) => {
-            groupsCtx.setTasks(groupId, fetchedTasks);
+            const teste = groupsCtx.setTasks(groupId, fetchedTasks);
+            console.log(teste)
             if (initialLoad) {
               setIsLoading(false);
               setInitialLoad(false);
