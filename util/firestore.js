@@ -91,6 +91,31 @@ export async function updateGroup(groupId, newTitle) {
   }
 }
 
+export async function isMember(groupId, userId) {
+  try {
+    // Create references to the user and group documents
+    const userRef = doc(db, "users", userId);
+    const groupRef = doc(db, "groups", groupId);
+
+    // Query the 'memberships' collection for documents matching both userId and groupId
+    const membershipQuery = query(
+      collection(db, "memberships"),
+      where("user", "==", userRef),
+      where("group", "==", groupRef)
+    );
+
+    // Execute the query
+    const querySnapshot = await getDocs(membershipQuery);
+
+    // Check if any documents were returned
+    return !querySnapshot.empty;
+
+  } catch (error) {
+    console.error("Error checking membership:", error.message);
+    throw error;
+  }
+}
+
 // Function to check if a user is an admin of a given group.
 export async function isAdmin(groupRef, userRef, callback) {
   try {
