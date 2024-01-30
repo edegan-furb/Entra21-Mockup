@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   },
   formCreate: {
     marginTop: 40,
-    height: hp('35%'),
+    height: hp('40%'),
     width: wp('90%'),
     borderRadius: 20,
     backgroundColor: Colors.primary900,
@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
     height: '60%',
     alignItems: "center",
     justifyContent: "center",
+    gap: 10,
   },
   styleButtonsCreate: {
     width: '100%',
@@ -139,7 +140,7 @@ const styles = StyleSheet.create({
   },
   formEditing: {
     marginTop: 40,
-    height: hp('35%'),
+    height: hp('40%'),
     width: wp('90%'),
     borderRadius: 20,
     backgroundColor: Colors.primary900,
@@ -159,6 +160,7 @@ const styles = StyleSheet.create({
     height: '50%',
     alignItems: "center",
     justifyContent: "center",
+    gap: 10,
   },
   styleButtonsEdit: {
     width: '100%',

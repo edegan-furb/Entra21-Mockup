@@ -69,21 +69,24 @@ function AddMemberForm({ onCancel, onSubmit }) {
               onChangeText: inputChangeHandler.bind(this, "email"),
             }}
           />
-          {formIsInvalid && (
-            <Text style={styles.errorText}>
-              Invalid email - please check your entered data
-            </Text>
-          )}
         </View>
         <View style={styles.switch}>
-          <Text style={styles.text}>Set as Admin</Text>
-          <Switch
-            trackColor={{ false: Colors.error400, true: Colors.primary800 }}
-            thumbColor={Colors.primary100}
-            ios_backgroundColor="#c4c4c4"
-            onValueChange={toggleSwitch}
-            value={isChecked}
-          />
+          <View style={styles.switchContent}> 
+            <Text style={styles.text}>Set as Admin</Text>
+            <Switch
+              trackColor={{ false: Colors.neutral400, true: Colors.primary500 }}
+              thumbColor={Colors.primary800}
+              ios_backgroundColor="#979797"
+              onValueChange={toggleSwitch}
+              value={isChecked}
+              style={{ transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }] }}
+            />
+          </View>
+          {formIsInvalid && (
+              <Text style={styles.errorText}>
+                Invalid email - please check your entered data
+              </Text>
+            )}
         </View>
         <View style={styles.buttonContainer}>
           <Button styleButton={styles.button} onPress={submitHandler}>
@@ -104,7 +107,7 @@ const styles = StyleSheet.create({
   form: {
     marginTop: 40,
     width: wp('90%'),
-    height: hp('35%'),
+    height: hp('40%'),
     backgroundColor: Colors.primary900,
     borderRadius: 20,
   },
@@ -134,32 +137,36 @@ const styles = StyleSheet.create({
   inputContainer: {
     backgroundColor: Colors.primary100,
     borderTopEndRadius: 30,
-    justifyContent: "center",
+    justifyContent: "flex-end",
     width: '100%',
     height: '35%',
   },
-  errorText: {
-    textAlign: "center",
-    color: Colors.error500,
-    margin: 8,
-  },
   switch: {
+    alignItems: "flex-start",
+    height: '25%',
+    backgroundColor: Colors.primary100,
+  },
+  switchContent: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 10,
-    backgroundColor: Colors.primary100,
+    height: '50%',
+    width: '100%',
     paddingHorizontal: 12,
+    gap: 10,
   },
   text: {
     fontSize: 15,
     color: Colors.primary900,
-    marginVertical: 24,
+  },
+  errorText: {
+    color: Colors.error500,
+    paddingHorizontal: 30
   },
   buttonContainer: {
     width: '100%',
     height: '30%',
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-start",
     justifyContent: "space-around",
     borderBottomEndRadius: 20,
     borderBottomStartRadius: 20,
