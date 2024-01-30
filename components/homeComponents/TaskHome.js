@@ -16,13 +16,13 @@ export default function TaskHome({ deadline, taskName, groupName, taskProgress})
                 <Text>{deadline}</Text>
             </View>
 
-            <View style={styles.taskNameContainer}>
+            <View style={styles.taskContainer}>
                 <Ionicons
                     size={hp('7%')} 
                     name="reader-outline"
                     color={Colors.primary600}
                 />
-                <View>
+                <View style={styles.taskInfoContainer}>
                     <Text style={styles.taskName}>{taskName}</Text>
                     <Text style={styles.groupName}>{groupName}</Text>
                 </View>
@@ -52,15 +52,20 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         backgroundColor: '#fff'
     },
-    taskNameContainer: {
+    taskContainer: {
+        height: '50%',
         marginTop: '5%',
         flexDirection: 'row'
+    },
+    taskInfoContainer:{
+        height: '100%',
+        maxWidth: '70%',
     },
     ProgressText: {
         color: Colors.neutral1100
     },
     taskName: {
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: 'bold',
         textAlign: 'left',
         color: Colors.neutral1100
@@ -75,6 +80,6 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     progressContainer: {
-        marginTop: '5%'
+        marginTop: '0.5%'
     }
 })

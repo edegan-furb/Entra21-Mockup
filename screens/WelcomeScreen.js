@@ -71,7 +71,7 @@ function WelcomeScreen({ navigation, route }) {
           </View>
 
         <View style={styles.tasksContainer}>
-          <TaskHome deadline={'Jan, 31 2024'} taskName={"Mobile app"} groupName={'Clube da luta'} taskProgress={0.8}/>
+          <TaskHome deadline={'Jan, 31 2024'} taskName={"Dar Água pro cachorro pincher"} groupName={'Clube da luta'} taskProgress={0.8}/>
           <TaskHome/>
         </View>
 
