@@ -2,14 +2,16 @@ import { createContext, useReducer } from "react";
 
 export const GroupsContext = createContext({
   groups: [],
-  addGroup: ({ title }) => {},
-  setGroups: (groups) => {},
-  deleteGroup: (id) => {},
-  updateGroup: (id, { title }) => {},
-  setMembers: (groupId, members) => {},
-  addMember: ({ admin, group, user }) => {},
-  deleteMember: (id) => {},
-  updateAdmin: (id) => {},
+  addGroup: ({ title }) => { },
+  setGroups: (groups) => { },
+  deleteGroup: (id) => { },
+  updateGroup: (id, { title }) => { },
+  setMembers: (groupId, members) => { },
+  addMember: ({ admin, group, user }) => { },
+  deleteMember: (id) => { },
+  updateAdmin: (id) => { },
+  addTask: ({ title, description, date, owner, group, designatedUser, completed, objectives }) => { },
+  setTasks: (groupId, tasks) => { },
 });
 
 function groupsReducer(state, action) {
@@ -89,6 +91,31 @@ function groupsReducer(state, action) {
         }
         return group;
       });
+    case "ADD_TASK":
+      return state.map((group) => {
+        if (group.id === action.payload.groupId) {
+          const newTasks = action.payload.task;
+          return {
+            ...group,
+            tasks: [...group.tasks, newTasks].sort((a, b) =>
+              a.title.localeCompare(b.title)
+            ),
+          };
+        }
+        return group;
+      });
+    case "SET_TASKS":
+      return state.map((group) => {
+        if (group.id === action.payload.groupId) {
+          return {
+            ...group,
+            tasks: [...action.payload.tasks].sort((a, b) =>
+              a.title.localeCompare(b.title)
+            ),
+          };
+        }
+        return group;
+      });
     default:
       return state;
   }
@@ -125,6 +152,12 @@ function GroupsContextProvider({ children }) {
   function updateAdmin(groupId, memberId) {
     dispatch({ type: "UPDATE_ADMIN", payload: { groupId, memberId } });
   }
+  function addTask(taskData) {
+    dispatch({ type: "ADD_TASK", payload: taskData });
+  }
+  function setTasks(groupId, tasks) {
+    dispatch({ type: "SET_TAsKS", payload: { groupId, tasks } });
+  }
 
   const value = {
     groups: groupsState,
@@ -136,6 +169,8 @@ function GroupsContextProvider({ children }) {
     addMember: addMember,
     deleteMember: deleteMember,
     updateAdmin: updateAdmin,
+    addTask: addTask,
+    setMembers: setMembers,
   };
 
   return (

@@ -448,3 +448,47 @@ export async function createtask(groupId, taskData) {
   }
 }
 
+export async function fetchGroupTasks(groupId, callback) {
+  // Create a reference to the specified group in Firestore
+  const groupDocRef = doc(db, "groups", groupId);
+
+  // Define a query for tasks of the specified group
+  const tasksQuery = query(
+    collection(db, "tasks"),
+    where("group", "==", groupDocRef)
+  );
+
+  // Set up a real-time listener for changes in group tasks
+  const stopListeningTasks = onSnapshot(tasksQuery, async (tasksSnapshot) => {
+    // Process each task document
+    const tasksData = await Promise.all(tasksSnapshot.docs.map(async (docSnapshot) => {
+      const taskData = docSnapshot.data();
+
+      // Fetch objectives for this task
+      const objectivesRef = collection(db, `tasks/${docSnapshot.id}/objectives`);
+      const objectivesSnapshot = await getDocs(objectivesRef);
+      const objectives = objectivesSnapshot.docs.map(doc => doc.data());
+
+      // Return task data with objectives
+      return {
+        id: docSnapshot.id,
+        title: taskData.title,
+        description: taskData.description,
+        date: taskData.date.toDate(), // Converting Firestore Timestamp to JavaScript Date
+        completed: taskData.completed,
+        owner: taskData.owner,
+        designatedUser: taskData.designatedUser,
+        group: groupId,
+        objectives // Added objectives array
+      };
+    }));
+
+    // Invoke the callback with the tasks data
+    callback(tasksData);
+  });
+
+  // Return a function that stops listening to tasks updates
+  return () => {
+    stopListeningTasks();
+  };
+}

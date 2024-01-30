@@ -56,7 +56,7 @@ function ManageTasksScreen({ navigation, route }) {
         updatedTaskData = { ...taskData, designatedUser: userId, completed: false };
         const taskId = await createtask(groupId, updatedTaskData);
         console.log(taskId);
-        //groupsCtx.addTask(groupId, { ...taskData, id: taskId });
+        groupsCtx.addTask({ ...taskData, id: taskId });
       }
       navigation.goBack();
     } catch (error) {
