@@ -1,10 +1,11 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Alert } from "react-native";
 import { useLayoutEffect, useContext, useState } from "react";
 import TaskForm from "../components/ManageTask/TaskForm";
 import { Colors } from "../constants/styles";
 import { GroupsContext } from "../store/groups-context";
 import Error from "../components/ui/Error";
 import Loading from "../components/ui/LoadingOverlay";
+import { createtask, getUserIdByEmail, isMember } from "../util/firestore";
 
 function ManageTasksScreen({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -15,6 +16,8 @@ function ManageTasksScreen({ navigation, route }) {
   const groupId = route.params?.groupId;
 
   const groupsCtx = useContext(GroupsContext);
+
+  const selectGroup = groupsCtx.groups.find((group) => group.id === groupId);
 
   const isEditing = !!editedTaskId;
 
@@ -29,16 +32,36 @@ function ManageTasksScreen({ navigation, route }) {
   async function confirmHandler(taskData) {
     setIsLoading(true);
     try {
+      const userId = await getUserIdByEmail(taskData.designatedUser);
+      // const isMember = selectGroup?.members.some(
+      //   (member) => member.user.id === userId
+      // );
+
+      if (!userId) {
+        Alert.alert("Not Found", "No user found with the specified email.");
+        return;
+      }
+      const checkMembership = await isMember(groupId, userId);
+      if (!checkMembership) {
+        Alert.alert("User not a Member", "This user is not a member of the group.");
+        return;
+      }
+
+      const updatedTaskData = { ...taskData, designatedUser: userId };
+
       if (isEditing) {
-        groupsCtx.updateTask(editedTaskId, taskData);
-        await updateTask(editedTaskId, taskData);
+        // groupsCtx.updateTask(editedTaskId, updatedTaskData);
+        // await updateTask(editedTaskId, updatedTaskData);
       } else {
-        const groupId = await createtask(groupData);
-        groupsCtx.addTask(groupId, { ...taskData, id: taskId });
+        const taskId = await createtask(groupId, updatedTaskData);
+        console.log(taskId);
+        //groupsCtx.addTask(groupId, { ...taskData, id: taskId });
       }
       navigation.goBack();
     } catch (error) {
+      console.error(error);
       setError("Could not save data - please try again later");
+    } finally {
       setIsLoading(false);
     }
   }
