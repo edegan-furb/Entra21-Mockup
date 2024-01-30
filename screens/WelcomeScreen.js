@@ -6,12 +6,15 @@ import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import { AuthContext } from "../store/auth-context";
 import { auth } from "../util/auth";
 
-import CompletedTasks from '../components/graphComponents/CompletedTasks';
-import TotalTasks from "../components/graphComponents/TotalTasks";
-import MissedDeadlines from "../components/graphComponents/MissedDeadlines";
-import NumberOfGroups from "../components/graphComponents/NumberOfGroups";
+import CompletedTasks from '../components/homeComponents/graphComponents/CompletedTasks';
+import TotalTasks from "../components/homeComponents/graphComponents/TotalTasks";
+import MissedDeadlines from "../components/homeComponents/graphComponents/MissedDeadlines";
+import NumberOfGroups from "../components/homeComponents/graphComponents/NumberOfGroups";
+import ProgrssionGraph from "../components/homeComponents/graphComponents/ProgressionGraph";
+
 import HiComp from "../components/homeComponents/HiComp";
 import WelcomeComp from "../components/homeComponents/WelcomeComp";
+
 
 function WelcomeScreen({ navigation, route }) {
 
@@ -66,6 +69,11 @@ function WelcomeScreen({ navigation, route }) {
           </View>
         
         </View>
+        
+        <View style={styles.graphContainer}>
+          <ProgrssionGraph/>        
+        </View>
+
       </View>
     </SafeAreaView>
   );
@@ -100,4 +108,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 8,
   },
+  graphContainer: {
+    marginTop: '10%'
+  }
 });
