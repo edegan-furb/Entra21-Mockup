@@ -5,7 +5,7 @@ import React, {
   useContext,
   useCallback,
 } from "react";
-import { View, StyleSheet, Alert } from "react-native";
+import { View, Alert } from "react-native";
 import { Colors } from "../constants/styles";
 import { GroupsContext } from "../store/groups-context";
 import { auth } from "../util/auth";
@@ -31,17 +31,14 @@ function GroupScreen({ route, navigation }) {
   useEffect(() => {
     const getTasks = async () => {
       try {
-        const stopListening = await fetchGroupTasks(
-          groupId,
-          (fetchedTasks) => {
-            const teste = groupsCtx.setTasks(groupId, fetchedTasks);
-            console.log(teste)
-            if (initialLoad) {
-              setIsLoading(false);
-              setInitialLoad(false);
-            }
+        const stopListening = await fetchGroupTasks(groupId, (fetchedTasks) => {
+          const teste = groupsCtx.setTasks(groupId, fetchedTasks);
+          //console.log(teste);
+          if (initialLoad) {
+            setIsLoading(false);
+            setInitialLoad(false);
           }
-        );
+        });
         return () => {
           stopListening();
         };
@@ -118,7 +115,6 @@ function GroupScreen({ route, navigation }) {
     });
   }, [navigation, selectGroup, renderHeaderButtons]);
 
-
   if (error && !isLoading) {
     return <Error message={error} />;
   }
@@ -127,26 +123,7 @@ function GroupScreen({ route, navigation }) {
     return <LoadingOverlay />;
   }
 
-  return (
-    <View style={styles.container}>
-      <TasksOutput tasks={groupTasks} fallbackText={"No Tasks"} />
-    </View>
-  );
+  return <TasksOutput tasks={groupTasks} fallbackText={"No Tasks"} />;
 }
 
 export default GroupScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
-    backgroundColor: Colors.primary100,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 8,
-  },
-});

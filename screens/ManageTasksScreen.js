@@ -17,15 +17,22 @@ function ManageTasksScreen({ navigation, route }) {
 
   const groupsCtx = useContext(GroupsContext);
 
-  const selectGroup = groupsCtx.groups.find((group) => group.id === groupId);
-
   const isEditing = !!editedTaskId;
 
-  // const selectTask = groupsCtx.groups.tasks.find(
-  //   (task) => task.id === editedTaskId
-  // );
+  let selectTask = null;
+
+  if (groupsCtx.groups) {
+    groupsCtx.groups?.forEach((group) => {
+      group.tasks?.forEach((task) => {
+        if (task.id === editedTaskId) {
+          selectTask = task;
+        }
+      });
+    });
+  }
 
   function cancelHandler() {
+    console.log(groupId);
     navigation.goBack();
   }
 
@@ -43,7 +50,10 @@ function ManageTasksScreen({ navigation, route }) {
       }
       const checkMembership = await isMember(groupId, userId);
       if (!checkMembership) {
-        Alert.alert("User not a Member", "This user is not a member of the group.");
+        Alert.alert(
+          "User not a Member",
+          "This user is not a member of the group."
+        );
         return;
       }
 
@@ -53,7 +63,11 @@ function ManageTasksScreen({ navigation, route }) {
         // groupsCtx.updateTask(editedTaskId, updatedTaskData);
         // await updateTask(editedTaskId, updatedTaskData);
       } else {
-        updatedTaskData = { ...taskData, designatedUser: userId, completed: false };
+        updatedTaskData = {
+          ...taskData,
+          designatedUser: userId,
+          completed: false,
+        };
         const taskId = await createtask(groupId, updatedTaskData);
         console.log(taskId);
         groupsCtx.addTask({ ...taskData, id: taskId });
@@ -86,7 +100,7 @@ function ManageTasksScreen({ navigation, route }) {
         onCancel={cancelHandler}
         submitButtonLabel={isEditing ? "Update" : "Add"}
         onSubmit={confirmHandler}
-        defaultValues={null}
+        defaultValues={selectTask}
       />
     </View>
   );

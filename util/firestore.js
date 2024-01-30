@@ -109,7 +109,6 @@ export async function isMember(groupId, userId) {
 
     // Check if any documents were returned
     return !querySnapshot.empty;
-
   } catch (error) {
     console.error("Error checking membership:", error.message);
     throw error;
@@ -402,7 +401,6 @@ export async function updateAdminStatus(memberId) {
 // Function to create a new task to a group
 export async function createtask(groupId, taskData) {
   try {
-
     // Create a reference to the specified group in Firestore
     const group = doc(db, "groups", groupId);
     // Retrieve the UID of the currently authenticated user
@@ -426,14 +424,14 @@ export async function createtask(groupId, taskData) {
       date,
       designatedUser,
       group,
-      owner
+      owner,
     });
 
     // Create objectives as sub-documents of the task
     const objectivesPromises = objectives.map((objective) =>
       addDoc(collection(db, `tasks/${taskRef.id}/objectives`), {
         description: objective.value,
-        completed: objective.completed
+        completed: objective.completed,
       })
     );
 
@@ -441,7 +439,6 @@ export async function createtask(groupId, taskData) {
     await Promise.all(objectivesPromises);
 
     return taskRef.id;
-
   } catch (error) {
     console.error("Error creating task:", error.message);
     throw error;
@@ -461,29 +458,43 @@ export async function fetchGroupTasks(groupId, callback) {
   // Set up a real-time listener for changes in group tasks
   const stopListeningTasks = onSnapshot(tasksQuery, async (tasksSnapshot) => {
     // Process each task document
-    const tasksData = await Promise.all(tasksSnapshot.docs.map(async (docSnapshot) => {
-      const taskData = docSnapshot.data();
+    const tasksData = await Promise.all(
+      tasksSnapshot.docs.map(async (docSnapshot) => {
+        const taskData = docSnapshot.data();
 
-      // Fetch objectives for this task
-      const objectivesRef = collection(db, `tasks/${docSnapshot.id}/objectives`);
-      const objectivesSnapshot = await getDocs(objectivesRef);
-      const objectives = objectivesSnapshot.docs.map(doc => doc.data());
+        // Fetch the designated user's email
+        let designatedUserEmail = "";
+        if (taskData.designatedUser) {
+          const userDocSnapshot = await getDoc(taskData.designatedUser);
+          if (userDocSnapshot.exists()) {
+            const userData = userDocSnapshot.data();
+            designatedUserEmail = userData.email; // Assuming the field is named 'email'
+          }
+        }
 
-      // Return task data with objectives
-      return {
-        id: docSnapshot.id,
-        title: taskData.title,
-        description: taskData.description,
-        date: taskData.date.toDate(), // Converting Firestore Timestamp to JavaScript Date
-        completed: taskData.completed,
-        owner: taskData.owner,
-        designatedUser: taskData.designatedUser,
-        group: groupId,
-        objectives // Added objectives array
-      };
-    }));
+        // Fetch objectives for this task
+        const objectivesRef = collection(
+          db,
+          `tasks/${docSnapshot.id}/objectives`
+        );
+        const objectivesSnapshot = await getDocs(objectivesRef);
+        const objectives = objectivesSnapshot.docs.map((doc) => doc.data());
+        // Return task data with objectives and designated user email
+        return {
+          id: docSnapshot.id,
+          title: taskData.title,
+          description: taskData.description,
+          date: taskData.date.toDate(), // Converting Firestore Timestamp to JavaScript Date
+          completed: taskData.completed,
+          owner: taskData.owner,
+          designatedUser: designatedUserEmail, // Updated to include the user's email
+          group: groupId,
+          objectives, // Added objectives array
+        };
+      })
+    );
 
-    // Invoke the callback with the tasks data
+    // Invoke the callback with the tasks dat
     callback(tasksData);
   });
 

@@ -4,6 +4,7 @@ import Input from "./Input";
 import Button from "../ui/Button";
 import { Colors } from "../../constants/styles";
 import IconButton from "../ui/IconButton";
+import { getFormattedDate } from "../../util/date";
 
 function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
   const [inputs, setInputs] = useState({
@@ -26,9 +27,9 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
     objectives:
       defaultValues && defaultValues.objectives
         ? defaultValues.objectives.map((obj) => ({
-            value: obj.value,
+            value: obj.description,
             completed: obj.completed,
-            objisValid: true,
+            isValid: true,
           }))
         : [{ value: "", completed: false, isValid: true }],
   });
