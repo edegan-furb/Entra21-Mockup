@@ -66,7 +66,9 @@ function GroupForm({
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styleForm}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>{PageTitle}</Text>
+          <View style={styles.titleContent}>
+            <Text style={styles.title}>{PageTitle}</Text>
+          </View>
         </View>
         <View style={styleContent}>
           <View style={styleInputsContainer}>
@@ -116,13 +118,21 @@ export default GroupForm;
 
 const styles = StyleSheet.create({
   titleContainer: {
-    height: '20%',
+    height: '25%',
     width: '100%',
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: Colors.primary900,
+    backgroundColor: Colors.primary100,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
+  },
+  titleContent: {
+    backgroundColor: Colors.primary900,
+    borderTopEndRadius: 20,
+    borderTopStartRadius: 20,
+    borderBottomLeftRadius: 30,
+    width: '100%',
+    height: '100%',
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
     fontSize: 26,

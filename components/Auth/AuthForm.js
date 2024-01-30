@@ -134,20 +134,19 @@ const styles = StyleSheet.create({
   inputAreaLogin: {
     height: '70%',
     width: '100%',
-    justifyContent: 'center',
     gap: 20,
   },
   inputAreaSignup: {
-    height: '80%',
+    height: '70%',
     width: '100%',
-    justifyContent: 'center',
   },
   buttons: {
     width: '100%',
-    height: '30%',
-    gap: 5,
+    height: '20%',
   },
   stylesButton: {
+    width: '100%',
+    height: '70%',
     alignItems: 'center',
     justifyContent: 'center',
   },
