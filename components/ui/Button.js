@@ -6,7 +6,7 @@ function Button({ children, onPress, mode, styleButton }) {
     <View style={styleButton}>
       <Pressable
         onPress={onPress}
-        style={({ pressed }) => pressed && styles.pressed} 
+        style={({ pressed }) => pressed ? [styles.pressed, styles.btnContent] : styles.btnContent}
       >
         <View style={[styles.button, mode === "flat" && styles.flat]}>
           <Text style={[styles.buttonText, mode === "flat" && styles.flatText]}>
@@ -21,20 +21,27 @@ function Button({ children, onPress, mode, styleButton }) {
 export default Button;
 
 const styles = StyleSheet.create({
+  btnContent: {
+    width: '50%',
+    height: '100%',
+    alignItems: "center",
+    justifyContent: "center"
+  },
   button: {
-    paddingHorizontal: 40,
-    paddingVertical: 15,
+    width: '100%',
+    height: '100%',
     borderRadius: 12,
     backgroundColor: Colors.primary900,
+    alignItems: "center",
+    justifyContent: "center"
   },
   flat: {
     backgroundColor: Colors.primary900,
   },
   buttonText: {
     color: '#fff',
-    textAlign: "center",
     fontFamily: 'open-sans-bold',
-    fontSize: 13
+    fontSize: 13,
   },
   flatText: {
     color: Colors.primary100,

@@ -56,20 +56,25 @@ function AddMemberForm({ onCancel, onSubmit }) {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.form}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Add Members</Text>
+          <View style={styles.titleContent}> 
+            <Text style={styles.title}>Add Members</Text>
+          </View>
         </View>
-        <Input
-          label={"User by Email"}
-          textInputConfig={{
-            multiline: false,
-            onChangeText: inputChangeHandler.bind(this, "email"),
-          }}
-        />
-        {formIsInvalid && (
-          <Text style={styles.errorText}>
-            Invalid email - please check your entered data
-          </Text>
-        )}
+
+        <View style={styles.inputContainer}>
+          <Input
+            label={"User by Email"}
+            textInputConfig={{
+              multiline: false,
+              onChangeText: inputChangeHandler.bind(this, "email"),
+            }}
+          />
+          {formIsInvalid && (
+            <Text style={styles.errorText}>
+              Invalid email - please check your entered data
+            </Text>
+          )}
+        </View>
         <View style={styles.switch}>
           <Text style={styles.text}>Set as Admin</Text>
           <Switch
@@ -99,49 +104,71 @@ const styles = StyleSheet.create({
   form: {
     marginTop: 40,
     width: wp('90%'),
-    height: hp('50%'),
-    backgroundColor: Colors.primary100,
+    height: hp('35%'),
+    backgroundColor: Colors.primary900,
     borderRadius: 20,
   },
   titleContainer: {
-    backgroundColor: Colors.primary900,
+    height: '25%',
+    width: '100%',
+    backgroundColor: Colors.primary100,
     borderTopLeftRadius: 20,
-    borderTopRightRadius: 20
+    borderTopRightRadius: 20,
   },
-  switch: {
-    flexDirection: "row",
+  titleContent: {
+    width: '100%',
+    height: '100%',
     alignItems: "center",
-    gap: 10,
-    paddingHorizontal: 12,
+    justifyContent: "center",
+    backgroundColor: Colors.primary900,
+    borderTopEndRadius: 20,
+    borderTopStartRadius: 20,
+    borderBottomLeftRadius: 30,
   },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: "bold",
     color: Colors.primary100,
-    marginVertical: 20,
     textAlign: "center",
   },
-  text: {
-    fontSize: 15,
-    color: Colors.primary900,
-    marginVertical: 24,
+  inputContainer: {
+    backgroundColor: Colors.primary100,
+    borderTopEndRadius: 30,
+    justifyContent: "center",
+    width: '100%',
+    height: '35%',
   },
   errorText: {
     textAlign: "center",
     color: Colors.error500,
     margin: 8,
   },
+  switch: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    backgroundColor: Colors.primary100,
+    paddingHorizontal: 12,
+  },
+  text: {
+    fontSize: 15,
+    color: Colors.primary900,
+    marginVertical: 24,
+  },
   buttonContainer: {
     width: '100%',
-    height: '20%',
-    alignItems: "center",
-    justifyContent: "center",
+    height: '30%',
     flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    borderBottomEndRadius: 20,
+    borderBottomStartRadius: 20,
+    backgroundColor: Colors.primary100,
   },
   button: {
-    width: '40%',
     alignItems: "center",
-    justifyContent: "center",
-    height: '100%',
+    justifyContent: 'center',
+    width: '70%',
+    height: '50%',
   },
 });
