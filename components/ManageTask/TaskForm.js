@@ -1,9 +1,9 @@
-import { StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useState } from "react";
-
 import Input from "./Input";
 import Button from "../ui/Button";
 import { Colors } from "../../constants/styles";
+import IconButton from "../ui/IconButton";
 
 function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
   const [inputs, setInputs] = useState({
@@ -22,32 +22,87 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
     designatedUser: {
       value: defaultValues ? defaultValues.designatedUser : "",
       isValid: true,
-    }
+    },
+    objectives:
+      defaultValues && defaultValues.objectives
+        ? defaultValues.objectives.map((obj) => ({
+            value: obj.value,
+            completed: obj.completed,
+            objisValid: true,
+          }))
+        : [{ value: "", completed: false, isValid: true }],
   });
 
-  function inputChangeHandler(inputIdentifier, enteredValue) {
+  function inputChangeHandler(inputIdentifier, enteredValue, index = null) {
+    if (inputIdentifier === "objectives") {
+      setInputs((currentInputs) => {
+        const updatedObjectives = [...currentInputs.objectives];
+        updatedObjectives[index] = {
+          value: enteredValue,
+          completed: false,
+          isValid: true,
+        };
+        return { ...currentInputs, objectives: updatedObjectives };
+      });
+    } else {
+      setInputs((currentInputs) => {
+        return {
+          ...currentInputs,
+          [inputIdentifier]: { value: enteredValue, isValid: true },
+        };
+      });
+    }
+  }
+
+  function addObjective() {
     setInputs((currentInputs) => {
       return {
         ...currentInputs,
-        [inputIdentifier]: { value: enteredValue, isValid: true },
+        objectives: [
+          ...currentInputs.objectives,
+          { value: "", completed: false, isValid: true },
+        ],
       };
     });
   }
 
+  function removeObjective(index) {
+    setInputs((currentInputs) => {
+      const updatedObjectives = currentInputs.objectives.filter(
+        (_, i) => i !== index
+      );
+      return { ...currentInputs, objectives: updatedObjectives };
+    });
+  }
+
   function submitHandler() {
+    const objectivesData = inputs.objectives.map((objective) => ({
+      value: objective.value,
+      completed: objective.completed,
+    }));
     const taskData = {
       title: inputs.title.value,
       date: new Date(inputs.date.value),
       description: inputs.description.value,
       designatedUser: inputs.designatedUser.value,
+      objectives: objectivesData,
     };
 
     const titleIsValid = taskData.title.trim().length > 0;
     const dateIsValid = taskData.date.toString() !== "Invalid Date";
     const descriptionIsValid = taskData.description.trim().length > 0;
     const designatedUserIsValid = taskData.designatedUser.includes("@");
+    const objectivesAreValid = inputs.objectives.every(
+      (objective) => objective.value.trim().length > 0
+    );
 
-    if (!titleIsValid || !dateIsValid || !descriptionIsValid || !designatedUserIsValid) {
+    if (
+      !titleIsValid ||
+      !dateIsValid ||
+      !descriptionIsValid ||
+      !designatedUserIsValid ||
+      !objectivesAreValid
+    ) {
       setInputs((currentInputs) => {
         return {
           title: {
@@ -56,7 +111,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
           },
           date: {
             value: currentInputs.date.value,
-            isValid: dateIsValid
+            isValid: dateIsValid,
           },
           description: {
             value: currentInputs.description.value,
@@ -65,7 +120,12 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
           designatedUser: {
             value: currentInputs.designatedUser.value,
             isValid: designatedUserIsValid,
-          }
+          },
+          objectives: currentInputs.objectives.map((objective) => ({
+            value: objective.value,
+            completed: objective.completed,
+            isValid: objective.value.trim().length > 0,
+          })),
         };
       });
       return;
@@ -75,11 +135,12 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
     onSubmit(taskData);
   }
 
-  const formIsInvalid = !inputs.title.isValid
-    || !inputs.date.isValid
-    || !inputs.description.isValid
-    || !inputs.designatedUser.isValid;
-
+  const formIsInvalid =
+    !inputs.title.isValid ||
+    !inputs.date.isValid ||
+    !inputs.description.isValid ||
+    !inputs.designatedUser.isValid ||
+    inputs.objectives.some((objective) => !objective.isValid);
   return (
     <View style={styles.form}>
       <Text style={styles.title}>Your Task</Text>
@@ -107,24 +168,60 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
           }}
         />
       </View>
-      <Input
-        label={"Description"}
-        invalid={!inputs.description.isValid}
-        textInputConfig={{
-          multiline: true,
-          onChangeText: inputChangeHandler.bind(this, "description"),
-          value: inputs.description.value,
-        }}
-      />
-      <Input
-        label={"Designed User by Email"}
-        invalid={!inputs.designatedUser.isValid}
-        textInputConfig={{
-          multiline: false,
-          onChangeText: inputChangeHandler.bind(this, "designatedUser"),
-          value: inputs.designatedUser.value,
-        }}
-      />
+      <View style={styles.inputRow}>
+        <Input
+          label={"Description"}
+          style={styles.rowInput}
+          invalid={!inputs.description.isValid}
+          textInputConfig={{
+            multiline: true,
+            onChangeText: inputChangeHandler.bind(this, "description"),
+            value: inputs.description.value,
+          }}
+        />
+      </View>
+      <View style={styles.inputRow}>
+        <Input
+          label={"Designed User by Email"}
+          style={styles.rowInput}
+          invalid={!inputs.designatedUser.isValid}
+          textInputConfig={{
+            multiline: false,
+            onChangeText: inputChangeHandler.bind(this, "designatedUser"),
+            value: inputs.designatedUser.value,
+          }}
+        />
+      </View>
+      <ScrollView style={styles.scrollView}>
+        {inputs.objectives.map((objective, index) => (
+          <View key={index} style={styles.inputObjectivesRow}>
+            <Input
+              style={styles.rowInput}
+              label={`Objective ${index + 1}`}
+              invalid={!objective.isValid}
+              textInputConfig={{
+                multiline: false,
+                onChangeText: (text) =>
+                  inputChangeHandler("objectives", text, index),
+                value: objective.value,
+              }}
+            />
+            {inputs.objectives.length > 0 && (
+              <View style={styles.removeButton}>
+                <IconButton
+                  icon={"close-circle-outline"}
+                  color={Colors.primary100}
+                  size={32}
+                  onPress={() => removeObjective(index)}
+                />
+              </View>
+            )}
+          </View>
+        ))}
+      </ScrollView>
+      <Button mode="flat" style={styles.button} onPress={addObjective}>
+        Add Objective
+      </Button>
       {formIsInvalid && (
         <Text style={styles.errorText}>
           Invalid input values - please check your entered data
@@ -161,6 +258,7 @@ const styles = StyleSheet.create({
   },
   rowInput: {
     flex: 1,
+    marginRight: 8,
   },
   rowTitle: {
     flex: 2,
@@ -183,5 +281,16 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     minWidth: 120,
     marginHorizontal: 8,
+  },
+  inputObjectivesRow: {
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  removeButton: {
+    marginTop: "6%",
+  },
+  scrollView: {
+    height: "40%",
   },
 });
