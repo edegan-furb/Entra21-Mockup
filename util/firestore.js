@@ -373,3 +373,53 @@ export async function updateAdminStatus(memberId) {
     throw error;
   }
 }
+
+// Function to create a new task to a group
+export async function createtask(groupId, taskData) {
+  try {
+
+    // Create a reference to the specified group in Firestore
+    const group = doc(db, "groups", groupId);
+    // Retrieve the UID of the currently authenticated user
+    const userRef = auth.currentUser.uid;
+    // Create a Firestore document reference for the owner
+    const owner = doc(db, "users", userRef);
+    // Create a Firestore document reference for the designatedUser
+    const designatedUser = doc(db, "users", taskData.designatedUser);
+
+    // Destructure the task data
+    const { title, description, date, objectives } = taskData;
+
+    // Initial completed status of the task
+    const completed = false;
+
+    // Create a new task in the 'tasks' collection
+    const taskRef = await addDoc(collection(db, "tasks"), {
+      completed,
+      title,
+      description,
+      date,
+      designatedUser,
+      group,
+      owner
+    });
+
+    // Create objectives as sub-documents of the task
+    const objectivesPromises = objectives.map((objective) =>
+      addDoc(collection(db, `tasks/${taskRef.id}/objectives`), {
+        description: objective.value,
+        completed: objective.completed
+      })
+    );
+
+    // Wait for all objectives to be added
+    await Promise.all(objectivesPromises);
+
+    return taskRef.id;
+
+  } catch (error) {
+    console.error("Error creating task:", error.message);
+    throw error;
+  }
+}
+
