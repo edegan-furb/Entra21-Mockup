@@ -446,65 +446,6 @@ export async function createtask(groupId, taskData) {
   }
 }
 
-// export async function fetchGroupTasks(groupId, callback) {
-//   // Create a reference to the specified group in Firestore
-//   const groupDocRef = doc(db, "groups", groupId);
-
-//   // Define a query for tasks of the specified group
-//   const tasksQuery = query(
-//     collection(db, "tasks"),
-//     where("group", "==", groupDocRef)
-//   );
-
-//   // Set up a real-time listener for changes in group tasks
-//   const stopListeningTasks = onSnapshot(tasksQuery, async (tasksSnapshot) => {
-//     // Process each task document
-//     const tasksData = await Promise.all(
-//       tasksSnapshot.docs.map(async (docSnapshot) => {
-//         const taskData = docSnapshot.data();
-
-//         // Fetch the designated user's email
-//         let designatedUserEmail = "";
-//         if (taskData.designatedUser) {
-//           const userDocSnapshot = await getDoc(taskData.designatedUser);
-//           if (userDocSnapshot.exists()) {
-//             const userData = userDocSnapshot.data();
-//             designatedUserEmail = userData.email; // Assuming the field is named 'email'
-//           }
-//         }
-
-//         // Fetch objectives for this task
-//         const objectivesRef = collection(
-//           db,
-//           `tasks/${docSnapshot.id}/objectives`
-//         );
-//         const objectivesSnapshot = await getDocs(objectivesRef);
-//         const objectives = objectivesSnapshot.docs.map((doc) => doc.data());
-//         // Return task data with objectives and designated user email
-//         return {
-//           id: docSnapshot.id,
-//           title: taskData.title,
-//           description: taskData.description,
-//           date: taskData.date.toDate(), // Converting Firestore Timestamp to JavaScript Date
-//           completed: taskData.completed,
-//           owner: taskData.owner,
-//           designatedUser: designatedUserEmail, // Updated to include the user's email
-//           group: groupId,
-//           objectives, // Added objectives array
-//         };
-//       })
-//     );
-
-//     // Invoke the callback with the tasks dat
-//     callback(tasksData);
-//   });
-
-//   // Return a function that stops listening to tasks updates
-//   return () => {
-//     stopListeningTasks();
-//   };
-// }
-
 export async function fetchGroupTasks(groupId, callback) {
   // Create a reference to the specified group in Firestore
   const groupDocRef = doc(db, "groups", groupId);
@@ -655,6 +596,62 @@ export async function updateTask(taskId, updatedTaskData) {
       "Error updating task and replacing objectives:",
       error.message
     );
+    throw error;
+  }
+}
+
+export async function updateObjectiveStatus(taskId, objectiveId) {
+  try {
+    // Reference to the specific objective in Firestore
+    const objectiveRef = doc(db, `tasks/${taskId}/objectives`, objectiveId);
+
+    // Get the current objective document
+    const objectiveSnapshot = await getDoc(objectiveRef);
+
+    if (!objectiveSnapshot.exists()) {
+      throw new Error("Objective not found");
+    }
+
+    // Get the current completed status
+    const currentStatus = objectiveSnapshot.data().completed;
+
+    // Toggle the status
+    const updatedStatus = !currentStatus;
+
+    // Update the objective with the new status
+    await updateDoc(objectiveRef, { completed: updatedStatus });
+
+    console.log(`Objective status toggled to ${updatedStatus}`);
+  } catch (error) {
+    console.error("Error toggling objective status:", error);
+    throw error;
+  }
+}
+
+export async function updateTaskStatus(taskId) {
+  try {
+    // Reference to the specific task in Firestore
+    const taskRef = doc(db, "tasks", taskId);
+
+    // Get the current task document
+    const taskSnapshot = await getDoc(taskRef);
+
+    if (!taskSnapshot.exists()) {
+      throw new Error("Task not found");
+    }
+
+    // Get the current completed status of the task
+    const currentStatus = taskSnapshot.data().completed;
+
+    // Toggle the status
+    const updatedStatus = !currentStatus;
+
+    // Update the task with the new status
+    await updateDoc(taskRef, { completed: updatedStatus });
+
+    console.log(`Task status toggled to ${updatedStatus}`);
+  } catch (error) {
+    console.error("Error toggling task status:", error);
     throw error;
   }
 }

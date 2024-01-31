@@ -13,6 +13,8 @@ export const GroupsContext = createContext({
   addTask: (taskData) => {},
   setTasks: (groupId, tasks) => {},
   updateTask: (groupId, taskId, newTaskData) => {},
+  updateObjectiveStatus: (groupId, taskId, objectiveId) => {},
+  updateTaskStatus: (groupId, taskId) => {},
 });
 
 function groupsReducer(state, action) {
@@ -145,6 +147,44 @@ function groupsReducer(state, action) {
       });
       console.log("New state after update:", JSON.stringify(newState, null, 2));
       return newState;
+    case "UPDATE_OBJECTIVE_STATUS":
+      return state.map((group) => {
+        if (group.id === action.payload.groupId) {
+          return {
+            ...group,
+            tasks: group.tasks.map((task) => {
+              if (task.id === action.payload.taskId) {
+                return {
+                  ...task,
+                  objectives: task.objectives.map((objective) => {
+                    if (objective.id === action.payload.objectiveId) {
+                      return { ...objective, completed: !objective.completed };
+                    }
+                    return objective;
+                  }),
+                };
+              }
+              return task;
+            }),
+          };
+        }
+        return group;
+      });
+    case "UPDATE_TASK_STATUS":
+      return state.map((group) => {
+        if (group.id === action.payload.groupId) {
+          return {
+            ...group,
+            tasks: group.tasks.map((task) => {
+              if (task.id === action.payload.taskId) {
+                return { ...task, completed: !task.completed };
+              }
+              return task;
+            }),
+          };
+        }
+        return group;
+      });
     default:
       return state;
   }
@@ -193,6 +233,18 @@ function GroupsContextProvider({ children }) {
       payload: { groupId, taskId, newTaskData },
     });
   }
+  function updateObjectiveStatus(groupId, taskId, objectiveId) {
+    dispatch({
+      type: "UPDATE_OBJECTIVE_STATUS",
+      payload: { groupId, taskId, objectiveId },
+    });
+  }
+  function updateTaskStatus(groupId, taskId) {
+    dispatch({
+      type: "UPDATE_TASK_STATUS",
+      payload: { groupId, taskId },
+    });
+  }
 
   const value = {
     groups: groupsState,
@@ -207,6 +259,8 @@ function GroupsContextProvider({ children }) {
     addTask: addTask,
     setTasks: setTasks,
     updateTask: updateTask,
+    updateObjectiveStatus: updateObjectiveStatus,
+    updateTaskStatus: updateTaskStatus,
   };
 
   return (

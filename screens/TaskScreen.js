@@ -1,12 +1,20 @@
-import React, { useLayoutEffect, useContext, useCallback } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import React, {
+  useLayoutEffect,
+  useContext,
+  useCallback,
+  useState,
+} from "react";
+import { View, Text, StyleSheet, ScrollView, Alert } from "react-native";
 import { Colors } from "../constants/styles";
 import { GroupsContext } from "../store/groups-context";
 import IconButton from "../components/ui/IconButton";
 import { auth } from "../util/auth";
 import { getFormattedDate } from "../util/date";
+import { getUserIdByEmail, updateObjectiveStatus, updateTaskStatus } from "../util/firestore";
+import Error from "../components/ui/Error";
 
 function TaskScreen({ route, navigation }) {
+  const [error, setError] = useState();
   const currentUser = auth.currentUser.uid;
   const groupsCtx = useContext(GroupsContext);
   const taskId = route.params?.taskId;
@@ -43,6 +51,7 @@ function TaskScreen({ route, navigation }) {
               icon={"checkmark-circle-outline"}
               color={Colors.primary100}
               size={24}
+              onPress={() => onChangeTaskCompletedStatusHandler()}
             />
           </>
         )}
@@ -59,6 +68,38 @@ function TaskScreen({ route, navigation }) {
       headerRight: renderHeaderButtons,
     });
   }, [navigation, selectTask, renderHeaderButtons]);
+
+  async function onChangeCompletedStatusHandler(objectiveId) {
+    try {
+      const designatedUser = await getUserIdByEmail(selectTask.designatedUser);
+      if (designatedUser === currentUser) {
+        groupsCtx.updateObjectiveStatus(selectTask.group, taskId, objectiveId);
+        await updateObjectiveStatus(taskId, objectiveId);
+      } else {
+        Alert.alert(
+          "Access Denied",
+          "This Task was not assigned to you.",
+          [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+          { cancelable: false }
+        );
+      }
+    } catch {
+      setError("Could not update objective status - please try again later");
+    }
+  }
+
+  async function onChangeTaskCompletedStatusHandler() {
+    try {
+      groupsCtx.updateTaskStatus(selectTask.group, taskId);
+      await updateTaskStatus(taskId);
+    } catch {
+      setError("Could not update task status - please try again later");
+    }
+  }
+
+  if (error && !isLoading) {
+    return <Error message={error} />;
+  }
 
   return (
     <ScrollView style={styles.rootContainer}>
@@ -80,12 +121,14 @@ function TaskScreen({ route, navigation }) {
           <View key={index} style={styles.objectivesInnerContainer}>
             {objective?.completed ? (
               <IconButton
+                onPress={() => onChangeCompletedStatusHandler(objective?.id)}
                 icon={"checkmark-circle-outline"}
                 color={Colors.primary800}
                 size={32}
               />
             ) : (
               <IconButton
+                onPress={() => onChangeCompletedStatusHandler(objective?.id)}
                 icon={"ellipse-outline"}
                 color={Colors.primary800}
                 size={32}
