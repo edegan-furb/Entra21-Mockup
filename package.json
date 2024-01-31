@@ -31,6 +31,7 @@
     "react-native-progress": "^5.0.1",
     "react-native-responsive-screen": "^1.4.2",
     "react-native-svg": "^14.1.0",
+    "react-native-switch": "^1.5.1",
     "react-native-web": "0.19.9"
   },
   "devDependencies": {
