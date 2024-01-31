@@ -518,10 +518,13 @@ export async function fetchGroupTasks(groupId, callback) {
   // Initialize an object to keep track of listeners for objectives
   const objectivesListeners = {};
 
+  // Use a map for tasksData for efficient updates
+  const tasksData = new Map();
+
   // Set up a real-time listener for changes in group tasks
   const stopListeningTasks = onSnapshot(tasksQuery, async (tasksSnapshot) => {
     // Process each task document
-    const tasksData = await Promise.all(
+    await Promise.all(
       tasksSnapshot.docs.map(async (docSnapshot) => {
         const taskData = docSnapshot.data();
         const taskId = docSnapshot.id;
@@ -536,35 +539,8 @@ export async function fetchGroupTasks(groupId, callback) {
           }
         }
 
-        // Listen to objectives for this task
-        // if (!objectivesListeners[taskId]) {
-        const objectivesRef = collection(db, `tasks/${taskId}/objectives`);
-        objectivesListeners[taskId] = onSnapshot(
-          objectivesRef,
-          (objectivesSnapshot) => {
-            const objectives = objectivesSnapshot.docs.map((doc) => {
-              // Extracting specific fields from each objective document
-              const objectiveData = doc.data();
-              return {
-                id: doc.id, // Include the document ID
-                value: objectiveData.value, // Include the 'value' field
-                completed: objectiveData.completed, // Include the 'completed' field
-                // Add any additional fields or transformations as needed
-              };
-            });
-
-            // Update the task in tasksData and invoke the callback
-            const updatedTask = tasksData.find((t) => t.id === taskId);
-            if (updatedTask) {
-              updatedTask.objectives = objectives;
-              callback(tasksData);
-            }
-          }
-        );
-        //}
-
-        // Return initial task data
-        return {
+        // Update tasksData map
+        tasksData.set(taskId, {
           id: taskId,
           title: taskData.title,
           description: taskData.description,
@@ -574,12 +550,55 @@ export async function fetchGroupTasks(groupId, callback) {
           designatedUser: designatedUserEmail, // Updated to include the user's email
           group: groupId,
           objectives: [], // Initialize with empty array
-        };
+        });
+
+        // Fetch and listen to objectives for this task
+        const objectivesRef = collection(db, `tasks/${taskId}/objectives`);
+        if (!objectivesListeners[taskId]) {
+          objectivesListeners[taskId] = onSnapshot(
+            objectivesRef,
+            (objectivesSnapshot) => {
+              const objectives = objectivesSnapshot.docs.map((doc) => {
+                const objectiveData = doc.data();
+                return {
+                  id: doc.id,
+                  value: objectiveData.value,
+                  completed: objectiveData.completed,
+                };
+              });
+
+              // Update the task's objectives and invoke the callback
+              const updatedTask = tasksData.get(taskId);
+              if (updatedTask) {
+                updatedTask.objectives = objectives;
+                callback(Array.from(tasksData.values())); // Convert Map values to an array
+              }
+            }
+          );
+        } else {
+          // Manually fetch objectives if the listener is already set up
+          const objectivesSnapshot = await getDocs(objectivesRef);
+          const objectives = objectivesSnapshot.docs.map((doc) => {
+            const objectiveData = doc.data();
+            return {
+              id: doc.id,
+              value: objectiveData.value,
+              completed: objectiveData.completed,
+            };
+          });
+
+          // Update the task's objectives and invoke the callback
+          const updatedTask = tasksData.get(taskId);
+          if (updatedTask) {
+            updatedTask.objectives = objectives;
+            callback(Array.from(tasksData.values()));
+          }
+        }
       })
     );
 
     // Invoke the callback with the initial tasks data
-    callback(tasksData);
+    callback(Array.from(tasksData.values()));
   });
 
   // Return a function that stops listening to all updates

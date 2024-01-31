@@ -82,7 +82,7 @@ function TaskScreen({ route, navigation }) {
               <IconButton
                 icon={"checkmark-circle-outline"}
                 color={Colors.primary800}
-                size={24}
+                size={32}
               />
             ) : (
               <IconButton
