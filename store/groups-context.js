@@ -2,16 +2,17 @@ import { createContext, useReducer } from "react";
 
 export const GroupsContext = createContext({
   groups: [],
-  addGroup: ({ title }) => { },
-  setGroups: (groups) => { },
-  deleteGroup: (id) => { },
-  updateGroup: (id, { title }) => { },
-  setMembers: (groupId, members) => { },
-  addMember: ({ admin, group, user }) => { },
-  deleteMember: (id) => { },
-  updateAdmin: (id) => { },
-  addTask: ({ title, description, date, owner, group, designatedUser, completed, objectives }) => { },
-  setTasks: (groupId, tasks) => { },
+  addGroup: ({ title }) => {},
+  setGroups: (groups) => {},
+  deleteGroup: (id) => {},
+  updateGroup: (id, { title }) => {},
+  setMembers: (groupId, members) => {},
+  addMember: ({ admin, group, user }) => {},
+  deleteMember: (id) => {},
+  updateAdmin: (id) => {},
+  addTask: (taskData) => {},
+  setTasks: (groupId, tasks) => {},
+  updateTask: (groupId, taskId, newTaskData) => {},
 });
 
 function groupsReducer(state, action) {
@@ -107,15 +108,43 @@ function groupsReducer(state, action) {
     case "SET_TASKS":
       return state.map((group) => {
         if (group.id === action.payload.groupId) {
+          const sortedTasks = action.payload.tasks.map((task) => ({
+            ...task,
+            objectives: task.objectives.sort((a, b) =>
+              a.value.localeCompare(b.value)
+            ),
+          }));
           return {
             ...group,
-            tasks: [...action.payload.tasks].sort((a, b) =>
-              a.title.localeCompare(b.title)
-            ),
+            tasks: sortedTasks.sort((a, b) => a.title.localeCompare(b.title)),
           };
         }
         return group;
       });
+
+    case "UPDATE_TASK":
+      console.log(
+        "Current state before update:",
+        JSON.stringify(state, null, 2)
+      );
+      const newState = state.map((group) => {
+        if (group.id === action.payload.groupId) {
+          return {
+            ...group,
+            tasks: group.tasks
+              .map((task) => {
+                if (task.id === action.payload.taskId) {
+                  return { ...task, ...action.payload.newTaskData };
+                }
+                return task;
+              })
+              .sort((a, b) => a.title.localeCompare(b.title)),
+          };
+        }
+        return group;
+      });
+      console.log("New state after update:", JSON.stringify(newState, null, 2));
+      return newState;
     default:
       return state;
   }
@@ -158,6 +187,12 @@ function GroupsContextProvider({ children }) {
   function setTasks(groupId, tasks) {
     dispatch({ type: "SET_TASKS", payload: { groupId, tasks } });
   }
+  function updateTask(groupId, taskId, newTaskData) {
+    dispatch({
+      type: "UPDATE_TASK",
+      payload: { groupId, taskId, newTaskData },
+    });
+  }
 
   const value = {
     groups: groupsState,
@@ -171,6 +206,7 @@ function GroupsContextProvider({ children }) {
     updateAdmin: updateAdmin,
     addTask: addTask,
     setTasks: setTasks,
+    updateTask: updateTask,
   };
 
   return (

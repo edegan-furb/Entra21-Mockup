@@ -27,11 +27,19 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
     objectives:
       defaultValues && defaultValues.objectives
         ? defaultValues.objectives.map((obj) => ({
-            value: obj.description,
+            id: obj.id,
+            value: obj.value,
             completed: obj.completed,
             isValid: true,
           }))
-        : [{ value: "", completed: false, isValid: true }],
+        : [
+            {
+              id: generateUniqueId(),
+              value: "",
+              completed: false,
+              isValid: true,
+            },
+          ],
   });
 
   function inputChangeHandler(inputIdentifier, enteredValue, index = null) {
@@ -39,6 +47,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
       setInputs((currentInputs) => {
         const updatedObjectives = [...currentInputs.objectives];
         updatedObjectives[index] = {
+          ...updatedObjectives[index],
           value: enteredValue,
           completed: false,
           isValid: true,
@@ -55,13 +64,29 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
     }
   }
 
+  function generateUniqueId() {
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
+    const charactersLength = characters.length;
+    for (let i = 0; i < 20; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
+
   function addObjective() {
     setInputs((currentInputs) => {
       return {
         ...currentInputs,
         objectives: [
           ...currentInputs.objectives,
-          { value: "", completed: false, isValid: true },
+          {
+            id: generateUniqueId(),
+            value: "",
+            completed: false,
+            isValid: true,
+          },
         ],
       };
     });
@@ -78,6 +103,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
 
   function submitHandler() {
     const objectivesData = inputs.objectives.map((objective) => ({
+      id: objective.id,
       value: objective.value,
       completed: objective.completed,
     }));
@@ -123,6 +149,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
             isValid: designatedUserIsValid,
           },
           objectives: currentInputs.objectives.map((objective) => ({
+            id: objective.id,
             value: objective.value,
             completed: objective.completed,
             isValid: objective.value.trim().length > 0,
@@ -132,7 +159,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
       return;
     }
 
-    console.log(taskData);
+    //console.log(taskData);
     onSubmit(taskData);
   }
 
@@ -292,6 +319,6 @@ const styles = StyleSheet.create({
     marginTop: "6%",
   },
   scrollView: {
-    height: "40%",
+    height: "20%",
   },
 });

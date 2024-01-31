@@ -5,7 +5,12 @@ import { Colors } from "../constants/styles";
 import { GroupsContext } from "../store/groups-context";
 import Error from "../components/ui/Error";
 import Loading from "../components/ui/LoadingOverlay";
-import { createtask, getUserIdByEmail, isMember } from "../util/firestore";
+import {
+  createtask,
+  getUserIdByEmail,
+  isMember,
+  updateTask,
+} from "../util/firestore";
 
 function ManageTasksScreen({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -58,10 +63,10 @@ function ManageTasksScreen({ navigation, route }) {
       }
 
       let updatedTaskData = { ...taskData, designatedUser: userId };
-
       if (isEditing) {
-        // groupsCtx.updateTask(editedTaskId, updatedTaskData);
-        // await updateTask(editedTaskId, updatedTaskData);
+        console.log(updatedTaskData);
+        groupsCtx.updateTask(groupId, editedTaskId, updatedTaskData);
+        await updateTask(editedTaskId, updatedTaskData);
       } else {
         updatedTaskData = {
           ...taskData,
