@@ -6,7 +6,7 @@ import TasksList from "./TasksList";
 function TasksOutput({ tasks, fallbackText }) {
   let content = <Text style={styles.infoText}>{fallbackText}</Text>;
 
-  if (tasks.length > 0) {
+  if (Array.isArray(tasks) && tasks.length > 0) {
     content = <TasksList tasks={tasks} />;
   }
 

@@ -257,69 +257,138 @@ export async function removeMember(memberId) {
   }
 }
 
-// Function to fetch all groups a user is a member of
 export async function fetchGroups(callback) {
   // Get the UID of the current authenticated user
   const userRef = auth.currentUser.uid;
   // Create a Firestore document reference for the user
   const userDocRef = doc(db, "users", userRef);
-  // Define references to the "members" and "groups" collections
-  const membersCollection = collection(db, "members");
-  const groupsCollectionRef = collection(db, "groups");
 
   // Set up a listener for changes in the user's memberships
   const stopListeningUserMemberships = onSnapshot(
-    query(membersCollection, where("user", "==", userDocRef)),
-    (userMembersSnapshot) => {
-      // Extract group references from the user's memberships
-      const groupRefs = userMembersSnapshot.docs
-        .map((doc) => doc.data().group)
-        .filter(Boolean);
+    query(collection(db, "members"), where("user", "==", userDocRef)),
+    async (userMembersSnapshot) => {
+      const groupsData = await Promise.all(
+        userMembersSnapshot.docs.map(async (memberDoc) => {
+          const groupRef = memberDoc.data().group;
 
-      // If the user is not a member of any groups, invoke the callback with an empty array
-      if (groupRefs.length === 0) {
-        callback([]);
-        return;
-      }
+          // Fetch group data
+          const groupSnapshot = await getDoc(groupRef);
+          const groupData = { id: groupRef.id, ...groupSnapshot.data() };
 
-      // Extract group IDs from the group references
-      const groupIDs = groupRefs.map((groupRef) => groupRef.id);
+          // Fetch tasks associated with this group
+          const tasksQuery = query(
+            collection(db, "tasks"),
+            where("group", "==", groupRef)
+          );
+          const tasksSnapshot = await getDocs(tasksQuery);
+          const tasks = await Promise.all(
+            tasksSnapshot.docs.map(async (taskDoc) => {
+              const taskData = taskDoc.data();
 
-      // Define a query for the groups the user is a member of
-      const groupsQuery = query(
-        groupsCollectionRef,
-        where("__name__", "in", groupIDs)
+              // Fetch objectives for each task
+              const objectivesQuery = query(
+                collection(db, `tasks/${taskDoc.id}/objectives`)
+              );
+              const objectivesSnapshot = await getDocs(objectivesQuery);
+              const objectives = objectivesSnapshot.docs.map(
+                (objectiveDoc) => ({
+                  id: objectiveDoc.id,
+                  ...objectiveDoc.data(),
+                })
+              );
+
+              return {
+                id: taskDoc.id,
+                title: taskData.title,
+                description: taskData.description,
+                date: taskData.date.toDate(), // Convert Firestore Timestamp to JavaScript Date
+                completed: taskData.completed,
+                owner: taskData.owner,
+                designatedUser: taskData.designatedUser,
+                group: taskData.group,
+                objectives: objectives, // Array of objectives
+              };
+            })
+          );
+
+          return { ...groupData, tasks: tasks };
+        })
       );
 
-      // Set up a real-time listener for changes in these groups
-      const stopListeningGroups = onSnapshot(groupsQuery, (groupsSnapshot) => {
-        // Map Firestore documents to a JavaScript object
-        const groups = groupsSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-
-        // Sort the groups alphabetically by their title
-        const sortedGroups = groups.sort((a, b) =>
-          a.title.localeCompare(b.title)
-        );
-
-        // Invoke the callback with the sorted groups
-        callback(sortedGroups);
-      });
-
-      // Return a function to stop listening for group updates
-      return stopListeningGroups;
+      // Invoke the callback with groups and their associated tasks
+      callback(groupsData);
     }
   );
 
-  // Return a function that stops listening to both user memberships and group updates
+  // Return a function that stops listening to user memberships
   return () => {
     stopListeningUserMemberships();
-    // Call the stopListeningGroups function if it's defined
-    stopListeningGroups && stopListeningGroups();
   };
 }
+
+// // Function to fetch all groups a user is a member of
+// export async function fetchGroups(callback) {
+//   // Get the UID of the current authenticated user
+//   const userRef = auth.currentUser.uid;
+//   // Create a Firestore document reference for the user
+//   const userDocRef = doc(db, "users", userRef);
+//   // Define references to the "members" and "groups" collections
+//   const membersCollection = collection(db, "members");
+//   const groupsCollectionRef = collection(db, "groups");
+
+//   // Set up a listener for changes in the user's memberships
+//   const stopListeningUserMemberships = onSnapshot(
+//     query(membersCollection, where("user", "==", userDocRef)),
+//     (userMembersSnapshot) => {
+//       // Extract group references from the user's memberships
+//       const groupRefs = userMembersSnapshot.docs
+//         .map((doc) => doc.data().group)
+//         .filter(Boolean);
+
+//       // If the user is not a member of any groups, invoke the callback with an empty array
+//       if (groupRefs.length === 0) {
+//         callback([]);
+//         return;
+//       }
+
+//       // Extract group IDs from the group references
+//       const groupIDs = groupRefs.map((groupRef) => groupRef.id);
+
+//       // Define a query for the groups the user is a member of
+//       const groupsQuery = query(
+//         groupsCollectionRef,
+//         where("__name__", "in", groupIDs)
+//       );
+
+//       // Set up a real-time listener for changes in these groups
+//       const stopListeningGroups = onSnapshot(groupsQuery, (groupsSnapshot) => {
+//         // Map Firestore documents to a JavaScript object
+//         const groups = groupsSnapshot.docs.map((doc) => ({
+//           id: doc.id,
+//           ...doc.data(),
+//         }));
+
+//         // Sort the groups alphabetically by their title
+//         const sortedGroups = groups.sort((a, b) =>
+//           a.title.localeCompare(b.title)
+//         );
+
+//         // Invoke the callback with the sorted groups
+//         callback(sortedGroups);
+//       });
+
+//       // Return a function to stop listening for group updates
+//       return stopListeningGroups;
+//     }
+//   );
+
+//   // Return a function that stops listening to both user memberships and group updates
+//   return () => {
+//     stopListeningUserMemberships();
+//     // Call the stopListeningGroups function if it's defined
+//     stopListeningGroups && stopListeningGroups();
+//   };
+// }
 
 // Function to fetch all group members
 export async function fetchGroupMembers(groupId, callback) {
