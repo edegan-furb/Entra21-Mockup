@@ -42,7 +42,7 @@ function GroupItem({ id, title, }) {
           </View>
           <View style={styles.graphiContainer}>
             <Text style={styles.graphiTextInf}>Concluido</Text>
-            <GroupDounnut concludedTasks={80} pendingTasks={10}/>
+            <GroupDounnut concludedTasks={80} />
           </View>
         </View>
       </View>
