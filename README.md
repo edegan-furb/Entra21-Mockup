@@ -1,9 +1,9 @@
 # Entra21-Mockup
 <p align="center">
     <img src="https://video-public.canva.com/VAEgBiRAJHg/v/6dceef1a6c.gif" width="150"/>
-</p>
+</p >
  </p>
-  <p>
+  <p  align="center">
   <a href="https://github.com/edegan-furb/Entra21-Mockup/graphs/contributors">
     <img src="https://img.shields.io/github/contributors/edegan-furb/Entra21-Mockup" alt="contributors" />
   </a>
