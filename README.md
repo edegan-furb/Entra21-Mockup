@@ -1,9 +1,6 @@
-# Entra21-Mockup
-<p align="center">
-    <img src="https://video-public.canva.com/VAEgBiRAJHg/v/6dceef1a6c.gif" width="150"/>
-</p >
+<h1 align="center">Entra21-Mockup</h1>
  </p>
-  <p  align="center">
+  <p align="center">
   <a href="https://github.com/edegan-furb/Entra21-Mockup/graphs/contributors">
     <img src="https://img.shields.io/github/contributors/edegan-furb/Entra21-Mockup" alt="contributors" />
   </a>
@@ -17,6 +14,9 @@
     <img src="https://img.shields.io/github/stars/edegan-furb/Entra21-Mockup" alt="stars" />
   </a>
 </p>
+<p align="center">
+    <img src="https://video-public.canva.com/VAEgBiRAJHg/v/6dceef1a6c.gif" width="150"/>
+</p >
 <table>
 <tr>
 <td>
