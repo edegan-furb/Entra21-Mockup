@@ -15,7 +15,7 @@
   </a>
 </p>
 <p align="center">
-    <img src="https://video-public.canva.com/VAEgBiRAJHg/v/6dceef1a6c.gif" width="300"/>
+    <img src="https://video-public.canva.com/VAEgBiRAJHg/v/6dceef1a6c.gif" width="200"/>
 </p >
 <table>
 <tr>
