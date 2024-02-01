@@ -10,7 +10,11 @@ import { GroupsContext } from "../store/groups-context";
 import IconButton from "../components/ui/IconButton";
 import { auth } from "../util/auth";
 import { getFormattedDate } from "../util/date";
-import { getUserIdByEmail, updateObjectiveStatus, updateTaskStatus } from "../util/firestore";
+import {
+  getUserIdByEmail,
+  updateObjectiveStatus,
+  updateTaskStatus,
+} from "../util/firestore";
 import Error from "../components/ui/Error";
 
 function TaskScreen({ route, navigation }) {
@@ -176,17 +180,18 @@ const styles = StyleSheet.create({
   },
   descriptionContainer: {
     padding: 16,
-    backgroundColor: Colors.primary800,
-    borderRadius: 20,
-    elevation: 10,
-    shadowColor: "black",
+    borderWidth: 2,
+    borderColor: Colors.primary800,
+    borderRadius: 12,
+    elevation: 3,
+    shadowColor: Colors.primary100,
     shadowRadius: 4,
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.4,
   },
   description: {
     fontSize: 16,
-    color: Colors.primary100,
+    color: Colors.primary800,
     justifyContent: "center",
     textAlign: "center",
   },

@@ -170,86 +170,88 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
     !inputs.designatedUser.isValid ||
     inputs.objectives.some((objective) => !objective.isValid);
   return (
-    <View style={styles.form}>
-      <Text style={styles.title}>Your Task</Text>
-      <View style={styles.inputRow}>
-        <Input
-          style={styles.rowTitle}
-          label={"Title"}
-          invalid={!inputs.title.isValid}
-          textInputConfig={{
-            multiline: false,
-            onChangeText: inputChangeHandler.bind(this, "title"),
-            value: inputs.title.value,
-          }}
-        />
-        <Input
-          style={styles.rowInput}
-          label={"Date"}
-          invalid={!inputs.date.isValid}
-          textInputConfig={{
-            placeholder: "YYYY-MM-DD",
-            placeholderTextStyle: { fontSize: 1 },
-            maxLength: 10,
-            onChangeText: inputChangeHandler.bind(this, "date"),
-            value: inputs.date.value,
-          }}
-        />
-      </View>
-      <View style={styles.inputRow}>
-        <Input
-          label={"Description"}
-          style={styles.rowInput}
-          invalid={!inputs.description.isValid}
-          textInputConfig={{
-            multiline: true,
-            onChangeText: inputChangeHandler.bind(this, "description"),
-            value: inputs.description.value,
-          }}
-        />
-      </View>
-      <View style={styles.inputRow}>
-        <Input
-          label={"Designed User by Email"}
-          style={styles.rowInput}
-          invalid={!inputs.designatedUser.isValid}
-          textInputConfig={{
-            multiline: false,
-            onChangeText: inputChangeHandler.bind(this, "designatedUser"),
-            value: inputs.designatedUser.value,
-          }}
-        />
-      </View>
+    <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
-        {inputs.objectives.map((objective, index) => (
-          <View key={index} style={styles.inputObjectivesRow}>
+        <View style={styles.form}>
+          <Text style={styles.title}>Your Task</Text>
+          <View style={styles.inputRow}>
             <Input
-              style={styles.rowInput}
-              label={`Objective ${index + 1}`}
-              invalid={!objective.isValid}
+              style={styles.rowTitle}
+              label={"Title"}
+              invalid={!inputs.title.isValid}
               textInputConfig={{
                 multiline: false,
-                onChangeText: (text) =>
-                  inputChangeHandler("objectives", text, index),
-                value: objective.value,
+                onChangeText: inputChangeHandler.bind(this, "title"),
+                value: inputs.title.value,
               }}
             />
-            {inputs.objectives.length > 0 && (
-              <View style={styles.removeButton}>
-                <IconButton
-                  icon={"close-circle-outline"}
-                  color={Colors.primary100}
-                  size={32}
-                  onPress={() => removeObjective(index)}
-                />
-              </View>
-            )}
+            <Input
+              style={styles.rowInput}
+              label={"Date"}
+              invalid={!inputs.date.isValid}
+              textInputConfig={{
+                placeholder: "YYYY-MM-DD",
+                placeholderTextStyle: { fontSize: 1 },
+                maxLength: 10,
+                onChangeText: inputChangeHandler.bind(this, "date"),
+                value: inputs.date.value,
+              }}
+            />
           </View>
-        ))}
+          <View style={styles.inputRow}>
+            <Input
+              label={"Description"}
+              style={styles.rowInput}
+              invalid={!inputs.description.isValid}
+              textInputConfig={{
+                multiline: true,
+                onChangeText: inputChangeHandler.bind(this, "description"),
+                value: inputs.description.value,
+              }}
+            />
+          </View>
+          <View style={styles.inputRow}>
+            <Input
+              label={"Designed User by Email"}
+              style={styles.rowInput}
+              invalid={!inputs.designatedUser.isValid}
+              textInputConfig={{
+                multiline: false,
+                onChangeText: inputChangeHandler.bind(this, "designatedUser"),
+                value: inputs.designatedUser.value,
+              }}
+            />
+          </View>
+          {inputs.objectives.map((objective, index) => (
+            <View key={index} style={styles.inputObjectivesRow}>
+              <Input
+                style={styles.rowInput}
+                label={`Objective ${index + 1}`}
+                invalid={!objective.isValid}
+                textInputConfig={{
+                  multiline: false,
+                  onChangeText: (text) =>
+                    inputChangeHandler("objectives", text, index),
+                  value: objective.value,
+                }}
+              />
+              {inputs.objectives.length > 0 && (
+                <View style={styles.removeButton}>
+                  <IconButton
+                    icon={"close-circle-outline"}
+                    color={Colors.primary100}
+                    size={32}
+                    onPress={() => removeObjective(index)}
+                  />
+                </View>
+              )}
+            </View>
+          ))}
+          <Button style={styles.button}  mode="flat" onPress={addObjective}>
+            Add Objective
+          </Button>
+        </View>
       </ScrollView>
-      <Button mode="flat" style={styles.button} onPress={addObjective}>
-        Add Objective
-      </Button>
       {formIsInvalid && (
         <Text style={styles.errorText}>
           Invalid input values - please check your entered data
@@ -270,7 +272,16 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
 export default TaskForm;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  scrollView: {
+    flex: 1,
+    //paddingBottom: 60,
+    //backgroundColor: "red",
+  },
   form: {
+    padding: 5,
     //marginTop: 5,
   },
   title: {
@@ -297,15 +308,17 @@ const styles = StyleSheet.create({
     margin: 8,
   },
   buttons: {
-    marginTop: 10,
-    paddingTop: 15,
-    borderTopWidth: 2,
-    borderTopColor: Colors.primary500,
+    //flex: 1,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    borderTopWidth: 2,
+    borderTopColor: Colors.primary500,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
   },
   button: {
+    //flex: 1,
     paddingTop: 8,
     minWidth: 120,
     marginHorizontal: 8,
@@ -317,8 +330,5 @@ const styles = StyleSheet.create({
   },
   removeButton: {
     marginTop: "6%",
-  },
-  scrollView: {
-    height: "20%",
   },
 });
