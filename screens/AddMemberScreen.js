@@ -1,11 +1,7 @@
 import { View, StyleSheet, Alert } from "react-native";
 import { Colors } from "../constants/styles";
 import AddMemberForm from "../components/AddMembers/AddMemberForm";
-import {
-  setAdminStatus,
-  addMember,
-  getUserIdByEmail,
-} from "../util/firestore";
+import { setAdminStatus, addMember, getUserIdByEmail } from "../util/firestore";
 import Error from "../components/ui/Error";
 import Loading from "../components/ui/LoadingOverlay";
 import { useContext, useState } from "react";
@@ -38,12 +34,15 @@ function AddMembersScreen({ route, navigation }) {
           "This user is already a member of the group."
         );
       } else {
+        const memberId = await addMember(groupId, userId);
+        console.log(memberId);
+        console.log(memberId.id);
         groupsCtx.addMember({
+          id: memberId.id,
           admin: memberData.isAdmin,
           user: userId,
           group: groupId,
         });
-        await addMember(groupId, userId);
         await setAdminStatus(groupId, userId, memberData.isAdmin);
         navigation.goBack();
       }

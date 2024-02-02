@@ -11,7 +11,7 @@ export const GroupsContext = createContext({
   deleteMember: (id) => {},
   updateAdmin: (id) => {},
   addTask: (taskData) => {},
-  setTasks: (groupId, tasks) => {},
+  setTasks: ({ groupId, tasks }) => {},
   updateTask: (groupId, taskId, newTaskData) => {},
   updateObjectiveStatus: (groupId, taskId, objectiveId) => {},
   updateTaskStatus: (groupId, taskId) => {},
@@ -55,13 +55,11 @@ function groupsReducer(state, action) {
       });
     case "ADD_MEMBER":
       return state.map((group) => {
-        if (group.id === action.payload.groupId) {
-          const newMember = action.payload.member;
+        if (group.id === action.payload.group) {
+          const newMember = action.payload;
           return {
             ...group,
-            members: [...group.members, newMember].sort((a, b) =>
-              a.username.localeCompare(b.username)
-            ),
+            members: [...group.members, newMember],
           };
         }
         return group;
@@ -96,8 +94,9 @@ function groupsReducer(state, action) {
       });
     case "ADD_TASK":
       return state.map((group) => {
-        if (group.id === action.payload.groupId) {
-          const newTasks = action.payload.task;
+        if (group.id === action.payload.group) {
+          console.log("itworked");
+          const newTasks = action.payload;
           return {
             ...group,
             tasks: [...group.tasks, newTasks].sort((a, b) =>
@@ -123,7 +122,6 @@ function groupsReducer(state, action) {
         }
         return group;
       });
-
     case "UPDATE_TASK":
       console.log(
         "Current state before update:",
@@ -213,6 +211,7 @@ function GroupsContextProvider({ children }) {
     dispatch({ type: "SET_MEMBERS", payload: { groupId, members } });
   }
   function addMember(memberData) {
+    console.log(memberData);
     dispatch({ type: "ADD_MEMBER", payload: memberData });
   }
   function deleteMember(groupId, memberId) {

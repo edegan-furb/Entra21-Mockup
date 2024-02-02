@@ -21,11 +21,7 @@ function MemberItem({
   if (groupsCtx.groups) {
     groupsCtx.groups?.forEach((group) => {
       group.members?.forEach((member) => {
-        if (
-          member.user?._key?.path?.segments[
-            user._key.path.segments.length - 1
-          ] === currentUser
-        ) {
+        if (member.user === currentUser) {
           foundMember = member;
         }
       });

@@ -36,6 +36,17 @@ function ManageTasksScreen({ navigation, route }) {
     });
   }
 
+  function generateUniqueId() {
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
+    const charactersLength = characters.length;
+    for (let i = 0; i < 20; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
+
   function cancelHandler() {
     console.log(groupId);
     navigation.goBack();
@@ -73,9 +84,9 @@ function ManageTasksScreen({ navigation, route }) {
           designatedUser: userId,
           completed: false,
         };
-        const taskId = await createtask(groupId, updatedTaskData);
-        console.log(taskId);
-        groupsCtx.addTask({ ...taskData, id: taskId });
+        const taskId = generateUniqueId();
+        groupsCtx.addTask({ ...taskData, id: taskId, group: groupId });
+        await createtask(groupId, updatedTaskData, taskId);
       }
       navigation.goBack();
     } catch (error) {
@@ -117,6 +128,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
+    paddingBottom: 12,
     backgroundColor: Colors.primary800,
   },
 
