@@ -2,19 +2,19 @@ import { createContext, useReducer } from "react";
 
 export const GroupsContext = createContext({
   groups: [],
-  addGroup: ({ title }) => {},
-  setGroups: (groups) => {},
-  deleteGroup: (id) => {},
-  updateGroup: (id, { title }) => {},
-  setMembers: (groupId, members) => {},
-  addMember: ({ admin, group, user }) => {},
-  deleteMember: (id) => {},
-  updateAdmin: (id) => {},
-  addTask: (taskData) => {},
-  setTasks: ({ groupId, tasks }) => {},
-  updateTask: (groupId, taskId, newTaskData) => {},
-  updateObjectiveStatus: (groupId, taskId, objectiveId) => {},
-  updateTaskStatus: (groupId, taskId) => {},
+  addGroup: ({ title }) => { },
+  setGroups: (groups) => { },
+  deleteGroup: (id) => { },
+  updateGroup: (id, { title }) => { },
+  setMembers: (groupId, members) => { },
+  addMember: ({ admin, group, user }) => { },
+  deleteMember: (id) => { },
+  updateAdmin: (id) => { },
+  addTask: (taskData) => { },
+  setTasks: ({ groupId, tasks }) => { },
+  updateTask: (groupId, taskId, newTaskData) => { },
+  updateObjectiveStatus: (groupId, taskId, objectiveId) => { },
+  updateTaskStatus: (groupId, taskId) => { },
 });
 
 function groupsReducer(state, action) {

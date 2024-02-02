@@ -536,7 +536,6 @@ export async function createtask(groupId, taskData, taskId) {
   }
 }
 
-
 export async function fetchGroupTasks(groupId, callback) {
   // Create a reference to the specified group in Firestore
   const groupDocRef = doc(db, "groups", groupId);
@@ -580,8 +579,10 @@ export async function fetchGroupTasks(groupId, callback) {
         }
       }
 
-      // Update tasksData map
+      // Initialize or update tasksData map
+      const existingTask = tasksData.get(taskId) || {};
       tasksData.set(taskId, {
+        ...existingTask,
         id: taskId,
         title: taskData.title,
         description: taskData.description,
@@ -590,12 +591,12 @@ export async function fetchGroupTasks(groupId, callback) {
         owner: taskData.owner,
         designatedUser: designatedUserEmail, // Updated to include the user's email
         group: groupId,
-        objectives: [], // Initialize with empty array
+        objectives: existingTask.objectives || [], // Preserve existing objectives if already fetched
       });
 
-      // Fetch and listen to objectives for this task
+      // Immediately fetch and listen to objectives for this task
+      const objectivesRef = collection(db, `tasks/${taskId}/objectives`);
       if (!objectivesListeners[taskId]) {
-        const objectivesRef = collection(db, `tasks/${taskId}/objectives`);
         objectivesListeners[taskId] = onSnapshot(objectivesRef, (objectivesSnapshot) => {
           const objectives = objectivesSnapshot.docs.map(doc => ({
             id: doc.id,
@@ -607,13 +608,16 @@ export async function fetchGroupTasks(groupId, callback) {
           const updatedTask = tasksData.get(taskId);
           if (updatedTask) {
             updatedTask.objectives = objectives;
+            tasksData.set(taskId, updatedTask); // Ensure the map is updated
             callback(Array.from(tasksData.values())); // Convert Map values to an array
           }
+        }, error => {
+          console.error(`Error fetching objectives for task ${taskId}:`, error);
         });
       }
     }));
 
-    // Invoke the callback with the updated tasks data
+    // Invoke the callback after processing all tasks and their objectives
     callback(Array.from(tasksData.values()));
   });
 
