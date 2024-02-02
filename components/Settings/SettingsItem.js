@@ -27,9 +27,9 @@ export default function SettingsItem({ text, nameIcon, swich, activeText, inActi
                 inActiveText={inActiveText}
                 value={icon}
                 onValueChange={(valor) => setIcon(valor)}
-                backgroundActive={Colors.primary500}
+                backgroundActive={Colors.primary950}
                 circleActiveColor={Colors.primary200}
-                backgroundInactive={Colors.primary950}
+                backgroundInactive={Colors.primary500}
                 circleInActiveColor={Colors.primary200}
                 circleSize={25}
                 barHeight={30}

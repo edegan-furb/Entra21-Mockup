@@ -10,16 +10,16 @@ import AboutText from "../components/Settings/AboutModal";
 function SettingsScreen() {
 
   const authCtx = useContext(AuthContext);
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <SafeAreaView style={styles.rootContainer}>
-      <View style={styles.containerMain}>
+      <View style={styles.main}>
         <View style={styles.iconEditContainer}>
           <Pressable style={({ pressed }) => pressed ? [styles.iconEdit, styles.pressed] : styles.iconEdit}>
             <MaterialCommunityIcons name="lead-pencil" color={Colors.primary1000} size={18} />
           </Pressable>
         </View>
-
         <View style={styles.pictureContainer}>
           <View style={styles.pictureContent}>
             <View style={styles.picture}>
@@ -27,8 +27,8 @@ function SettingsScreen() {
             </View>
           </View>
           <View style={styles.infContainer}>
-            <Text style={styles.textInf}>Name: Julio Cesar Vanz</Text>
-            <Text style={styles.textInf}>Email: j.vanz1108@gmail.com</Text>
+            <Text style={[styles.textInf, {fontSize: 25}]}>Julio Cesar Vanz</Text>
+            <Text style={styles.textInf}>j.vanz1108@gmail.com</Text>
             <Text style={styles.textInf}>Registered groups: 5</Text>
           </View>         
         </View>
@@ -40,14 +40,14 @@ function SettingsScreen() {
           <SettingsItem
             nameIcon={"sunny-outline"}
             text={'Theme'}
-            activeText={<Ionicons name={'sunny'} size={15} color={Colors.primary100}/>}
-            inActiveText={<Ionicons name={'moon'} size={15} color={Colors.primary100}/>}
+            activeText={<Ionicons name={'moon'} size={15} color={Colors.primary100}/>}
+            inActiveText={<Ionicons name={'sunny'} size={15} color={Colors.primary100}/>}
           />
           <SettingsItem
             nameIcon={"language-outline"}
             text={'Language'}
-            activeText={'En'}
-            inActiveText={'Br'}
+            activeText={'Br'}
+            inActiveText={'En'}
           />
           <SettingsItem
             nameIcon={"help-circle-outline"}
@@ -68,8 +68,15 @@ function SettingsScreen() {
           />
         </View>
       </View>
-
-      <AboutText/>
+      <Modal 
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+      >
+      <AboutText 
+        onPress={() => setModalVisible(false)}
+      />
+    </Modal>
     </SafeAreaView>
   );
 }
@@ -82,19 +89,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: Colors.primary100,
   },
-  containerMain: {
+  main: {
     width: '90%',
-    height: '30%',
+    height: '35%',
     alignItems: "center",
-    justifyContent: 'space-around',
-    flexDirection: "row",
+    justifyContent: 'space-evenly',
+    //flexDirection: "row",
     borderBottomWidth: 2,
     borderColor: Colors.primary950,
   },
   iconEditContainer: {
-    width: '5%',
-    height: '70%',
-    alignItems: "center",
+    width: '100%',
+    height: '15%',
+    alignItems: "flex-end",
+    justifyContent: 'center',
   },
   iconEdit: {
     backgroundColor: '#2e106569',
@@ -105,11 +113,11 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   pictureContainer: {
-    width: '95%',
-    height: '100%',
+    width: '100%',
+    height: '85%',
     alignItems: "center",
     justifyContent: 'space-around',
-    flexDirection: "row",
+    //flexDirection: "row",
     borderColor: Colors.primary950,
   },
   pictureContent: {
@@ -132,9 +140,9 @@ const styles = StyleSheet.create({
     borderColor: Colors.primary950,
   },
   infContainer: {
-    width: '65%',
-    height: '50%',
-    alignItems: "flex-start",
+    width: '100%',
+    height: '40%',
+    alignItems: "center",
     justifyContent: "space-evenly",
   },
   textInf: {
@@ -170,6 +178,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   pressed: {
-    opacity: 0.7,
+    opacity: 0.5,
   },
 });
