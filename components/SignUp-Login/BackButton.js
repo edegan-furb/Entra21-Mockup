@@ -1,19 +1,12 @@
 // Back Button
 import { StyleSheet, Pressable, View } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from "@react-navigation/native";
 import { Colors } from "../../constants/styles";
 
-export default function BackButton() {
-    const navigation = useNavigation();
-
-    function onPressHandler() {
-        navigation.navigate('Start')
-    }
-
+export default function BackButton({onPress}) {
     return(
         <View style={styles.container} >
-            <Pressable style={styles.backButtonContainer} onPress={onPressHandler}>
+            <Pressable style={styles.backButtonContainer} onPress={onPress}>
                 <Ionicons 
                     name="arrow-back-circle-outline" 
                     color={Colors.primary100} 

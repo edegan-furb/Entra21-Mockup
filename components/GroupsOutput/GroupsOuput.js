@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import GroupsList from "./GroupsList";
 import AddButton from '../GroupsOutput/AddButton';
-import UpperLogo from '../../components/StartComponents/UpperLogo';
+import UpperLogo from '../../components/Start/UpperLogo';
 import { Colors } from "../../constants/styles";
 
 function GroupsOutput({ groups, firstText, secondText, title, page }) {

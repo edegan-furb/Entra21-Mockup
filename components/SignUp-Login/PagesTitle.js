@@ -1,12 +1,20 @@
 import { StyleSheet, View, Text, Image } from "react-native";
 import { Colors } from "../../constants/styles";
-import BackButton from '../SignUp-Login-components/BackButton';
+import BackButton from './BackButton';
+import { useNavigation } from "@react-navigation/native";
 
 export default function PagesTitle({ title, subTitle }) {
+
+  const navigation = useNavigation();
+
+  function onPressHandler() {
+      navigation.navigate('Start')
+  }
+
   return(
     <View style={styles.container}>
       <View style={styles.content}>
-        <BackButton/>
+        <BackButton onPress={onPressHandler}/>
         <View style={styles.imgContainer}>
           <Image 
             resizeMethod="scale"

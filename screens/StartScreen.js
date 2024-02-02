@@ -11,11 +11,11 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
-import UpperLogo from '../components/StartComponents/UpperLogo';
-import Banner from '../components/StartComponents/Banner';
-import CustomButton from '../components/StartComponents/CustomButton';
-import Description from '../components/StartComponents/Description';
-import Footer from '../components/StartComponents/Footer';
+import UpperLogo from '../components/Start/UpperLogo';
+import Banner from '../components/Start/Banner';
+import CustomButton from '../components/Start/CustomButton';
+import Description from '../components/Start/Description';
+import Footer from '../components/Start/Footer';
 import { Colors } from '../constants/styles';
 
 function StartScreen() {

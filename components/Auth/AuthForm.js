@@ -137,21 +137,23 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   inputAreaSignup: {
-    height: '70%',
+    height: '75%',
     width: '100%',
   },
   buttons: {
     width: '100%',
-    height: '20%',
+    height: '30%',
+    alignItems: 'center',
+    justifyContent: 'flex-end'
   },
   stylesButton: {
     width: '100%',
-    height: '70%',
+    height: '50%',
     alignItems: 'center',
     justifyContent: 'center',
   },
   signUpButton: {
-    height: "25%",
+    height: "30%",
     flexDirection: "row",
     alignItems: 'center',
     justifyContent: "center",

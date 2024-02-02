@@ -1,22 +1,19 @@
-import { View, Text, StyleSheet, SafeAreaView, Pressable} from "react-native";
+import { View, Text, StyleSheet, SafeAreaView, Pressable, Modal} from "react-native";
 import { AuthContext } from "../store/auth-context";
 import { useContext, useState } from "react";
 import { Colors } from "../constants/styles";
 import IconButton from "../components/ui/IconButton";
-import { Ionicons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
-import { Switch } from "react-native-switch";
-
+import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
+import SettingsItem from "../components/Settings/SettingsItem";
+import AboutText from "../components/Settings/AboutModal";
 
 function SettingsScreen() {
 
   const authCtx = useContext(AuthContext);
 
-  const [icon, setIcon] = useState(true);
-  const [language, setLanguage] = useState(true);
-
   return (
     <SafeAreaView style={styles.rootContainer}>
-      <View style={styles.main}>
+      <View style={styles.containerMain}>
         <View style={styles.iconEditContainer}>
           <Pressable style={({ pressed }) => pressed ? [styles.iconEdit, styles.pressed] : styles.iconEdit}>
             <MaterialCommunityIcons name="lead-pencil" color={Colors.primary1000} size={18} />
@@ -37,81 +34,42 @@ function SettingsScreen() {
         </View>
       </View>
 
-      <View style={styles.contentBody}>
-        <View style={styles.blocksContainer}>
-          <View style={styles.blockContent}>
-            <Text style={styles.blockText}>Change theme</Text>
-            <Switch
-              activeText={<Ionicons name="sunny-outline" size={20} color={'#000'}/>}
-              inActiveText={<Ionicons name="moon-outline" size={20} color={'#fff'}/>}
-              value={icon}
-              onValueChange={(valor) => setIcon(valor)}
-              backgroundActive={Colors.primary100}
-              circleActiveColor={Colors.primary950}
-              backgroundInactive={Colors.neutral800}
-              circleInActiveColor={Colors.primary950}
-              circleSize={35}
-              barHeight={40}
-              switchWidthMultiplier={2.8}
-            />
-          </View>
-
-
-          <View style={styles.blockContent}>
-            <Text style={styles.blockText}>Change language</Text>
-            <Switch
-              activeText={<Text style={{fontSize: 12}}>En</Text>}
-              inActiveText={<Text style={{fontSize: 12}}>Pt</Text>}
-              value={language}
-              onValueChange={(valor) => setLanguage(valor)}
-              backgroundActive={Colors.primary500}
-              circleActiveColor={Colors.primary950}
-              backgroundInactive={Colors.primary500}
-              circleInActiveColor={Colors.primary950}
-              circleSize={35}
-              barHeight={40}
-              switchWidthMultiplier={2.7}
-            />
-          </View>
+      <View style={styles.containerBody}>
+        <View style={styles.contentBody}>
+          <Text style={styles.titleSettings}>Settings</Text>
+          <SettingsItem
+            nameIcon={"sunny-outline"}
+            text={'Theme'}
+            activeText={<Ionicons name={'sunny'} size={15} color={Colors.primary100}/>}
+            inActiveText={<Ionicons name={'moon'} size={15} color={Colors.primary100}/>}
+          />
+          <SettingsItem
+            nameIcon={"language-outline"}
+            text={'Language'}
+            activeText={'En'}
+            inActiveText={'Br'}
+          />
+          <SettingsItem
+            nameIcon={"help-circle-outline"}
+            text={'About'}
+            swich={true}
+            onPress={() => setModalVisible(true)}
+          />
+          <SettingsItem
+            nameIcon={"close-circle-outline"}
+            text={'Delete account'}
+            swich={true}
+          />
+          <SettingsItem
+            nameIcon={"log-out-outline"}
+            text={'Logout'}
+            swich={true}
+            onPress={authCtx.logout}
+          />
         </View>
-        
-        <View style={styles.test}>
+      </View>
 
-        </View>
-        
-
-        
-        
-          <View style={styles.btnContainer}>
-            <Pressable style={({ pressed }) => pressed ? [styles.btnExit, styles.pressed] : styles.btnExit} onPress={authCtx.logout}>
-              <View style={styles.textContainer}>
-                <Text style={styles.btnText}>Logout</Text> 
-              </View>
-              <View style={styles.iconContainer}>
-                <Ionicons name="log-out-outline" size={15} color={'#fff'} style={styles.icon}/>
-              </View>
-            </Pressable>
-
-            <Pressable style={({ pressed }) => pressed ? [styles.btnExit, styles.pressed] : styles.btnExit}>
-              <View style={styles.textContainer}>
-                <Text style={styles.btnText}>Delet account</Text> 
-              </View>
-              <View style={styles.iconContainer}>
-                <AntDesign name="deleteuser" size={15} color={'#fff'} style={styles.icon}/>
-              </View>
-            </Pressable>
-          </View>
-        </View>
-      
-
-
-
-
-
-
-
-
-      
+      <AboutText/>
     </SafeAreaView>
   );
 }
@@ -124,7 +82,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: Colors.primary100,
   },
-  main: {
+  containerMain: {
     width: '90%',
     height: '30%',
     alignItems: "center",
@@ -184,85 +142,32 @@ const styles = StyleSheet.create({
     color: Colors.primary950,
     fontSize: 13
   },
-
-
-  contentBody: {
+  containerBody: {
     width: '100%',
     height: '70%',
     alignItems: "center",
     justifyContent: "flex-start",
     marginTop: 20
   },
-  blocksContainer: {
-    width: '90%',
-    height: '30%',
-    alignItems: "center",
-    justifyContent: "space-evenly",
-    flexDirection: "row",
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
-    backgroundColor: Colors.primary900
+  contentBody: {
+    width: "80%",
+    height: '50%',
   },
-  blockContent: { 
-    width: "40%",
-    height: '90%',
-    alignItems: "center",
-    justifyContent: "space-evenly",
-    backgroundColor: '#ffffff77',
-    borderRadius: 40
-  },
-  blockText: {
-    fontFamily: 'open-sans-bold',
-    fontSize: 15,
+  titleSettings: {
     color: Colors.primary950,
+    fontSize: 14,
+    fontFamily: 'open-sans-bold'
   },
-
-  test: {
-    width: '90%',
-    height: '2%',
-  },
-
-  btnContainer: {
-    width: '90%',
-    height: '30%',
-    flexDirection: 'row',
-    justifyContent: "space-around",
-    alignItems: "center",
-    borderBottomLeftRadius: 40,
-    borderBottomRightRadius: 40,
-    backgroundColor: Colors.primary300
-  },
-  btnExit: {
-    height: '35%',
-    width: '40%',
-    flexDirection: 'row',
-    justifyContent: "space-between",
-    alignItems: "center",
-    borderRadius: 50,
-    backgroundColor: Colors.primary900
-  },
-  iconContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: '#ffffff36',
-    width: '20%',
+  modalContainer: {
+    width: "100%",
     height: '100%',
-    borderTopRightRadius: 50,
-    borderBottomRightRadius: 50,
+    backgroundColor: '#ffffffef'
   },
-  textContainer: {
-    alignItems: "center",
+  iconContent: {
+    width: '100%',
+    height: '5%',
+    alignItems: "flex-start",
     justifyContent: "center",
-    width: '80%',
-    height: '100%',
-    borderTopLeftRadius: 50,
-    borderBottomLeftRadius: 50,
-    
-  },
-  btnText: {
-    fontSize: 13,
-    color: Colors.primary100,
-    fontFamily: 'open-sans-bold',
   },
   pressed: {
     opacity: 0.7,
