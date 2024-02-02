@@ -632,8 +632,7 @@ export async function updateTask(taskId, updatedTaskData) {
     const taskDocRef = doc(db, "tasks", taskId);
 
     // Destructure the updated task data to separate objectives and designatedUser
-    const { objectives, designatedUser, ...taskDataWithoutObjectives } =
-      updatedTaskData;
+    const { objectives, designatedUser, ...taskDataWithoutObjectives } = updatedTaskData;
 
     // Convert designatedUser ID to a Firestore reference
     let userRef = null;
@@ -653,23 +652,31 @@ export async function updateTask(taskId, updatedTaskData) {
     // Reference to the objectives subcollection
     const objectivesRef = collection(db, `tasks/${taskId}/objectives`);
 
-    const updateObjectivesPromises = objectives.map((objective) => {
+    const updateObjectivesPromises = objectives.map(async (objective) => {
       const objectiveDocRef = doc(objectivesRef, objective.id);
-      return updateDoc(objectiveDocRef, {
-        value: objective.value,
-        completed: objective.completed,
-      });
+      const objectiveDocSnap = await getDoc(objectiveDocRef);
+
+      if (objectiveDocSnap.exists()) {
+        // Update the existing objective
+        return updateDoc(objectiveDocRef, {
+          value: objective.value,
+          completed: objective.completed,
+        });
+      } else {
+        // Create a new objective if it does not exist
+        return setDoc(objectiveDocRef, {
+          value: objective.value,
+          completed: objective.completed,
+        });
+      }
     });
 
-    // Wait for all objectives to be updated
+    // Wait for all objectives to be updated or created
     await Promise.all(updateObjectivesPromises);
 
-    console.log("Task updated and objectives replaced successfully.");
+    console.log("Task updated and objectives replaced or created successfully.");
   } catch (error) {
-    console.error(
-      "Error updating task and replacing objectives:",
-      error.message
-    );
+    console.error("Error updating task and replacing or creating objectives:", error.message);
     throw error;
   }
 }
