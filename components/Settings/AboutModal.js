@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, Pressable, Modal} from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from "react";
+import { Colors } from "../../constants/styles";
 
 export default function AboutText() {
 
