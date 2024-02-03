@@ -5,20 +5,52 @@ import React, {
   useContext,
   useCallback,
 } from "react";
-import { View, StyleSheet, Text, Alert } from "react-native";
+import { View, Alert } from "react-native";
 import { Colors } from "../constants/styles";
 import { GroupsContext } from "../store/groups-context";
 import { auth } from "../util/auth";
-import { isAdmin } from "../util/firestore";
+import { fetchGroupTasks, isAdmin } from "../util/firestore";
 import IconButton from "../components/ui/IconButton";
+import TasksOutput from "../components/TasksOutput/TaskOuput";
+import Error from "../components/ui/Error";
+import LoadingOverlay from "../components/ui/LoadingOverlay";
 
 function GroupScreen({ route, navigation }) {
   const currentUser = auth.currentUser.uid;
   const groupsCtx = useContext(GroupsContext);
   const groupId = route.params?.groupId;
   const selectGroup = groupsCtx.groups.find((group) => group.id === groupId);
+  const selectedGroup = groupsCtx.groups.find((group) => group.id === groupId);
+  const groupTasks = selectedGroup ? selectedGroup.tasks : [];
 
   const [isAdminStatus, setIsAdminStatus] = useState(false);
+  const [initialLoad, setInitialLoad] = useState(true);
+  const [error, setError] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const getTasks = async () => {
+      try {
+        const stopListening = await fetchGroupTasks(groupId, (fetchedTasks) => {
+          groupsCtx.setTasks(groupId, fetchedTasks);
+          //console.log(JSON.stringify(fetchedTasks));
+          if (initialLoad) {
+            setIsLoading(false);
+            setInitialLoad(false);
+          }
+        });
+        return () => {
+          stopListening();
+        };
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+        setError("Could not fetch tasks. Please try again.");
+        setIsLoading(false);
+      }
+    };
+
+    getTasks();
+  }, [initialLoad]);
 
   useEffect(() => {
     if (!selectGroup) {
@@ -66,6 +98,11 @@ function GroupScreen({ route, navigation }) {
           icon={"add-circle-outline"}
           color={Colors.primary100}
           size={24}
+          onPress={() => {
+            navigation.navigate("ManageTasksScreen", {
+              groupId: groupId,
+            });
+          }}
         />
       </View>
     );
@@ -78,17 +115,15 @@ function GroupScreen({ route, navigation }) {
     });
   }, [navigation, selectGroup, renderHeaderButtons]);
 
-  return (
-    <View style={styles.container}></View>
-  );
+  if (error && !isLoading) {
+    return <Error message={error} />;
+  }
+
+  if (isLoading) {
+    return <LoadingOverlay />;
+  }
+
+  return <TasksOutput tasks={groupTasks} fallbackText={"No Tasks"} />;
 }
 
 export default GroupScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.primary100,
-  },
-  
-});

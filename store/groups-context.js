@@ -2,14 +2,19 @@ import { createContext, useReducer } from "react";
 
 export const GroupsContext = createContext({
   groups: [],
-  addGroup: ({ title }) => {},
-  setGroups: (groups) => {},
-  deleteGroup: (id) => {},
-  updateGroup: (id, { title }) => {},
-  setMembers: (groupId, members) => {},
-  addMember: ({ admin, group, user }) => {},
-  deleteMember: (id) => {},
-  updateAdmin: (id) => {},
+  addGroup: ({ title }) => { },
+  setGroups: (groups) => { },
+  deleteGroup: (id) => { },
+  updateGroup: (id, { title }) => { },
+  setMembers: (groupId, members) => { },
+  addMember: ({ admin, group, user }) => { },
+  deleteMember: (id) => { },
+  updateAdmin: (id) => { },
+  addTask: (taskData) => { },
+  setTasks: ({ groupId, tasks }) => { },
+  updateTask: (groupId, taskId, newTaskData) => { },
+  updateObjectiveStatus: (groupId, taskId, objectiveId) => { },
+  updateTaskStatus: (groupId, taskId) => { },
 });
 
 function groupsReducer(state, action) {
@@ -50,13 +55,11 @@ function groupsReducer(state, action) {
       });
     case "ADD_MEMBER":
       return state.map((group) => {
-        if (group.id === action.payload.groupId) {
-          const newMember = action.payload.member;
+        if (group.id === action.payload.group) {
+          const newMember = action.payload;
           return {
             ...group,
-            members: [...group.members, newMember].sort((a, b) =>
-              a.username.localeCompare(b.username)
-            ),
+            members: [...group.members, newMember],
           };
         }
         return group;
@@ -84,6 +87,97 @@ function groupsReducer(state, action) {
                 return { ...member, admin: !member.admin };
               }
               return member;
+            }),
+          };
+        }
+        return group;
+      });
+    case "ADD_TASK":
+      return state.map((group) => {
+        if (group.id === action.payload.group) {
+          console.log("itworked");
+          const newTasks = action.payload;
+          return {
+            ...group,
+            tasks: [...group.tasks, newTasks].sort((a, b) =>
+              a.title.localeCompare(b.title)
+            ),
+          };
+        }
+        return group;
+      });
+    case "SET_TASKS":
+      return state.map((group) => {
+        if (group.id === action.payload.groupId) {
+          const sortedTasks = action.payload.tasks.map((task) => ({
+            ...task,
+            objectives: task.objectives.sort((a, b) =>
+              a.value.localeCompare(b.value)
+            ),
+          }));
+          return {
+            ...group,
+            tasks: sortedTasks.sort((a, b) => a.title.localeCompare(b.title)),
+          };
+        }
+        return group;
+      });
+    case "UPDATE_TASK":
+      console.log(
+        "Current state before update:",
+        JSON.stringify(state, null, 2)
+      );
+      const newState = state.map((group) => {
+        if (group.id === action.payload.groupId) {
+          return {
+            ...group,
+            tasks: group.tasks
+              .map((task) => {
+                if (task.id === action.payload.taskId) {
+                  return { ...task, ...action.payload.newTaskData };
+                }
+                return task;
+              })
+              .sort((a, b) => a.title.localeCompare(b.title)),
+          };
+        }
+        return group;
+      });
+      console.log("New state after update:", JSON.stringify(newState, null, 2));
+      return newState;
+    case "UPDATE_OBJECTIVE_STATUS":
+      return state.map((group) => {
+        if (group.id === action.payload.groupId) {
+          return {
+            ...group,
+            tasks: group.tasks.map((task) => {
+              if (task.id === action.payload.taskId) {
+                return {
+                  ...task,
+                  objectives: task.objectives.map((objective) => {
+                    if (objective.id === action.payload.objectiveId) {
+                      return { ...objective, completed: !objective.completed };
+                    }
+                    return objective;
+                  }),
+                };
+              }
+              return task;
+            }),
+          };
+        }
+        return group;
+      });
+    case "UPDATE_TASK_STATUS":
+      return state.map((group) => {
+        if (group.id === action.payload.groupId) {
+          return {
+            ...group,
+            tasks: group.tasks.map((task) => {
+              if (task.id === action.payload.taskId) {
+                return { ...task, completed: !task.completed };
+              }
+              return task;
             }),
           };
         }
@@ -117,6 +211,7 @@ function GroupsContextProvider({ children }) {
     dispatch({ type: "SET_MEMBERS", payload: { groupId, members } });
   }
   function addMember(memberData) {
+    console.log(memberData);
     dispatch({ type: "ADD_MEMBER", payload: memberData });
   }
   function deleteMember(groupId, memberId) {
@@ -124,6 +219,30 @@ function GroupsContextProvider({ children }) {
   }
   function updateAdmin(groupId, memberId) {
     dispatch({ type: "UPDATE_ADMIN", payload: { groupId, memberId } });
+  }
+  function addTask(taskData) {
+    dispatch({ type: "ADD_TASK", payload: taskData });
+  }
+  function setTasks(groupId, tasks) {
+    dispatch({ type: "SET_TASKS", payload: { groupId, tasks } });
+  }
+  function updateTask(groupId, taskId, newTaskData) {
+    dispatch({
+      type: "UPDATE_TASK",
+      payload: { groupId, taskId, newTaskData },
+    });
+  }
+  function updateObjectiveStatus(groupId, taskId, objectiveId) {
+    dispatch({
+      type: "UPDATE_OBJECTIVE_STATUS",
+      payload: { groupId, taskId, objectiveId },
+    });
+  }
+  function updateTaskStatus(groupId, taskId) {
+    dispatch({
+      type: "UPDATE_TASK_STATUS",
+      payload: { groupId, taskId },
+    });
   }
 
   const value = {
@@ -136,6 +255,11 @@ function GroupsContextProvider({ children }) {
     addMember: addMember,
     deleteMember: deleteMember,
     updateAdmin: updateAdmin,
+    addTask: addTask,
+    setTasks: setTasks,
+    updateTask: updateTask,
+    updateObjectiveStatus: updateObjectiveStatus,
+    updateTaskStatus: updateTaskStatus,
   };
 
   return (

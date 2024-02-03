@@ -23,6 +23,8 @@ import GroupScreen from "./screens/GroupScreen";
 import { View } from "react-native";
 import GroupMembersScreen from "./screens/GroupMembersScreen";
 import AddMemberScreen from "./screens/AddMemberScreen";
+import ManageTasksScreen from "./screens/ManageTasksScreen";
+import TaskScreen from "./screens/TaskScreen";
 
 const BottomTabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -162,6 +164,13 @@ function AuthenticatedStack() {
         }}
       />
       <Stack.Screen
+        name="ManageTasksScreen"
+        component={ManageTasksScreen}
+        options={{
+          presentation: "modal",
+        }}
+      />
+      <Stack.Screen
         name="Add Member"
         component={AddMemberScreen}
         options={{
@@ -217,6 +226,13 @@ function AuthenticatedStack() {
               <IconButton icon={"exit-outline"} color={tintColor} size={24} />
             </View>
           ),
+        })}
+      />
+      <Stack.Screen
+        name="TaskScreen"
+        component={TaskScreen}
+        options={({ route, navigation }) => ({
+          presentation: "modal",
         })}
       />
     </Stack.Navigator>

@@ -10,6 +10,7 @@ import {
   deleteDoc,
   onSnapshot,
   getDoc,
+  setDoc,
 } from "firebase/firestore";
 
 // Function to create a new group in the Firestore database
@@ -61,15 +62,35 @@ export async function deleteGroup(groupId) {
     const membersSnapshot = await getDocs(membersQuery);
 
     // Map over the member documents, deleting each one
-    const deletePromises = membersSnapshot.docs.map(async (memberDoc) => {
-      await deleteDoc(memberDoc.ref);
+    const deleteMembersPromises = membersSnapshot.docs.map(
+      async (memberDoc) => {
+        await deleteDoc(memberDoc.ref);
+      }
+    );
+
+    // Construct a query to find all tasks associated with the group
+    const tasksQuery = query(
+      collection(db, "tasks"),
+      where("group", "==", groupDocRef)
+    );
+
+    // Execute the query and get a snapshot of the resulting documents for tasks
+    const tasksSnapshot = await getDocs(tasksQuery);
+
+    // Wait for all deletion promises (members and tasks) to resolve
+    const deleteTasksPromises = tasksSnapshot.docs.map(async (taskDoc) => {
+      await deleteDoc(taskDoc.ref);
     });
 
-    // Wait for all member deletion promises to resolve
-    await Promise.all(deletePromises);
-    console.log("Group and members deleted successfully.");
+    await Promise.all([...deleteMembersPromises, ...deleteTasksPromises]);
+    console.log(
+      "Group and all its members and tasks were deleted successfully."
+    );
   } catch (error) {
-    console.error("Error deleting group and members:", error.message);
+    console.error(
+      "Error deleting group and all its members and tasks:",
+      error.message
+    );
     throw error;
   }
 }
@@ -87,6 +108,30 @@ export async function updateGroup(groupId, newTitle) {
     console.log("Group updated successfully.");
   } catch (error) {
     console.error("Error updating group title:", error.message);
+    throw error;
+  }
+}
+
+export async function isMember(groupId, userId) {
+  try {
+    // Create references to the user and group documents
+    const userRef = doc(db, "users", userId);
+    const groupRef = doc(db, "groups", groupId);
+
+    // Query the 'members' collection for documents matching both userId and groupId
+    const membershipQuery = query(
+      collection(db, "members"),
+      where("user", "==", userRef),
+      where("group", "==", groupRef)
+    );
+
+    // Execute the query
+    const querySnapshot = await getDocs(membershipQuery);
+
+    // Check if any documents were returned
+    return !querySnapshot.empty;
+  } catch (error) {
+    console.error("Error checking membership:", error.message);
     throw error;
   }
 }
@@ -232,69 +277,138 @@ export async function removeMember(memberId) {
   }
 }
 
-// Function to fetch all groups a user is a member of
 export async function fetchGroups(callback) {
   // Get the UID of the current authenticated user
   const userRef = auth.currentUser.uid;
   // Create a Firestore document reference for the user
   const userDocRef = doc(db, "users", userRef);
-  // Define references to the "members" and "groups" collections
-  const membersCollection = collection(db, "members");
-  const groupsCollectionRef = collection(db, "groups");
 
   // Set up a listener for changes in the user's memberships
   const stopListeningUserMemberships = onSnapshot(
-    query(membersCollection, where("user", "==", userDocRef)),
-    (userMembersSnapshot) => {
-      // Extract group references from the user's memberships
-      const groupRefs = userMembersSnapshot.docs
-        .map((doc) => doc.data().group)
-        .filter(Boolean);
+    query(collection(db, "members"), where("user", "==", userDocRef)),
+    async (userMembersSnapshot) => {
+      const groupsData = await Promise.all(
+        userMembersSnapshot.docs.map(async (memberDoc) => {
+          const groupRef = memberDoc.data().group;
 
-      // If the user is not a member of any groups, invoke the callback with an empty array
-      if (groupRefs.length === 0) {
-        callback([]);
-        return;
-      }
+          // Fetch group data
+          const groupSnapshot = await getDoc(groupRef);
+          const groupData = { id: groupRef.id, ...groupSnapshot.data() };
 
-      // Extract group IDs from the group references
-      const groupIDs = groupRefs.map((groupRef) => groupRef.id);
+          // Fetch tasks associated with this group
+          const tasksQuery = query(
+            collection(db, "tasks"),
+            where("group", "==", groupRef)
+          );
+          const tasksSnapshot = await getDocs(tasksQuery);
+          const tasks = await Promise.all(
+            tasksSnapshot.docs.map(async (taskDoc) => {
+              const taskData = taskDoc.data();
 
-      // Define a query for the groups the user is a member of
-      const groupsQuery = query(
-        groupsCollectionRef,
-        where("__name__", "in", groupIDs)
+              // Fetch objectives for each task
+              const objectivesQuery = query(
+                collection(db, `tasks/${taskDoc.id}/objectives`)
+              );
+              const objectivesSnapshot = await getDocs(objectivesQuery);
+              const objectives = objectivesSnapshot.docs.map(
+                (objectiveDoc) => ({
+                  id: objectiveDoc.id,
+                  ...objectiveDoc.data(),
+                })
+              );
+
+              return {
+                id: taskDoc.id,
+                title: taskData.title,
+                description: taskData.description,
+                date: taskData.date.toDate(), // Convert Firestore Timestamp to JavaScript Date
+                completed: taskData.completed,
+                owner: taskData.owner,
+                designatedUser: taskData.designatedUser,
+                group: taskData.group,
+                objectives: objectives, // Array of objectives
+              };
+            })
+          );
+
+          return { ...groupData, tasks: tasks };
+        })
       );
 
-      // Set up a real-time listener for changes in these groups
-      const stopListeningGroups = onSnapshot(groupsQuery, (groupsSnapshot) => {
-        // Map Firestore documents to a JavaScript object
-        const groups = groupsSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-
-        // Sort the groups alphabetically by their title
-        const sortedGroups = groups.sort((a, b) =>
-          a.title.localeCompare(b.title)
-        );
-
-        // Invoke the callback with the sorted groups
-        callback(sortedGroups);
-      });
-
-      // Return a function to stop listening for group updates
-      return stopListeningGroups;
+      // Invoke the callback with groups and their associated tasks
+      callback(groupsData);
     }
   );
 
-  // Return a function that stops listening to both user memberships and group updates
+  // Return a function that stops listening to user memberships
   return () => {
     stopListeningUserMemberships();
-    // Call the stopListeningGroups function if it's defined
-    stopListeningGroups && stopListeningGroups();
   };
 }
+
+// // Function to fetch all groups a user is a member of
+// export async function fetchGroups(callback) {
+//   // Get the UID of the current authenticated user
+//   const userRef = auth.currentUser.uid;
+//   // Create a Firestore document reference for the user
+//   const userDocRef = doc(db, "users", userRef);
+//   // Define references to the "members" and "groups" collections
+//   const membersCollection = collection(db, "members");
+//   const groupsCollectionRef = collection(db, "groups");
+
+//   // Set up a listener for changes in the user's memberships
+//   const stopListeningUserMemberships = onSnapshot(
+//     query(membersCollection, where("user", "==", userDocRef)),
+//     (userMembersSnapshot) => {
+//       // Extract group references from the user's memberships
+//       const groupRefs = userMembersSnapshot.docs
+//         .map((doc) => doc.data().group)
+//         .filter(Boolean);
+
+//       // If the user is not a member of any groups, invoke the callback with an empty array
+//       if (groupRefs.length === 0) {
+//         callback([]);
+//         return;
+//       }
+
+//       // Extract group IDs from the group references
+//       const groupIDs = groupRefs.map((groupRef) => groupRef.id);
+
+//       // Define a query for the groups the user is a member of
+//       const groupsQuery = query(
+//         groupsCollectionRef,
+//         where("__name__", "in", groupIDs)
+//       );
+
+//       // Set up a real-time listener for changes in these groups
+//       const stopListeningGroups = onSnapshot(groupsQuery, (groupsSnapshot) => {
+//         // Map Firestore documents to a JavaScript object
+//         const groups = groupsSnapshot.docs.map((doc) => ({
+//           id: doc.id,
+//           ...doc.data(),
+//         }));
+
+//         // Sort the groups alphabetically by their title
+//         const sortedGroups = groups.sort((a, b) =>
+//           a.title.localeCompare(b.title)
+//         );
+
+//         // Invoke the callback with the sorted groups
+//         callback(sortedGroups);
+//       });
+
+//       // Return a function to stop listening for group updates
+//       return stopListeningGroups;
+//     }
+//   );
+
+//   // Return a function that stops listening to both user memberships and group updates
+//   return () => {
+//     stopListeningUserMemberships();
+//     // Call the stopListeningGroups function if it's defined
+//     stopListeningGroups && stopListeningGroups();
+//   };
+// }
 
 // Function to fetch all group members
 export async function fetchGroupMembers(groupId, callback) {
@@ -326,7 +440,7 @@ export async function fetchGroupMembers(groupId, callback) {
             id: docSnapshot.id,
             admin: memberData.admin,
             group: groupId,
-            user: memberData.user,
+            user: memberData.user.id,
             email: userData.email,
             username: userData.username,
           };
@@ -370,6 +484,259 @@ export async function updateAdminStatus(memberId) {
     console.log("Member admin status toggled successfully.");
   } catch (error) {
     console.error("Error toggling member admin status:", error.message);
+    throw error;
+  }
+}
+
+// Function to create a new task to a group
+export async function createtask(groupId, taskData, taskId) {
+  try {
+    // Create a reference to the specified group in Firestore
+    const group = doc(db, "groups", groupId);
+    // Retrieve the UID of the currently authenticated user
+    const userRef = auth.currentUser.uid;
+    // Create a Firestore document reference for the owner
+    const owner = doc(db, "users", userRef);
+    // Create a Firestore document reference for the designatedUser
+    const designatedUser = doc(db, "users", taskData.designatedUser);
+
+    // Destructure the task data
+    const { title, description, date, objectives, completed } = taskData;
+
+    // // Initial completed status of the task
+    // const completed = false;
+
+    const taskRef = doc(db, "tasks", taskId);
+
+    await setDoc(taskRef, {
+      completed,
+      title,
+      description,
+      date,
+      designatedUser,
+      group,
+      owner,
+    });
+
+    // Create objectives as sub-documents of the task
+    const objectivesPromises = objectives.map((objective) =>
+      setDoc(doc(db, `tasks/${taskRef.id}/objectives`, objective.id), {
+        value: objective.value,
+        completed: objective.completed,
+      })
+    );
+
+    // Wait for all objectives to be added
+    await Promise.all(objectivesPromises);
+
+    return taskRef.id;
+  } catch (error) {
+    console.error("Error creating task:", error.message);
+    throw error;
+  }
+}
+
+export async function fetchGroupTasks(groupId, callback) {
+  // Create a reference to the specified group in Firestore
+  const groupDocRef = doc(db, "groups", groupId);
+
+  // Define a query for tasks of the specified group
+  const tasksQuery = query(collection(db, "tasks"), where("group", "==", groupDocRef));
+
+  // Initialize an object to keep track of listeners for objectives
+  const objectivesListeners = {};
+
+  // Use a map for tasksData for efficient updates
+  const tasksData = new Map();
+
+  // Set up a real-time listener for changes in group tasks
+  const stopListeningTasks = onSnapshot(tasksQuery, async (tasksSnapshot) => {
+    // First, remove any tasks that have been deleted
+    const snapshotTaskIds = tasksSnapshot.docs.map(doc => doc.id);
+    tasksData.forEach((_, taskId) => {
+      if (!snapshotTaskIds.includes(taskId)) {
+        tasksData.delete(taskId);
+        // Also stop listening to objectives for this task if there's a listener
+        if (objectivesListeners[taskId]) {
+          objectivesListeners[taskId]();
+          delete objectivesListeners[taskId];
+        }
+      }
+    });
+
+    // Process each task document
+    await Promise.all(tasksSnapshot.docs.map(async (docSnapshot) => {
+      const taskData = docSnapshot.data();
+      const taskId = docSnapshot.id;
+
+      // Fetch the designated user's email
+      let designatedUserEmail = "";
+      if (taskData.designatedUser) {
+        const userDocSnapshot = await getDoc(taskData.designatedUser);
+        if (userDocSnapshot.exists()) {
+          const userData = userDocSnapshot.data();
+          designatedUserEmail = userData.email; // Assuming the field is named 'email'
+        }
+      }
+
+      // Initialize or update tasksData map
+      const existingTask = tasksData.get(taskId) || {};
+      tasksData.set(taskId, {
+        ...existingTask,
+        id: taskId,
+        title: taskData.title,
+        description: taskData.description,
+        date: taskData.date.toDate(), // Converting Firestore Timestamp to JavaScript Date
+        completed: taskData.completed,
+        owner: taskData.owner,
+        designatedUser: designatedUserEmail, // Updated to include the user's email
+        group: groupId,
+        objectives: existingTask.objectives || [], // Preserve existing objectives if already fetched
+      });
+
+      // Immediately fetch and listen to objectives for this task
+      const objectivesRef = collection(db, `tasks/${taskId}/objectives`);
+      if (!objectivesListeners[taskId]) {
+        objectivesListeners[taskId] = onSnapshot(objectivesRef, (objectivesSnapshot) => {
+          const objectives = objectivesSnapshot.docs.map(doc => ({
+            id: doc.id,
+            value: doc.data().value,
+            completed: doc.data().completed,
+          }));
+
+          // Update the task's objectives and invoke the callback
+          const updatedTask = tasksData.get(taskId);
+          if (updatedTask) {
+            updatedTask.objectives = objectives;
+            tasksData.set(taskId, updatedTask); // Ensure the map is updated
+            callback(Array.from(tasksData.values())); // Convert Map values to an array
+          }
+        }, error => {
+          console.error(`Error fetching objectives for task ${taskId}:`, error);
+        });
+      }
+    }));
+
+    // Invoke the callback after processing all tasks and their objectives
+    callback(Array.from(tasksData.values()));
+  });
+
+  // Return a function that stops listening to all updates
+  return () => {
+    stopListeningTasks();
+    // Stop listening to all objectives listeners
+    Object.values(objectivesListeners).forEach(stopListener => stopListener());
+  };
+}
+
+
+export async function updateTask(taskId, updatedTaskData) {
+  try {
+    // Create a reference to the specified task document
+    const taskDocRef = doc(db, "tasks", taskId);
+
+    // Destructure the updated task data to separate objectives and designatedUser
+    const { objectives, designatedUser, ...taskDataWithoutObjectives } = updatedTaskData;
+
+    // Convert designatedUser ID to a Firestore reference
+    let userRef = null;
+    if (designatedUser) {
+      userRef = doc(db, "users", designatedUser);
+    }
+
+    // Combine task data with the user reference
+    const taskDataToUpdate = {
+      ...taskDataWithoutObjectives,
+      ...(userRef ? { designatedUser: userRef } : {}),
+    };
+
+    // Update the task with the new data, excluding objectives
+    await updateDoc(taskDocRef, taskDataToUpdate);
+
+    // Reference to the objectives subcollection
+    const objectivesRef = collection(db, `tasks/${taskId}/objectives`);
+
+    const updateObjectivesPromises = objectives.map(async (objective) => {
+      const objectiveDocRef = doc(objectivesRef, objective.id);
+      const objectiveDocSnap = await getDoc(objectiveDocRef);
+
+      if (objectiveDocSnap.exists()) {
+        // Update the existing objective
+        return updateDoc(objectiveDocRef, {
+          value: objective.value,
+          completed: objective.completed,
+        });
+      } else {
+        // Create a new objective if it does not exist
+        return setDoc(objectiveDocRef, {
+          value: objective.value,
+          completed: objective.completed,
+        });
+      }
+    });
+
+    // Wait for all objectives to be updated or created
+    await Promise.all(updateObjectivesPromises);
+
+    console.log("Task updated and objectives replaced or created successfully.");
+  } catch (error) {
+    console.error("Error updating task and replacing or creating objectives:", error.message);
+    throw error;
+  }
+}
+
+export async function updateObjectiveStatus(taskId, objectiveId) {
+  try {
+    // Reference to the specific objective in Firestore
+    const objectiveRef = doc(db, `tasks/${taskId}/objectives`, objectiveId);
+
+    // Get the current objective document
+    const objectiveSnapshot = await getDoc(objectiveRef);
+
+    if (!objectiveSnapshot.exists()) {
+      throw new Error("Objective not found");
+    }
+
+    // Get the current completed status
+    const currentStatus = objectiveSnapshot.data().completed;
+
+    // Toggle the status
+    const updatedStatus = !currentStatus;
+
+    // Update the objective with the new status
+    await updateDoc(objectiveRef, { completed: updatedStatus });
+
+    console.log(`Objective status toggled to ${updatedStatus}`);
+  } catch (error) {
+    console.error("Error toggling objective status:", error);
+    throw error;
+  }
+}
+
+export async function updateTaskStatus(taskId) {
+  try {
+    // Reference to the specific task in Firestore
+    const taskRef = doc(db, "tasks", taskId);
+
+    // Get the current task document
+    const taskSnapshot = await getDoc(taskRef);
+
+    if (!taskSnapshot.exists()) {
+      throw new Error("Task not found");
+    }
+
+    // Get the current completed status of the task
+    const currentStatus = taskSnapshot.data().completed;
+
+    // Toggle the status
+    const updatedStatus = !currentStatus;
+
+    // Update the task with the new status
+    await updateDoc(taskRef, { completed: updatedStatus });
+
+    console.log(`Task status toggled to ${updatedStatus}`);
+  } catch (error) {
+    console.error("Error toggling task status:", error);
     throw error;
   }
 }
