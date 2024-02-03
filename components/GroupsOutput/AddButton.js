@@ -36,6 +36,11 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         borderWidth: 1,
         borderColor: Colors.primary900,
+        elevation: 4,
+        shadowColor: Colors.primary950,
+        shadowRadius: 5,
+        shadowOffset: { width: 1, height: 1 },
+        shadowOpacity: .3,
     },
     addButtonText: {
         fontFamily: "open-sans-bold",

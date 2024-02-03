@@ -59,7 +59,7 @@ export default GroupsOutput;
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
-    backgroundColor: Colors.neutral100,
+    backgroundColor: Colors.primary100,
     width: '100%',
     height: '100%'
   },

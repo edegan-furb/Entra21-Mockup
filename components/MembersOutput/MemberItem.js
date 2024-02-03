@@ -107,12 +107,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     borderRadius: 10,
-    backgroundColor: Colors.primary950
-    // elevation: 4,
-    // shadowColor: Colors.primary900,
-    // shadowRadius: 1,
-    // shadowOffset: { width: 1, height: 1 },
-    // shadowOpacity: 0.4,
+    backgroundColor: Colors.primary950,
+    elevation: 4,
+    shadowColor: Colors.primary950,
+    shadowRadius: 2,
+    shadowOffset: { width: 4, height: 5 },
+    shadowOpacity: .3,
   },
   textBase: {
     color: Colors.primary100,

@@ -50,6 +50,11 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         borderBottomWidth: 1,
         borderColor: '#000',
+        elevation: 4,
+        shadowColor: Colors.primary950,
+        shadowRadius: 5,
+        shadowOffset: { width: 1, height: 1 },
+        shadowOpacity: .4,
     },
     icon: {
         width: '15%',
@@ -59,6 +64,6 @@ const styles = StyleSheet.create({
         fontSize: 17
     },
     pressed: {
-        opacity: 0.7,
+        opacity: 0.6
     },
 })
