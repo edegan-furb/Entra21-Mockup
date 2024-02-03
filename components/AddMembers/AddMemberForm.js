@@ -1,8 +1,9 @@
-import { StyleSheet, Text, Switch, View, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { StyleSheet, Text, View, TouchableWithoutFeedback, Keyboard } from "react-native";
 import Input from "../AddMembers/Input";
 import { Colors } from "../../constants/styles";
 import Button from "../ui/Button";
 import { useState } from "react";
+import { Switch } from "react-native-switch";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -74,12 +75,17 @@ function AddMemberForm({ onCancel, onSubmit }) {
           <View style={styles.switchContent}> 
             <Text style={styles.text}>Set as Admin</Text>
             <Switch
-              trackColor={{ false: Colors.neutral400, true: Colors.primary500 }}
-              thumbColor={Colors.primary800}
-              ios_backgroundColor="#979797"
+              activeText={''}
+              inActiveText={''}
+              backgroundActive={Colors.primary800}
+              backgroundInactive={Colors.neutral500}
+              circleActiveColor={Colors.primary100}
+              circleInActiveColor={Colors.primary100}
               onValueChange={toggleSwitch}
               value={isChecked}
-              style={{ transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }] }}
+              circleSize={25}
+              barHeight={30}
+              switchWidthMultiplier={2.3} 
             />
           </View>
           {formIsInvalid && (
