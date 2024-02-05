@@ -15,6 +15,7 @@ import SettingsScreen from "./screens/SetttingsScreen";
 import ManageGroupScreen from "./screens/ManageGroupScreen";
 import { Colors } from "./constants/styles";
 import AuthContextProvider, { AuthContext } from "./store/auth-context";
+import { ThemeProvider } from "./store/theme-context"
 import IconButton from "./components/ui/IconButton";
 import GroupsContextProvider from "./store/groups-context";
 import GroupScreen from "./screens/GroupScreen";
@@ -224,11 +225,13 @@ export default function App() {
   return (
     <>
       <StatusBar style="light" />
-      <GroupsContextProvider>
-        <AuthContextProvider>
-          <Root />
-        </AuthContextProvider>
-      </GroupsContextProvider>
+      <ThemeProvider>
+        <GroupsContextProvider>
+          <AuthContextProvider>
+            <Root />
+          </AuthContextProvider>
+        </GroupsContextProvider>
+      </ThemeProvider>
     </>
   );
 }
