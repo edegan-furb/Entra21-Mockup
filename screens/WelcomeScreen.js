@@ -137,9 +137,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: '5%',
   },
-  containerRow2: {
-    flexDirection: "row",
-  },
+
   containerRow1: {
     marginBottom: '5%'
   },
@@ -155,10 +153,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
     flexWrap: "wrap",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 8,
   }
 });
