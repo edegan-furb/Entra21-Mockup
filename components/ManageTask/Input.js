@@ -33,21 +33,20 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: Colors.primary900,
     marginBottom: 5,
+    fontWeight: 600
   },
   input: {
-    backgroundColor: Colors.primary100,
-    color: Colors.primary800,
-    padding: 10,
+    padding: 5,
     borderRadius: 6,
-    fontSize: 15,
+    fontSize: 14,
+    paddingLeft: 10,
     borderWidth: 2,
     borderColor: Colors.primary900,
+    color: Colors.primary900,
   },
   inputMultine: {
     minHeight: 80,
     textAlignVertical: "top",
-    borderWidth: 2,
-    borderColor: Colors.primary900,
   },
   invalidLabel: {
     color: Colors.error500,

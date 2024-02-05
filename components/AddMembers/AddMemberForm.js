@@ -78,14 +78,14 @@ function AddMemberForm({ onCancel, onSubmit }) {
               activeText={''}
               inActiveText={''}
               backgroundActive={Colors.primary800}
-              backgroundInactive={Colors.neutral500}
+              backgroundInactive={Colors.neutral400}
               circleActiveColor={Colors.primary100}
               circleInActiveColor={Colors.primary100}
               onValueChange={toggleSwitch}
               value={isChecked}
-              circleSize={25}
-              barHeight={30}
-              switchWidthMultiplier={2.3} 
+              circleSize={20}
+              barHeight={25}
+              switchWidthMultiplier={2.5} 
             />
           </View>
           {formIsInvalid && (
@@ -94,14 +94,17 @@ function AddMemberForm({ onCancel, onSubmit }) {
               </Text>
             )}
         </View>
-        <View style={styles.buttonContainer}>
-          <Button styleButton={styles.button} onPress={submitHandler}>
-            Add
-          </Button>
-          <Button styleButton={styles.button} onPress={onCancel}>
-            Cancel
-          </Button>
+        <View style={styles.buttonsContainer}>
+          <View style={styles.buttonContent}>
+            <Button mode={"flat"} onPress={onCancel}>
+              Cancel
+            </Button>
+            <Button onPress={submitHandler}>
+              Add
+            </Button>
+          </View>
         </View>
+
       </View>
     </TouchableWithoutFeedback>
   );
@@ -113,7 +116,7 @@ const styles = StyleSheet.create({
   form: {
     marginTop: 40,
     width: wp('90%'),
-    height: hp('40%'),
+    height: hp('45%'),
     backgroundColor: Colors.primary900,
     borderRadius: 20,
   },
@@ -149,7 +152,7 @@ const styles = StyleSheet.create({
   },
   switch: {
     alignItems: "flex-start",
-    height: '25%',
+    height: '20%',
     backgroundColor: Colors.primary100,
   },
   switchContent: {
@@ -163,25 +166,28 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 15,
     color: Colors.primary900,
+    fontWeight: "600"
   },
   errorText: {
     color: Colors.error500,
     paddingHorizontal: 30
   },
-  buttonContainer: {
+  buttonsContainer: {
     width: '100%',
-    height: '30%',
-    flexDirection: "row",
-    alignItems: "flex-start",
-    justifyContent: "space-around",
+    height: '25%',
+    alignItems: "center",
+    justifyContent: "flex-start",
     borderBottomEndRadius: 20,
     borderBottomStartRadius: 20,
     backgroundColor: Colors.primary100,
   },
-  button: {
-    alignItems: "center",
-    justifyContent: 'center',
+  buttonContent: {
     width: '70%',
-    height: '50%',
-  },
+    height: '55%',
+    gap: 10,
+    flexDirection: "row",
+    backgroundColor: Colors.primary100,
+    borderBottomEndRadius: 20,
+    borderBottomStartRadius: 20,
+  }
 });

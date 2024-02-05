@@ -89,11 +89,11 @@ function GroupForm({
           </View>
           <View style={styleButtons}>
             <View style={buttonsContent}>
-              <Button styleButton={styles.button} onPress={submitHandler}>
-                <Text style={styles.textbutton}>{submitButtonLabel}</Text>
+              <Button onPress={submitHandler}>
+                {submitButtonLabel}
               </Button>
-              <Button styleButton={styles.button} mode="flat" onPress={onCancel}>
-                <Text style={styles.textbutton}>Cancel</Text>
+              <Button mode="flat" onPress={onCancel}>
+                Cancel
               </Button>
             </View>
             <View style={styleDeleteContainer}>
@@ -148,8 +148,7 @@ const styles = StyleSheet.create({
   },
   button : {
     alignItems: "center",
-    justifyContent: 'center',
-    width: '70%',
+    width: '80%',
     height: '100%',
   },
   divider: {
@@ -168,7 +167,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: 'center',
     width: '60%',
-    height: '90%',
+    height: '50%',
     flexDirection: "row",
     backgroundColor: Colors.primary900,
     gap: 5,

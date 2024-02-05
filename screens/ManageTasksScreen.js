@@ -118,6 +118,7 @@ function ManageTasksScreen({ navigation, route }) {
           submitButtonLabel={isEditing ? "Update" : "Add"}
           onSubmit={confirmHandler}
           defaultValues={selectTask}
+          pageTitle={!editedTaskId ? "Add Task " : "Update Task"}
         />
       </View>
     </TouchableWithoutFeedback>

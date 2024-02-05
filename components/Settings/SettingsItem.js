@@ -50,7 +50,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         borderBottomWidth: 1,
         borderColor: '#000',
-        elevation: 4,
         shadowColor: Colors.primary950,
         shadowRadius: 6,
         shadowOffset: { width: 1, height: 1 },
