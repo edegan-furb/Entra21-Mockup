@@ -33,12 +33,13 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: Colors.primary900,
     marginBottom: 5,
+    fontWeight: 600
   },
   input: {
     padding: 8,
     borderRadius: 6,
     fontSize: 15,
-    paddingLeft: 5,
+    paddingLeft: 10,
     borderWidth: 2,
     borderColor: Colors.primary900,
     color: Colors.primary900,

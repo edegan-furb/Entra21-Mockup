@@ -14,7 +14,7 @@ function SettingsScreen() {
 
   return (
     <SafeAreaView style={styles.rootContainer}>
-      <View style={styles.main}>
+      <View style={styles.contentPerfil}>
         <InfPerfil/>
       </View>
 
@@ -73,11 +73,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: Colors.primary100,
   },
-  main: {
+  contentPerfil: {
     width: '90%',
     height: '35%',
-    alignItems: "center",
-    justifyContent: 'space-evenly',
+    marginTop: 25,
     borderBottomWidth: 2,
     borderColor: Colors.primary950,
   },

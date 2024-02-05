@@ -130,13 +130,16 @@ const styles = StyleSheet.create({
   styleButtonsCreate: {
     width: '100%',
     height: '30%',
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   buttonCreate: {
-    width: '100%',
+    width: '80%',
     height: '70%',
     borderRadius: 12,
     flexDirection: "row",
-    justifyContent: "space-around",
+    alignItems: "center",
+    gap: 10,
   },
   formEditing: {
     marginTop: 40,
@@ -168,17 +171,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonEdit: {
-    width: '100%',
+    width: '80%',
     height: '30%',
     borderRadius: 12,
     flexDirection: "row",
-    justifyContent: "space-around",
+    alignItems: "center",
+    gap: 10
   },
   deleteContainer: {
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     width: '90%',
-    height: '35%',
-    marginTop: 10
+    height: '60%',
   },
 });

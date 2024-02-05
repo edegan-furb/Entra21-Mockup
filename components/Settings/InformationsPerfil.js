@@ -1,13 +1,20 @@
-import { View, Text, StyleSheet, Pressable} from "react-native";
+import { View, Text, StyleSheet, Pressable, Modal} from "react-native";
 import IconButton from "../ui/IconButton";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Colors } from "../../constants/styles";
+import { useState } from "react";
 
 export default function InfPerfil() {
+
+    const [modalVisible, setModalVisible] = useState(false);
+
     return(
         <>
             <View style={styles.iconEditContainer}>
-            <Pressable style={({ pressed }) => pressed ? [styles.iconEdit, styles.pressed] : styles.iconEdit}>
+            <Pressable 
+                style={({ pressed }) => pressed ? [styles.iconEdit, styles.pressed] : styles.iconEdit}
+                onPress={() => setModalVisible(true)}
+            >
                 <MaterialCommunityIcons name="lead-pencil" color={Colors.primary1000} size={18} />
             </Pressable>
             </View>
@@ -23,11 +30,43 @@ export default function InfPerfil() {
                 <Text style={styles.textInf}>Registered groups: 5</Text>
             </View>         
             </View>
+
+            <Modal 
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+
+                    </View>
+                </View>
+            </Modal>
         </>
     );
 }
 
 const styles = StyleSheet.create({
+
+
+    modalContainer: {
+        backgroundColor: '#000000e7',
+        width: '100%',
+        height: '100%',
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    modalContent: { 
+        width: '80%',
+        height: '40%',
+        backgroundColor: '#999',
+    },
+
+
+
+
+
+
     iconEditContainer: {
         width: '100%',
         height: '15%',

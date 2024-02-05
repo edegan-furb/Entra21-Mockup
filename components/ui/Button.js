@@ -1,9 +1,8 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Colors } from "../../constants/styles";
 
-function Button({ children, onPress, mode, styleButton }) {
+function Button({ children, onPress, mode }) {
   return (
-    <View style={styleButton}>
       <Pressable
         onPress={onPress}
         style={({ pressed }) => pressed ? [styles.pressed, styles.btnContent] : styles.btnContent}
@@ -14,7 +13,6 @@ function Button({ children, onPress, mode, styleButton }) {
           </Text>
         </View>
       </Pressable>
-    </View>
   );
 }
 
@@ -25,7 +23,7 @@ const styles = StyleSheet.create({
     width: '50%',
     height: '100%',
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   button: {
     width: '100%',
@@ -36,15 +34,19 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   flat: {
-    backgroundColor: Colors.primary900,
+    backgroundColor: 'transparent',
+    borderWidth: 2,
+    borderColor: Colors.primary900
   },
   buttonText: {
     color: '#fff',
-    fontFamily: 'open-sans-bold',
-    fontSize: 13,
+    fontWeight: "bold",
+    fontSize: 15,
   },
   flatText: {
-    color: Colors.primary100,
+    color: Colors.primary900,
+    fontWeight: "bold",
+    fontSize: 15,
   },
   pressed: {
     opacity: 0.75,

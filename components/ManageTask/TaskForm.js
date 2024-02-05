@@ -5,8 +5,9 @@ import Button from "../ui/Button";
 import { Colors } from "../../constants/styles";
 import IconButton from "../ui/IconButton";
 import { getFormattedDate } from "../../util/date";
+import { TextInput } from "react-native-web";
 
-function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
+function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTitle }) {
   const [inputs, setInputs] = useState({
     title: {
       value: defaultValues ? defaultValues.title : "",
@@ -168,64 +169,87 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
     !inputs.date.isValid ||
     !inputs.description.isValid ||
     !inputs.designatedUser.isValid ||
-    inputs.objectives.some((objective) => !objective.isValid);
+    inputs.objectives.some((objective) => !objective.isValid)
+  ;
+
+  const [inputFocado, setInputFocado] = useState(false);
+
+  const handleFocus = () => {
+    setInputFocado(true);
+  };
+
+  const handleClose = () => {
+    setInputFocado(false);
+  };
+
   return (
     <View style={inputs.objectives.length > 1 ? styles.container : styles.containerTest}>
-      <View style={styles.titleContainer}>
+      <View style={inputFocado === true ? [styles.titleContainer, { height: '18%'}] : styles.titleContainer}>
         <View style={styles.titleContent}>
-          <Text style={styles.title}>PageTitle</Text>
+          <Text style={styles.title}>{pageTitle}</Text>
         </View>
       </View>
 
       <View style={styles.form}>
-        <View style={styles.contentInput}>
-          <Input
-            style={styles.rowTitle}
-            label={"Title"}
-            invalid={!inputs.title.isValid}
-            textInputConfig={{
-              multiline: false,
-              onChangeText: inputChangeHandler.bind(this, "title"),
-              value: inputs.title.value
-            }}
-          />
-          <Input
-            style={styles.rowInput}
-            label={"Date"}
-            invalid={!inputs.date.isValid}
-            textInputConfig={{
-              placeholder: "YYYY-MM-DD",
-              placeholderTextStyle: { fontSize: 1 },
-              maxLength: 10,
-              onChangeText: inputChangeHandler.bind(this, "date"),
-              value: inputs.date.value,
-            }}
-          />
-        </View>
-        <View style={styles.inputRow}>
-          <Input
-            label={"Description"}
-            invalid={!inputs.description.isValid}
-            textInputConfig={{
-              multiline: true,
-              onChangeText: inputChangeHandler.bind(this, "description"),
-              value: inputs.description.value,
-            }}
-          />
-        </View>
+        <ScrollView
+          bounces={false}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.contentInput}>
+            <Input
+              style={styles.rowTitle}
+              label={"Title"}
+              invalid={!inputs.title.isValid}
+              textInputConfig={{
+                multiline: false,
+                onChangeText: inputChangeHandler.bind(this, "title"),
+                value: inputs.title.value,
+                onFocus: handleFocus,
+                onBlur: handleClose
+              }}
+            />
+            <Input
+              style={styles.rowInput}
+              label={"Date"}
+              invalid={!inputs.date.isValid}
+              textInputConfig={{
+                placeholder: "YYYY-MM-DD",
+                placeholderTextStyle: { fontSize: 1 },
+                maxLength: 10,
+                onChangeText: inputChangeHandler.bind(this, "date"),
+                value: inputs.date.value,
+                onFocus: handleFocus,
+                onBlur: handleClose
+              }}
+            />
+          </View>
+          <View style={styles.inputRow}>
+            <Input
+              label={"Description"}
+              invalid={!inputs.description.isValid}
+              textInputConfig={{
+                multiline: true,
+                onChangeText: inputChangeHandler.bind(this, "description"),
+                value: inputs.description.value,
+                onFocus: handleFocus,
+                onBlur: handleClose
+              }}
+            />
+          </View>
 
-        <View style={styles.inputRow}>
-          <Input
-            label={"Designed User by Email"}
-            invalid={!inputs.designatedUser.isValid}
-            textInputConfig={{
-              multiline: false,
-              onChangeText: inputChangeHandler.bind(this, "designatedUser"),
-              value: inputs.designatedUser.value,
-            }}
-          />
-        </View>  
-        <ScrollView contentContainerStyle={styles.scrollView} automaticallyAdjustKeyboardInsets={true}>
+          <View style={styles.inputRow}>
+            <Input
+              label={"Designed User by Email"}
+              invalid={!inputs.designatedUser.isValid}
+              textInputConfig={{
+                multiline: false,
+                onChangeText: inputChangeHandler.bind(this, "designatedUser"),
+                value: inputs.designatedUser.value,
+                onFocus: handleFocus,
+                onBlur: handleClose
+              }}
+            />
+          </View>  
           {inputs.objectives.map((objective, index) => (
             <View key={index} style={styles.inputObjectivesRow}>
               <Input
@@ -234,6 +258,8 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
                 invalid={!objective.isValid}
                 textInputConfig={{
                   multiline: false,
+                  onFocus: handleFocus,
+                  onBlur: handleClose,
                   onChangeText: (text) =>
                     inputChangeHandler("objectives", text, index),
                   value: objective.value,
@@ -251,31 +277,26 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
               )}
             </View>
           ))}
-          <View style={{flex: 1}}>
-            <Button styleButton={styles.buttonAddObjective}  mode="flat" onPress={addObjective}>
+          <View style={styles.buttonAddObjective}>
+            <Button mode="flat" onPress={addObjective}>
               Add Objective
             </Button>
           </View>
+          {formIsInvalid && (
+            <Text style={styles.errorText}>
+              Invalid input values - please check your entered data
+            </Text>
+          )}  
         </ScrollView>
-        {formIsInvalid && (
-          <Text style={styles.errorText}>
-            Invalid input values - please check your entered data
-          </Text>
-        )}    
-        <View style={styles.buttonsContainer}>
-          <Button 
-            styleButton={styles.button} 
-            mode="flat" 
-            onPress={onCancel}
-          >
-            Cancel
-          </Button>
-          <Button 
-            styleButton={styles.button} 
-            onPress={submitHandler}
-          >
-            {submitButtonLabel}
-          </Button>
+        <View style={inputFocado === true ? [styles.buttonsContainer, { height: '25%'}] : styles.buttonsContainer}>
+          <View style={inputFocado === true ? [styles.buttonContent, { height: '60%'}] : styles.buttonContent}>
+            <Button mode="flat" onPress={onCancel}>
+              Cancel
+            </Button>
+            <Button onPress={submitHandler}>
+              {submitButtonLabel}
+            </Button>
+          </View>
         </View>
       </View>
     </View>
@@ -290,14 +311,13 @@ const styles = StyleSheet.create({
     height: '95%',
     backgroundColor: Colors.primary900,
     borderRadius: 20,
-    marginTop: 20,
   },
   containerTest: {
     width: '100%',
     height: '85%',
     backgroundColor: Colors.primary900,
     borderRadius: 20,
-    marginTop: 20,
+    marginTop: 15,
   },
   titleContainer: {
     height: '12%',
@@ -336,7 +356,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-evenly",
-    marginTop: 20
+    marginTop: 5
   },
   rowTitle: {
     flex: 2
@@ -345,7 +365,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   scrollView: {
-    paddingBottom: 30
+    paddingBottom: 20
   },
   inputObjectivesRow: {
     flexDirection: "row",
@@ -360,7 +380,7 @@ const styles = StyleSheet.create({
   },
   buttonAddObjective: {
     padding: 10,
-    height: 70,
+    height: 65,
     alignItems: "center",
     justifyContent: "center"
   },
@@ -372,13 +392,16 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     width: '100%',
     height: '20%',
-    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "center",
+    borderTopWidth: 2,
+    borderColor: Colors.primary900
   },
-  button: {
-    height: '40%',
+  buttonContent: {
+    height: '45%',
+    width: '85%',
+    flexDirection: "row",
+    gap: 10,
     alignItems: "center",
-    width: '70%'
   }
 });
