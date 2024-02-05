@@ -5,6 +5,8 @@ import { useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, View, SafeAreaView, FlatList } from "react-native";
 import { AuthContext } from "../store/auth-context";
 import { auth } from "../util/auth";
+import { fetchAllUserTask } from "../util/firestore";
+
 
 import TaskHome from "../components/homeComponents/TaskHome";
 
@@ -23,7 +25,7 @@ function WelcomeScreen({ navigation, route }) {
   const user = auth.currentUser;
 
   let name = "Ariel"
-
+  
 
   useEffect(() => {
     axios
@@ -132,12 +134,10 @@ export default WelcomeScreen;
 
 const styles = StyleSheet.create({
   rootContainer: {
-    height: '100%',
-    padding: '3%',
+    flex: 1
   },
   container: {
     flex: 1,
-    justifyContent: "flex-start",
     alignItems: "center",
   },
 
