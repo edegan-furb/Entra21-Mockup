@@ -1,4 +1,4 @@
-import { Text, Pressable } from 'react-native';
+import { Text, Pressable, ScrollView } from 'react-native';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Colors } from "../../constants/styles";
@@ -95,18 +95,14 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
             isInvalid={passwordsDontMatch}
           />
         )}
-        <View style={styles.buttons}>
-          <Button 
-            onPress={submitHandler} 
-            styleButton={
-              isLogin ? 
-                styles.stylesButton 
-                :
-                [styles.stylesButton, styles.paddingButton]
-              }
+        <View style={styles.buttonsContainer}>
+          <View style={styles.buttonContent}>
+            <Button 
+              onPress={submitHandler} 
             >
-            {isLogin ? 'LOGIN' : 'SIGNUP'}
-          </Button>
+              {isLogin ? 'LOGIN' : 'SIGNUP'}
+            </Button>
+          </View>
           <View style={styles.signUpButton}>
             <Text style={styles.signText}>{isLogin ? "Don't have an account?" : 'Do you have an account?'}</Text>
             <Pressable
@@ -140,17 +136,17 @@ const styles = StyleSheet.create({
     height: '75%',
     width: '100%',
   },
-  buttons: {
+  buttonsContainer: {
     width: '100%',
     height: '30%',
     alignItems: 'center',
-    justifyContent: 'flex-end'
+    justifyContent: "center",
   },
-  stylesButton: {
-    width: '100%',
-    height: '50%',
+  buttonContent: {
+    width: '80%',
+    height: '45%',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   signUpButton: {
     height: "30%",
