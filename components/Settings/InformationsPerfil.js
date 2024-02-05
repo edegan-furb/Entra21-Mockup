@@ -3,8 +3,9 @@ import IconButton from "../ui/IconButton";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Colors } from "../../constants/styles";
 import { useState } from "react";
+import ModalEditInformations from "./InfPerfilModal";
 
-export default function InfPerfil() {
+export default function ModalInformationsPerfil() {
 
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -36,37 +37,15 @@ export default function InfPerfil() {
                 transparent={true}
                 visible={modalVisible}
             >
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalContent}>
-
-                    </View>
-                </View>
+                <ModalEditInformations
+                    onPress={() => setModalVisible(false)}
+                />
             </Modal>
         </>
     );
 }
 
 const styles = StyleSheet.create({
-
-
-    modalContainer: {
-        backgroundColor: '#000000e7',
-        width: '100%',
-        height: '100%',
-        alignItems: "center",
-        justifyContent: "center"
-    },
-    modalContent: { 
-        width: '80%',
-        height: '40%',
-        backgroundColor: '#999',
-    },
-
-
-
-
-
-
     iconEditContainer: {
         width: '100%',
         height: '15%',

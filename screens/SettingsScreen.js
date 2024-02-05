@@ -5,7 +5,7 @@ import { Colors } from "../constants/styles";
 import { Ionicons } from '@expo/vector-icons';
 import SettingsItem from "../components/Settings/SettingsItem";
 import InfPerfil from "../components/Settings/InformationsPerfil";
-import AboutText from "../components/Settings/AboutModal";
+import ModalInformationsPerfil from "../components/Settings/AboutModal";
 
 function SettingsScreen() {
 
@@ -57,9 +57,9 @@ function SettingsScreen() {
         transparent={true}
         visible={modalVisible}
       >
-      <AboutText 
-        onPress={() => setModalVisible(false)}
-      />
+        <ModalInformationsPerfil 
+          onPress={() => setModalVisible(false)}
+        />
     </Modal>
     </SafeAreaView>
   );
