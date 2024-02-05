@@ -6,14 +6,10 @@ import { StyleSheet, Text, View, SafeAreaView, FlatList } from "react-native";
 import { AuthContext } from "../store/auth-context";
 import { auth } from "../util/auth";
 
-import CompletedTasks from '../components/homeComponents/graphComponents/CompletedTasks';
-import TotalTasks from "../components/homeComponents/graphComponents/TotalTasks";
-import MissedDeadlines from "../components/homeComponents/graphComponents/MissedDeadlines";
-import NumberOfGroups from "../components/homeComponents/graphComponents/NumberOfGroups";
 import TaskHome from "../components/homeComponents/TaskHome";
 
-import HiComp from "../components/homeComponents/HiComp";
-import WelcomeComp from "../components/homeComponents/WelcomeComp";
+import { Colors } from "../constants/styles";
+import WelcomeBanner from "../components/homeComponents/WelcomeBanner";
 
 
 function WelcomeScreen({ navigation, route }) {
@@ -25,6 +21,9 @@ function WelcomeScreen({ navigation, route }) {
   const token = authCtx.token;
 
   const user = auth.currentUser;
+
+  let name = "Ariel"
+
 
   useEffect(() => {
     axios
@@ -95,13 +94,17 @@ function WelcomeScreen({ navigation, route }) {
     <SafeAreaView style={styles.rootContainer}>
 
       <View style={styles.hiContainer}>
-        <HiComp name="Ariel" />
+        <Text style={styles.hi}>Hi, {name}</Text>
       </View>
 
       <View style={styles.container}>
 
-        <View style={styles.containerRow1}>
-          <WelcomeComp onPress={goToGroups} />
+        <View style={styles.welcomeContainer}>
+          <WelcomeBanner onPress={goToGroups} />
+        </View>
+
+        <View style={styles.ongoingTasksContainer}>
+          <Text style={styles.ongoingTasks}>Ongoing task</Text>
         </View>
 
         <View style={styles.tasksContainer}>
@@ -116,7 +119,7 @@ function WelcomeScreen({ navigation, route }) {
               />
             )}
             numColumns={2}
-            showsVerticalScrollIndicator={!true}
+            showsVerticalScrollIndicator={false}
             keyExtractor={(item) => item.id.toString()}
           />
         </View>
@@ -138,7 +141,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  containerRow1: {
+  welcomeContainer: {
+    width: '95%',
+    height: '20%',
     marginBottom: '5%'
   },
   hiContainer: {
@@ -153,5 +158,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
     flexWrap: "wrap",
-  }
+  },
+  hi: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: Colors.primary950
+  },
+  ongoingTasksContainer: {
+    alignSelf: 'flex-start',
+    marginTop: '8%',
+    marginBottom: '8%',
+    marginLeft: '5%',
+  },
+  ongoingTasks: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: Colors.primary950
+  },
 });
