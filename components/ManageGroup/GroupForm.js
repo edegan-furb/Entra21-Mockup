@@ -173,5 +173,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary900,
     gap: 5,
     borderRadius: 12
-  },
+  }
+  
 });

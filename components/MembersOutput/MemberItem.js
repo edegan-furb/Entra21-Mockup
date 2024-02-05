@@ -21,11 +21,7 @@ function MemberItem({
   if (groupsCtx.groups) {
     groupsCtx.groups?.forEach((group) => {
       group.members?.forEach((member) => {
-        if (
-          member.user?._key?.path?.segments[
-            user._key.path.segments.length - 1
-          ] === currentUser
-        ) {
+        if (member.user === currentUser) {
           foundMember = member;
         }
       });
@@ -107,12 +103,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     borderRadius: 10,
-    backgroundColor: Colors.primary950
-    // elevation: 4,
-    // shadowColor: Colors.primary900,
-    // shadowRadius: 1,
-    // shadowOffset: { width: 1, height: 1 },
-    // shadowOpacity: 0.4,
+    backgroundColor: Colors.primary950,
+    elevation: 4,
+    shadowColor: Colors.primary950,
+    shadowRadius: 2,
+    shadowOffset: { width: 4, height: 5 },
+    shadowOpacity: .3,
   },
   textBase: {
     color: Colors.primary100,

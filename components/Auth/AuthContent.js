@@ -19,7 +19,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import AuthForm from "./AuthForm";
 
 import { Colors } from "../../constants/styles";
-import PagesTitle from "../SignUp-Login-components/PagesTitle";
+import PagesTitle from "../SignUp-Login/PagesTitle";
 
 function AuthContent({ isLogin, onAuthenticate }) {
   const navigation = useNavigation();

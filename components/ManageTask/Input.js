@@ -26,9 +26,8 @@ export default Input;
 
 const styles = StyleSheet.create({
   inputContainer: {
-    width: '90%',
-    height: '40%',
-    marginBottom: 10
+    marginHorizontal: 4,
+    marginVertical: 8,
   },
   label: {
     fontSize: 15,
@@ -36,18 +35,19 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   input: {
-    borderWidth: 2,
-    borderColor: Colors.primary900,
-    color: Colors.primary900,
-    width: '100%',
-    height: '75%',
+    backgroundColor: Colors.primary100,
+    color: Colors.primary800,
+    padding: 10,
     borderRadius: 6,
     fontSize: 15,
-    paddingLeft: 5
+    borderWidth: 2,
+    borderColor: Colors.primary900,
   },
   inputMultine: {
-    minHeight: 100,
+    minHeight: 80,
     textAlignVertical: "top",
+    borderWidth: 2,
+    borderColor: Colors.primary900,
   },
   invalidLabel: {
     color: Colors.error500,

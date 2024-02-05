@@ -116,6 +116,7 @@ function WelcomeScreen({ navigation, route }) {
               />
             )}
             numColumns={2}
+            showsVerticalScrollIndicator={!true}
             keyExtractor={(item) => item.id.toString()}
           />
         </View>
@@ -129,13 +130,12 @@ export default WelcomeScreen;
 const styles = StyleSheet.create({
   rootContainer: {
     height: '100%',
-    flex: 1
+    padding: '3%',
   },
   container: {
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    padding: '5%',
   },
 
   containerRow1: {

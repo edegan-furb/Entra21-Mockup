@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { Colors } from "../../constants/styles";
 import { Ionicons, Foundation } from '@expo/vector-icons';
-import GroupDounnut from '../GroupsOutput/GroupDounnut';
+import GroupDonut from './GroupDonut';
 
 function GroupItem({ id, title, }) {
   const navigation = useNavigation();
@@ -42,7 +42,7 @@ function GroupItem({ id, title, }) {
           </View>
           <View style={styles.graphiContainer}>
             <Text style={styles.graphiTextInf}>Concluido</Text>
-            <GroupDounnut concludedTasks={80} />
+            <GroupDonut concludedTasks={80} />
           </View>
         </View>
       </View>
@@ -59,12 +59,17 @@ const styles = StyleSheet.create({
   groupItem: {
     width: '100%',
     height: 100,
-    backgroundColor: Colors.primary800,
+    backgroundColor: Colors.primary950,
     justifyContent: "center",
     alignItems: "flex-start",
     flexDirection: 'row',
     marginVertical: 8,
     borderRadius: 5,
+    elevation: 4,
+    shadowColor: Colors.primary950,
+    shadowRadius: 2,
+    shadowOffset: { width: 4, height: 5 },
+    shadowOpacity: .3,
   },
   content: {
     width: '100%',

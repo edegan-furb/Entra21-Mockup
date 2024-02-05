@@ -1,20 +1,17 @@
-import { StyleSheet, Text, View, StatusBar } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native";
-
-import GroupsList from "./GroupsList";
-import AddButton from '../GroupsOutput/AddButton';
-import UpperLogo from '../../components/Start/UpperLogo';
+import { StyleSheet, Text, View } from "react-native";
 import { Colors } from "../../constants/styles";
+import TasksList from "./TasksList";
+import { useNavigation } from "@react-navigation/native";
+import AddButton from '../GroupsOutput/AddButton';
 
-function GroupsOutput({ groups, firstText, secondText, title }) {
+function TasksOutput({ tasks, firstText, secondText, title }) {
 
   // Create the navigation component
   const navigation = useNavigation();
-  
+    
   // Function to open the team creation modal
   function modalPress() {
-    navigation.navigate("ManageGroupScreen");
+    navigation.navigate("ManageTasksScreen");
   }
 
   let content = 
@@ -29,46 +26,28 @@ function GroupsOutput({ groups, firstText, secondText, title }) {
         <AddButton 
           title={title} 
           onPress={modalPress} 
-          button={groups.length > 0 ? styles.btnNone : styles.button} 
+          button={tasks.length > 0 ? styles.btnNone : styles.button} 
         />
       </View>
     </View> 
-  ;
+;
 
-  if (groups.length > 0) {
-    content = <GroupsList groups={groups} />;
+  if (Array.isArray(tasks) && tasks.length > 0) {
+    content = <TasksList tasks={tasks} />;
   }
 
-  return (
-    <SafeAreaView style={styles.rootContainer}>
-      <View View style={styles.headerContainer}>
-        <UpperLogo children={'TaskSync'}/>
-        <AddButton 
-          title={title} 
-          onPress={modalPress} 
-          button={groups.length > 0 ? styles.button : {display: 'none'}}
-        />
-      </View>
-      {content}
-    </SafeAreaView>
-  )
+  return <View style={styles.container}>{content}</View>;
 }
 
-export default GroupsOutput;
+export default TasksOutput;
 
 const styles = StyleSheet.create({
-  rootContainer: {
+  container: {
     flex: 1,
+    paddingHorizontal: 24,
+    paddingTop: 24,
+    paddingBottom: 0,
     backgroundColor: Colors.primary100,
-    width: '100%',
-    height: '100%'
-  },
-  headerContainer: {
-    width: '100%',
-    height: '10%',
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "space-between",
   },
   textContainer: {
     width: '100%',
