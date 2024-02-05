@@ -3,11 +3,11 @@ import { StyleSheet, Text, View } from "react-native";
 import { Colors } from "../../constants/styles";
 import TasksList from "./TasksList";
 
-function TasksOutput({ tasks, fallbackText }) {
+function TasksOutput({ tasks, fallbackText, groupId }) {
   let content = <Text style={styles.infoText}>{fallbackText}</Text>;
 
   if (Array.isArray(tasks) && tasks.length > 0) {
-    content = <TasksList tasks={tasks} />;
+    content = <TasksList tasks={tasks} groupId={groupId} />;
   }
 
   return <View style={styles.container}>{content}</View>;

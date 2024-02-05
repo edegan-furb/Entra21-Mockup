@@ -656,6 +656,20 @@ export async function updateTask(taskId, updatedTaskData) {
     // Reference to the objectives subcollection
     const objectivesRef = collection(db, `tasks/${taskId}/objectives`);
 
+    // Retrieve all existing objectives
+    const existingObjectivesSnap = await getDocs(objectivesRef);
+    const existingObjectives = existingObjectivesSnap.docs.map(doc => doc.id);
+
+    // Identify objectives to delete
+    const objectivesToDelete = existingObjectives.filter(id => !objectives.some(objective => objective.id === id));
+
+    // Delete objectives not in the updated list
+    const deleteObjectivesPromises = objectivesToDelete.map(id => {
+      const objectiveDocRef = doc(objectivesRef, id);
+      return deleteDoc(objectiveDocRef);
+    });
+
+    // Update and create new objectives as per the updatedTaskData
     const updateObjectivesPromises = objectives.map(async (objective) => {
       const objectiveDocRef = doc(objectivesRef, objective.id);
       const objectiveDocSnap = await getDoc(objectiveDocRef);
@@ -675,12 +689,12 @@ export async function updateTask(taskId, updatedTaskData) {
       }
     });
 
-    // Wait for all objectives to be updated or created
-    await Promise.all(updateObjectivesPromises);
+    // Wait for all deletions, updates, and creations to complete
+    await Promise.all([...deleteObjectivesPromises, ...updateObjectivesPromises]);
 
-    console.log("Task updated and objectives replaced or created successfully.");
+    console.log("Task updated, objectives replaced or created, and unused objectives removed successfully.");
   } catch (error) {
-    console.error("Error updating task and replacing or creating objectives:", error.message);
+    console.error("Error updating task, replacing or creating objectives, and removing unused ones:", error.message);
     throw error;
   }
 }
@@ -738,5 +752,21 @@ export async function updateTaskStatus(taskId) {
   } catch (error) {
     console.error("Error toggling task status:", error);
     throw error;
+  }
+}
+
+
+export async function deleteTask(taskId) {
+  try {
+    // Create a reference to the task document
+    const taskDocRef = doc(db, 'tasks', taskId);
+
+    // Delete the document
+    await deleteDoc(taskDocRef);
+
+    console.log(`Task with ID ${taskId} has been successfully deleted.`);
+  } catch (error) {
+    console.error('Error deleting task:', error);
+    throw new Error('Failed to delete task.');
   }
 }

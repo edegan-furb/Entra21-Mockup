@@ -3,6 +3,7 @@ import React, {
   useContext,
   useCallback,
   useState,
+  useEffect
 } from "react";
 import { View, Text, StyleSheet, ScrollView, Alert } from "react-native";
 import { Colors } from "../constants/styles";
@@ -22,6 +23,7 @@ function TaskScreen({ route, navigation }) {
   const currentUser = auth.currentUser.uid;
   const groupsCtx = useContext(GroupsContext);
   const taskId = route.params?.taskId;
+  const groupId = route.params?.groupId;
 
   let selectTask = null;
 
@@ -34,6 +36,15 @@ function TaskScreen({ route, navigation }) {
       });
     });
   }
+
+  useEffect(() => {
+    if (!selectTask) {
+      navigation.navigate("GroupScreen", {
+        groupId: groupId,
+      });
+      Alert.alert("Task Deleted", "This task no longer exists");
+    }
+  }, [navigation, selectTask]);
 
   const renderHeaderButtons = useCallback(() => {
     return (
@@ -67,8 +78,8 @@ function TaskScreen({ route, navigation }) {
     navigation.setOptions({
       title:
         selectTask?.title +
-          " - " +
-          (selectTask?.completed ? "completed" : "ongoing") || "Task",
+        " - " +
+        (selectTask?.completed ? "completed" : "ongoing") || "Task",
       headerRight: renderHeaderButtons,
     });
   }, [navigation, selectTask, renderHeaderButtons]);
@@ -109,7 +120,7 @@ function TaskScreen({ route, navigation }) {
     <ScrollView style={styles.rootContainer}>
       <View style={styles.infoContainer}>
         <View style={styles.dateContainer}>
-          <Text style={styles.date}>{getFormattedDate(selectTask?.date)}</Text>
+          <Text style={styles.date}> {selectTask?.date ? getFormattedDate(selectTask.date) : "No Date"}</Text>
         </View>
         <View style={styles.designatedUserContainer}>
           <Text style={styles.designatedUser}>

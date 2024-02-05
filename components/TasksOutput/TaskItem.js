@@ -3,12 +3,13 @@ import { useNavigation } from "@react-navigation/native";
 
 import { Colors } from "../../constants/styles";
 
-function TaskItem({ id, title }) {
+function TaskItem({ id, title, groupId }) {
   const navigation = useNavigation();
 
   function taskPressHandler() {
     navigation.navigate("TaskScreen", {
       taskId: id,
+      groupId: groupId,
     });
   }
 

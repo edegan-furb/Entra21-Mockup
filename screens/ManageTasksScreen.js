@@ -1,5 +1,5 @@
 import { View, StyleSheet, Alert } from "react-native";
-import { useLayoutEffect, useContext, useState } from "react";
+import { useLayoutEffect, useContext, useState, useEffect } from "react";
 import TaskForm from "../components/ManageTask/TaskForm";
 import { Colors } from "../constants/styles";
 import { GroupsContext } from "../store/groups-context";
@@ -10,7 +10,9 @@ import {
   getUserIdByEmail,
   isMember,
   updateTask,
+  deleteTask
 } from "../util/firestore";
+import IconButton from "../components/ui/IconButton";
 
 function ManageTasksScreen({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -51,6 +53,21 @@ function ManageTasksScreen({ navigation, route }) {
     console.log(groupId);
     navigation.goBack();
   }
+
+  async function deleteGroupHandler() {
+    setIsLoading(true);
+    try {
+      await deleteTask(editedTaskId);
+      groupsCtx.deleteTask(groupId, editedTaskId);
+      navigation.navigate("GroupScreen", {
+        groupId: groupId,
+      })
+    } catch (error) {
+      setError("Could not delete group - please try again later");
+      setIsLoading(false);
+    }
+  }
+
 
   async function confirmHandler(taskData) {
     setIsLoading(true);
@@ -118,6 +135,16 @@ function ManageTasksScreen({ navigation, route }) {
         onSubmit={confirmHandler}
         defaultValues={selectTask}
       />
+      {isEditing && (
+        <View style={styles.deleteContainer}>
+          <IconButton
+            icon="trash"
+            color={Colors.error500}
+            size={36}
+            onPress={deleteGroupHandler}
+          />
+        </View>
+      )}
     </View>
   );
 }
@@ -133,10 +160,6 @@ const styles = StyleSheet.create({
   },
 
   deleteContainer: {
-    marginTop: 16,
-    paddingTop: 8,
-    borderTopWidth: 2,
-    borderTopColor: Colors.primary500,
     alignItems: "center",
   },
 });

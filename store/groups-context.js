@@ -15,6 +15,7 @@ export const GroupsContext = createContext({
   updateTask: (groupId, taskId, newTaskData) => { },
   updateObjectiveStatus: (groupId, taskId, objectiveId) => { },
   updateTaskStatus: (groupId, taskId) => { },
+  deleteTask: (groupId, taskId) => { },
 });
 
 function groupsReducer(state, action) {
@@ -183,6 +184,18 @@ function groupsReducer(state, action) {
         }
         return group;
       });
+    case "DELETE_TASK":
+      return state.map((group) => {
+        if (group.id === action.payload.groupId) {
+          return {
+            ...group,
+            tasks: group.tasks.filter(
+              (task) => task.id !== action.payload.taskId
+            ),
+          };
+        }
+        return group;
+      });
     default:
       return state;
   }
@@ -244,6 +257,9 @@ function GroupsContextProvider({ children }) {
       payload: { groupId, taskId },
     });
   }
+  function deleteTask(groupId, taskId) {
+    dispatch({ type: "DELETE_TASK", payload: { groupId, taskId } })
+  }
 
   const value = {
     groups: groupsState,
@@ -260,6 +276,7 @@ function GroupsContextProvider({ children }) {
     updateTask: updateTask,
     updateObjectiveStatus: updateObjectiveStatus,
     updateTaskStatus: updateTaskStatus,
+    deleteTask: deleteTask
   };
 
   return (

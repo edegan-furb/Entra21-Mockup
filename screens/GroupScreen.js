@@ -123,7 +123,7 @@ function GroupScreen({ route, navigation }) {
     return <LoadingOverlay />;
   }
 
-  return <TasksOutput tasks={groupTasks} fallbackText={"No Tasks"} />;
+  return <TasksOutput tasks={groupTasks} fallbackText={"No Tasks"} groupId={groupId}/>;
 }
 
 export default GroupScreen;
