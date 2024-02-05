@@ -34,8 +34,8 @@ export default function WelcomeComp({ onPress }) {
 
 const styles = StyleSheet.create({
     container: {
-        width: wp('90%'),
-        height: hp('15%'),
+        width: '100%',
+        height: '100%',
         borderRadius: 20,
         borderWidth: 1,
         padding: '2%',
