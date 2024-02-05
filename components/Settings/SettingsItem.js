@@ -52,9 +52,9 @@ const styles = StyleSheet.create({
         borderColor: '#000',
         elevation: 4,
         shadowColor: Colors.primary950,
-        shadowRadius: 5,
+        shadowRadius: 6,
         shadowOffset: { width: 1, height: 1 },
-        shadowOpacity: .4,
+        shadowOpacity: .3,
     },
     icon: {
         width: '15%',

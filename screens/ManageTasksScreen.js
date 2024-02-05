@@ -1,4 +1,4 @@
-import { View, StyleSheet, Alert } from "react-native";
+import { View, StyleSheet, Alert, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { useLayoutEffect, useContext, useState } from "react";
 import TaskForm from "../components/ManageTask/TaskForm";
 import { Colors } from "../constants/styles";
@@ -111,14 +111,16 @@ function ManageTasksScreen({ navigation, route }) {
   }
 
   return (
-    <View style={styles.container}>
-      <TaskForm
-        onCancel={cancelHandler}
-        submitButtonLabel={isEditing ? "Update" : "Add"}
-        onSubmit={confirmHandler}
-        defaultValues={selectTask}
-      />
-    </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={styles.container}>
+        <TaskForm
+          onCancel={cancelHandler}
+          submitButtonLabel={isEditing ? "Update" : "Add"}
+          onSubmit={confirmHandler}
+          defaultValues={selectTask}
+        />
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -128,15 +130,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-    paddingBottom: 12,
-    backgroundColor: Colors.primary800,
-  },
-
-  deleteContainer: {
-    marginTop: 16,
-    paddingTop: 8,
-    borderTopWidth: 2,
-    borderTopColor: Colors.primary500,
+    backgroundColor: Colors.primary1000,
     alignItems: "center",
   },
 });

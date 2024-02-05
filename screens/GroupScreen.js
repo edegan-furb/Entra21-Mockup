@@ -123,7 +123,14 @@ function GroupScreen({ route, navigation }) {
     return <LoadingOverlay />;
   }
 
-  return <TasksOutput tasks={groupTasks} fallbackText={"No Tasks"} />;
+  return (
+    <TasksOutput 
+      tasks={groupTasks} 
+      firstText={"Oops! It looks like you don't have any tasks registered yet."}
+      secondText={'Press the button below to create your first task now!'}
+      title={'Add Tasks'}
+    />
+  );
 }
 
 export default GroupScreen;

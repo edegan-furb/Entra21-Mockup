@@ -168,6 +168,7 @@ function AuthenticatedStack() {
         component={ManageTasksScreen}
         options={{
           presentation: "modal",
+          headerShown: false
         }}
       />
       <Stack.Screen
@@ -231,7 +232,7 @@ function AuthenticatedStack() {
       <Stack.Screen
         name="TaskScreen"
         component={TaskScreen}
-        options={({ route, navigation }) => ({
+        options={() => ({
           presentation: "modal",
         })}
       />

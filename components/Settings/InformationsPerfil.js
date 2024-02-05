@@ -78,11 +78,6 @@ const styles = StyleSheet.create({
         height: '40%',
         alignItems: "center",
         justifyContent: "space-evenly",
-        elevation: 4,
-        shadowColor: Colors.primary950,
-        shadowRadius: 6,
-        shadowOffset: { width: 1, height: 1 },
-        shadowOpacity: .3,
     },
     textInf: {
         fontWeight: "bold",

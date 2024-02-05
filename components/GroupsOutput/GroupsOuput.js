@@ -7,7 +7,7 @@ import AddButton from '../GroupsOutput/AddButton';
 import UpperLogo from '../../components/Start/UpperLogo';
 import { Colors } from "../../constants/styles";
 
-function GroupsOutput({ groups, firstText, secondText, title, page }) {
+function GroupsOutput({ groups, firstText, secondText, title }) {
 
   // Create the navigation component
   const navigation = useNavigation();
