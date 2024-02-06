@@ -1,9 +1,12 @@
-import { Alert, StyleSheet, Text, View } from "react-native";
+import { Alert, Image, StyleSheet, Text, View } from "react-native";
 import { Colors } from "../../constants/styles";
 import IconButton from "../ui/IconButton";
 import { auth } from "../../util/auth";
 import { GroupsContext } from "../../store/groups-context";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
+import { getImageUrlByName, getUserImageName } from '../../util/storage';
+import { Ionicons } from '@expo/vector-icons';
+
 
 function MemberItem({
   id,
@@ -14,6 +17,11 @@ function MemberItem({
   admin,
   onChangeAdminStatus,
 }) {
+
+
+  const [imageSource, setImageSource] = useState(null);
+
+
   const currentUser = auth.currentUser.uid;
   const groupsCtx = useContext(GroupsContext);
   let foundMember = null;
@@ -51,8 +59,30 @@ function MemberItem({
 
   //console.log(isAdmin);
 
+  useEffect(() => {
+    //setIsLoading(true); // Start loading
+    const fetchUserImage = async () => {
+      const imageName = await getUserImageName(user);
+      if (imageName) {
+        const url = await getImageUrlByName(imageName);
+        setImageSource({ uri: url });
+      }
+      //setIsLoading(false); // End loading
+    };
+
+    fetchUserImage();
+  }, []);
+
+
   return (
     <View style={styles.memberItem}>
+      <View style={styles.imageContainer}>
+        {imageSource ? (
+          <Image source={imageSource} style={styles.image} />
+        ) : (
+          <Ionicons name="person-circle-outline" color="#6366f1" size={54} style={styles.icon} /> //size needs to be 100% of imageContaineir View
+        )}
+      </View>
       <View>
         <Text style={[styles.textBase, styles.title]}>{username}</Text>
         <Text style={[styles.textBase, styles.subtitle]}>{email}</Text>
@@ -90,7 +120,7 @@ function MemberItem({
           />
         )}
       </View>
-    </View>
+    </View >
   );
 }
 
@@ -98,6 +128,8 @@ export default MemberItem;
 
 const styles = StyleSheet.create({
   memberItem: {
+    height: 80,
+    alignItems: "center",
     padding: 12,
     marginVertical: 8,
     backgroundColor: Colors.primary800,
@@ -127,5 +159,22 @@ const styles = StyleSheet.create({
     //fontWeight: "bold",
     margin: 6,
     borderRadius: 20,
+  },
+  imageContainer: {
+    aspectRatio: 1,
+    width: '15%',
+    maxWidth: 60,
+    maxHeight: 60,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+    //marginRight: 12,
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 75,
+    resizeMode: "cover",
   },
 });
