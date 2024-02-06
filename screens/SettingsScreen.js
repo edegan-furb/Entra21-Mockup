@@ -69,14 +69,14 @@ export default SettingsScreen;
 
 const styles = StyleSheet.create({
   rootContainer: {
-    flex: 1,
+    width: '100%',
+    height: '100%',
     alignItems: "center",
     backgroundColor: Colors.primary100,
   },
   contentPerfil: {
     width: '90%',
     height: '35%',
-    marginTop: 25,
     borderBottomWidth: 2,
     borderColor: Colors.primary950,
   },

@@ -3,18 +3,9 @@ import {
   TouchableWithoutFeedback, 
   View, 
   Keyboard, 
-  Platform, 
-  KeyboardAvoidingView,
-  ScrollView,
 } from "react-native";
 
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
-
 import { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import AuthForm from "./AuthForm";
@@ -23,7 +14,6 @@ import { Colors } from "../../constants/styles";
 import PagesTitle from "../SignUp-Login/PagesTitle";
 
 function AuthContent({ isLogin, onAuthenticate }) {
-  const navigation = useNavigation();
 
   const [credentialsInvalid, setCredentialsInvalid] = useState({
     email: false,
