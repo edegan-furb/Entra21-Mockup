@@ -59,31 +59,19 @@ function AuthContent({ isLogin, onAuthenticate }) {
     onAuthenticate({ email, password });
   }
 
-  const [inputFocado, setInputFocado] = useState(false);
-
-  const handleFocus = () => {
-    setInputFocado(true);
-  };
-
-  const handleClose = () => {
-    setInputFocado(false);
-  };
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={styles.rootContainer}>
         <PagesTitle 
-          style={inputFocado === true ? [styles.containerPageTitle, {flex: 1}] : styles.containerPageTitle}
+          style={styles.containerPageTitle}
           title={isLogin ? 'Wellcome back!' : 'Hello!'} 
           subTitle={isLogin ? 'Hello there, login to continue' : 'Create a new account to continue'}
         />
-        <View style={inputFocado === true ? [styles.inputsContainer, {flex: 1}] : styles.inputsContainer}>
+        <View style={styles.inputsContainer}>
           <AuthForm
             isLogin={isLogin}
             onSubmit={submitHandler}
             credentialsInvalid={credentialsInvalid}
-            onFocus={handleFocus}
-            onBlur={handleClose}
           />
         </View>
       </SafeAreaView>
@@ -95,17 +83,17 @@ export default AuthContent;
 
 const styles = StyleSheet.create({
   rootContainer: {
-    width: '100%',
-    height: '100%',
+    flex: 1,
     backgroundColor: Colors.primary800
   },
   containerPageTitle: {
-    flex: 1,
+    width: '100%',
+    height: '40%',
     alignItems: "flex-start",
     justifyContent: 'flex-start',
     backgroundColor: Colors.neutral100,
   },
   inputsContainer: {
-    flex: 2,
+    height: '65%',
   }
 });

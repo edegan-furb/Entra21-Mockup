@@ -104,7 +104,7 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid, onFocus, onBlur }) {
           />
         )}
         <View style={styles.buttonsContainer}>
-          <View style={styles.buttonContent}>
+          <View style={isLogin ? styles.buttonContentLogin : styles.buttonContentSignup}>
             <Button 
               onPress={submitHandler} 
             >
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.neutral100,
   },
   inputAreaLogin: {
-    height: '50%',
+    height: '60%',
     width: '100%',
     gap: 20,
   },
@@ -146,13 +146,19 @@ const styles = StyleSheet.create({
   },
   buttonsContainer: {
     width: '100%',
-    height: '35%',
+    height: '30%',
     alignItems: 'center',
     justifyContent: "center",
   },
-  buttonContent: {
-    width: '80%',
-    height: '45%',
+  buttonContentLogin: {
+    width: '100%',
+    height: '60%',
+    alignItems: 'center',
+    justifyContent: "center",
+  },
+  buttonContentSignup: {
+    width: '100%',
+    height: '50%',
     alignItems: 'center',
     justifyContent: "center",
   },
