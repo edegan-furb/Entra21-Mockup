@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Image, ActivityIndicator } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, Image, ActivityIndicator } from "react-native";
 import IconButton from "../components/ui/IconButton";
-import { uploadPicture, getImageUrlByName, getCurrrentUserImageName } from '../util/storage';
-import { Ionicons } from '@expo/vector-icons';
+import {
+  uploadPicture,
+  getImageUrlByName,
+  getCurrrentUserImageName,
+} from "../util/storage";
+import { Ionicons } from "@expo/vector-icons";
 
 function SettingsScreen() {
   const [imageSource, setImageSource] = useState(null);
@@ -32,7 +36,6 @@ function SettingsScreen() {
     setIsLoading(false); // End loading
   };
 
-  const iconSize = Math.min(styles.imageContainer.width, styles.imageContainer.height); // Assuming square container for simplicity
 
   return (
     <View style={styles.rootContainer}>
@@ -43,11 +46,20 @@ function SettingsScreen() {
           ) : imageSource ? (
             <Image source={imageSource} style={styles.image} />
           ) : (
-            <Ionicons name="person-circle-outline" color="#6366f1" size={iconSize} /> //size needs to be 100% of imageContaineir View
+            <Ionicons
+              name="person-circle-outline"
+              color="#6366f1"
+              size={135}
+            /> //size needs to be 100% of imageContaineir View
           )}
         </View>
         <View style={styles.buttonContainer}>
-          <IconButton icon={"pencil-outline"} size={24} color={"#1e1b4b"} onPress={handleUploadPicture} />
+          <IconButton
+            icon={"pencil-outline"}
+            size={24}
+            color={"#e0e7ff"}
+            onPress={handleUploadPicture}
+          />
         </View>
       </View>
     </View>
@@ -64,27 +76,30 @@ const styles = StyleSheet.create({
     padding: 32,
   },
   contentContainer: {
-    flexDirection: 'column', // Arrange children in a row
-    alignItems: 'center', // Center children vertically in the container
+    flexDirection: "column", // Arrange children in a row
+    alignItems: "center", // Center children vertically in the container
   },
   imageContainer: {
     backgroundColor: "#1e1b4b",
-    borderWidth: 1.5,
+    borderWidth: 3,
     borderColor: "#6366f1",
     width: 150,
     height: 150,
     borderRadius: 75,
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
   },
   image: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
     borderRadius: 75,
     resizeMode: "cover",
   },
   buttonContainer: {
     alignSelf: "flex-end",
+    backgroundColor: "#6366f1",
+    borderRadius: 100,
+    bottom: "20%",
   },
 });
