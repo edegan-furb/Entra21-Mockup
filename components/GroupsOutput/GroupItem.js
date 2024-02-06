@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   },
   groupItem: {
     width: '100%',
-    height: 100,
+    height: 105,
     backgroundColor: Colors.primary950,
     justifyContent: "center",
     alignItems: "flex-start",

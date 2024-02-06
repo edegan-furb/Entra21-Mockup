@@ -1,4 +1,4 @@
-import { View, TextInput, StyleSheet, Pressable, Text } from 'react-native';
+import { View, TextInput, StyleSheet, Pressable } from 'react-native';
 import { useState } from "react";
 import { Colors } from '../../constants/styles';
 import { Ionicons } from '@expo/vector-icons';
@@ -10,7 +10,9 @@ function Input({
   value,
   isInvalid,
   placeHolder,
-  height
+  height,
+  onFocus,
+  onBlur
 }) {
 
   const [hidePass, setHidePass] = useState(true);
@@ -28,6 +30,8 @@ function Input({
           value={value}
           placeholder={placeHolder}
           placeholderTextColor={isInvalid ? '#be0000' : '#999'}
+          onFocus={onFocus}
+          onBlur={onBlur}
         />        
         <Pressable onPress={() => setHidePass(!hidePass)}>
           {/* Icon check */}

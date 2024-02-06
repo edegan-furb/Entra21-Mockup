@@ -3,7 +3,7 @@ import { Colors } from "../../constants/styles";
 import BackButton from './BackButton';
 import { useNavigation } from "@react-navigation/native";
 
-export default function PagesTitle({ title, subTitle }) {
+export default function PagesTitle({ title, subTitle, style }) {
 
   const navigation = useNavigation();
 
@@ -12,7 +12,7 @@ export default function PagesTitle({ title, subTitle }) {
   }
 
   return(
-    <View style={styles.container}>
+    <View style={style}>
       <View style={styles.content}>
         <BackButton onPress={onPressHandler}/>
         <View style={styles.imgContainer}>
@@ -35,13 +35,6 @@ export default function PagesTitle({ title, subTitle }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-    height: "40%",
-    alignItems: "flex-start",
-    justifyContent: 'flex-start',
-    backgroundColor: Colors.neutral100,
-  },
   content: {
     width: '100%',
     height: '50%',
