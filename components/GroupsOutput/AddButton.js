@@ -1,12 +1,16 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from "../../constants/styles"; 
+import { useTheme } from "../../store/theme-context";
 
 export default function AddButton({ title, onPress, button }) {
+
+    const { colors } = useTheme();
+
     return(
         <View style={styles.addButtonContainer}>
             <Pressable 
-                style={({ pressed }) => pressed ? [styles.addButton, styles.pressed] : [styles.addButton, button]} 
+                style={({ pressed }) => pressed ? [styles.addButton, styles.pressed, {backgroundColor: colors.primary900}] : [styles.addButton, button]} 
                 android_ripple={{ color: Colors.primary950 }}
                 onPress={onPress}
             >

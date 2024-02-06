@@ -6,8 +6,12 @@ import GroupsList from "./GroupsList";
 import AddButton from '../GroupsOutput/AddButton';
 import UpperLogo from '../../components/Start/UpperLogo';
 import { Colors } from "../../constants/styles";
+import { useTheme } from '../../store/theme-context';
+
 
 function GroupsOutput({ groups, firstText, secondText, title }) {
+
+  const { colors } = useTheme();
 
   // Create the navigation component
   const navigation = useNavigation();
@@ -17,12 +21,14 @@ function GroupsOutput({ groups, firstText, secondText, title }) {
     navigation.navigate("ManageGroupScreen");
   }
 
+  
+
   let content = 
     <View style={styles.textContainer}>
-      <Text style={styles.text}>
+      <Text style={[styles.text, {color: colors.primary100}]}>
         {firstText}
       </Text>
-      <Text style={styles.text}>
+      <Text style={[styles.text, {color: colors.primary100}]}>
         {secondText}
       </Text>
       <View style={styles.addButtonContainer}>
@@ -40,7 +46,7 @@ function GroupsOutput({ groups, firstText, secondText, title }) {
   }
 
   return (
-    <SafeAreaView style={styles.rootContainer}>
+    <SafeAreaView style={[styles.rootContainer, {backgroundColor: colors.primary100}]}>
       <View View style={styles.headerContainer}>
         <UpperLogo children={'TaskSync'}/>
         <AddButton 

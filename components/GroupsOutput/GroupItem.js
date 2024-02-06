@@ -2,10 +2,13 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { Colors } from "../../constants/styles";
+import { useTheme } from '../../store/theme-context'; // Adj
 import { Ionicons, Foundation } from '@expo/vector-icons';
 import GroupDonut from './GroupDonut';
 
 function GroupItem({ id, title, }) {
+
+  const { colors } = useTheme();
   const navigation = useNavigation();
 
   function groupPressHandler() {
@@ -19,29 +22,29 @@ function GroupItem({ id, title, }) {
       onPress={groupPressHandler}
       style={({ pressed }) => pressed && styles.pressed}
     >
-      <View style={styles.groupItem}>
+      <View style={[styles.groupItem, { backgroundColor: colors.primary800, }]}>
         <View style={styles.content}>
           <View style={styles.container}>
             <View style={styles.titleContainer}>
-              <Text style={[styles.textBase, styles.title]}>{title}</Text>
+              <Text style={[styles.textBase, styles.title, {color: colors.primary100}]}>{title}</Text>
             </View>
             <View style={styles.infGroupsContainer}>
               <View style={styles.infGroups}>
-                <Ionicons name="people" color={'#fff'} size={17} />
-                <Text style={styles.infTitleGroup}>
+                <Ionicons name="people" color={colors.primary100} size={17} />
+                <Text style={[styles.infTitleGroup, {color: colors.primary100}]}>
                  4
                 </Text>
               </View>
               <View style={styles.infGroups}>
-                <Foundation name="clipboard-pencil" color={'#fff'} size={17}/>
-                <Text style={styles.infTitleGroup}>
+                <Foundation name="clipboard-pencil" color={colors.primary100} size={17}/>
+                <Text style={[styles.infTitleGroup, {color: colors.primary100}]}>
                   4
                </Text>
               </View>  
             </View>
           </View>
           <View style={styles.graphiContainer}>
-            <Text style={styles.graphiTextInf}>Concluido</Text>
+            <Text style={[styles.graphiTextInf, {color: colors.primary100}]}>Concluido</Text>
             <GroupDonut concludedTasks={80} />
           </View>
         </View>
@@ -87,7 +90,7 @@ const styles = StyleSheet.create({
     height: '45%',
   },
   textBase: {
-    color: Colors.primary100,
+    //color: Colors.primary100,
   },
   title: {
     fontSize: 16,

@@ -17,6 +17,7 @@ import SettingsScreen from "./screens/SettingsScreen";
 import ManageGroupScreen from "./screens/ManageGroupScreen";
 import { Colors } from "./constants/styles";
 import AuthContextProvider, { AuthContext } from "./store/auth-context";
+import { ThemeProvider } from "./store/theme-context"
 import IconButton from "./components/ui/IconButton";
 import GroupsContextProvider from "./store/groups-context";
 import GroupScreen from "./screens/GroupScreen";
@@ -25,6 +26,8 @@ import GroupMembersScreen from "./screens/GroupMembersScreen";
 import AddMemberScreen from "./screens/AddMemberScreen";
 import ManageTasksScreen from "./screens/ManageTasksScreen";
 import TaskScreen from "./screens/TaskScreen";
+import { useTheme } from "./store/theme-context";
+
 
 const BottomTabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -74,14 +77,16 @@ function AuthStack() {
 }
 
 function AuthenticatedBottomTab() {
+  const { colors } = useTheme();
+
   return (
     <BottomTabs.Navigator
-      sceneContainerStyle={{ backgroundColor: Colors.primary100 }}
+      sceneContainerStyle={{ backgroundColor: colors.primary100 }}
       screenOptions={{
-        headerStyle: { backgroundColor: Colors.primary500 },
+        headerStyle: { backgroundColor: colors.primary500 },
         headerTintColor: "white",
-        tabBarStyle: { backgroundColor: Colors.primary900 },
-        tabBarActiveTintColor: Colors.primary100,
+        tabBarStyle: { backgroundColor: colors.primary900 },
+        tabBarActiveTintColor: colors.primary100,
         tabBarShowLabel: false,
       }}
     >
@@ -95,10 +100,10 @@ function AuthenticatedBottomTab() {
               return <Ionicons 
                 size={25} 
                 name="home-sharp"
-                color={Colors.neutral50} 
+                color={colors.neutral50} 
               />
             }
-            return <Ionicons size={25} color={Colors.neutral400} name="home-outline"/>
+            return <Ionicons size={25} color={colors.neutral400} name="home-outline"/>
           },
         }}
       />
@@ -113,10 +118,10 @@ function AuthenticatedBottomTab() {
             return <Ionicons 
                 size={25} 
                 name="people"
-                color={Colors.neutral50} 
+                color={colors.neutral50} 
               />
             }
-          return <Ionicons size={25} color={Colors.neutral400} name="people-outline"/>
+          return <Ionicons size={25} color={colors.neutral400} name="people-outline"/>
         }
       }} 
       />
@@ -130,10 +135,10 @@ function AuthenticatedBottomTab() {
             return <Ionicons 
                 size={25} 
                 name="settings"
-                color={Colors.neutral50} 
+                color={colors.neutral50} 
               />
             }
-            return <Ionicons size={25} color={Colors.neutral400} name="settings-outline"/>
+            return <Ionicons size={25} color={colors.neutral400} name="settings-outline"/>
           }
         }}
       />
@@ -142,11 +147,14 @@ function AuthenticatedBottomTab() {
 }
 
 function AuthenticatedStack() {
+
+  const { colors } = useTheme();
+
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: true,
-        headerStyle: { backgroundColor: Colors.primary900 },
+        headerStyle: { backgroundColor: colors.primary900 },
         headerTintColor: "white",
       }}
     >
@@ -286,11 +294,13 @@ export default function App() {
   return (
     <>
       <StatusBar style="dark" />
-      <GroupsContextProvider>
-        <AuthContextProvider>
-          <Root />
-        </AuthContextProvider>
-      </GroupsContextProvider>
+      <ThemeProvider>
+        <GroupsContextProvider>
+          <AuthContextProvider>
+            <Root />
+          </AuthContextProvider>
+        </GroupsContextProvider>
+      </ThemeProvider>
     </>
   );
 }
