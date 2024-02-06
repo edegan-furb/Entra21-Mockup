@@ -5,6 +5,7 @@ import Button from "../ui/Button";
 import { Colors } from "../../constants/styles";
 import IconButton from "../ui/IconButton";
 import { getFormattedDate } from "../../util/date";
+import { generateUniqueId } from "../../util/generateUniqueId";
 
 function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
   const [inputs, setInputs] = useState({
@@ -62,17 +63,6 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
         };
       });
     }
-  }
-
-  function generateUniqueId() {
-    const characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let result = "";
-    const charactersLength = characters.length;
-    for (let i = 0; i < 20; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
   }
 
   function addObjective() {

@@ -10,9 +10,10 @@ import {
   getUserIdByEmail,
   isMember,
   updateTask,
-  deleteTask
+  deleteTask,
 } from "../util/firestore";
 import IconButton from "../components/ui/IconButton";
+import { generateUniqueId } from "../util/generateUniqueId";
 
 function ManageTasksScreen({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -38,17 +39,6 @@ function ManageTasksScreen({ navigation, route }) {
     });
   }
 
-  function generateUniqueId() {
-    const characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let result = "";
-    const charactersLength = characters.length;
-    for (let i = 0; i < 20; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-  }
-
   function cancelHandler() {
     console.log(groupId);
     navigation.goBack();
@@ -61,13 +51,12 @@ function ManageTasksScreen({ navigation, route }) {
       groupsCtx.deleteTask(groupId, editedTaskId);
       navigation.navigate("GroupScreen", {
         groupId: groupId,
-      })
+      });
     } catch (error) {
       setError("Could not delete group - please try again later");
       setIsLoading(false);
     }
   }
-
 
   async function confirmHandler(taskData) {
     setIsLoading(true);

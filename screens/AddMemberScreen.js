@@ -6,6 +6,7 @@ import Error from "../components/ui/Error";
 import Loading from "../components/ui/LoadingOverlay";
 import { useContext, useState } from "react";
 import { GroupsContext } from "../store/groups-context";
+import { generateUniqueId } from "../util/generateUniqueId";
 
 function AddMembersScreen({ route, navigation }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -34,15 +35,16 @@ function AddMembersScreen({ route, navigation }) {
           "This user is already a member of the group."
         );
       } else {
-        const memberId = await addMember(groupId, userId);
+        const memberId = generateUniqueId();
         console.log(memberId);
         console.log(memberId.id);
-        // groupsCtx.addMember({
-        //   id: memberId.id,
-        //   admin: memberData.isAdmin,
-        //   user: userId,
-        //   group: groupId,
-        // });
+        groupsCtx.addMember({
+          id: memberId,
+          admin: memberData.isAdmin,
+          user: userId,
+          group: groupId,
+        });
+        await addMember(groupId, userId);
         await setAdminStatus(groupId, userId, memberData.isAdmin);
         navigation.goBack();
       }

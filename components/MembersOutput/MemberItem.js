@@ -1,12 +1,11 @@
+import React, { useContext, useEffect, useState } from "react";
 import { Alert, Image, StyleSheet, Text, View } from "react-native";
 import { Colors } from "../../constants/styles";
 import IconButton from "../ui/IconButton";
 import { auth } from "../../util/auth";
 import { GroupsContext } from "../../store/groups-context";
-import { useContext, useEffect, useState } from "react";
-import { getImageUrlByName, getUserImageName } from '../../util/storage';
-import { Ionicons } from '@expo/vector-icons';
-
+import { getImageUrlByName, getUserImageName } from "../../util/storage";
+import { Ionicons } from "@expo/vector-icons";
 
 function MemberItem({
   id,
@@ -17,10 +16,7 @@ function MemberItem({
   admin,
   onChangeAdminStatus,
 }) {
-
-
   const [imageSource, setImageSource] = useState(null);
-
 
   const currentUser = auth.currentUser.uid;
   const groupsCtx = useContext(GroupsContext);
@@ -57,22 +53,17 @@ function MemberItem({
     }
   };
 
-  //console.log(isAdmin);
-
   useEffect(() => {
-    //setIsLoading(true); // Start loading
     const fetchUserImage = async () => {
       const imageName = await getUserImageName(user);
       if (imageName) {
         const url = await getImageUrlByName(imageName);
         setImageSource({ uri: url });
       }
-      //setIsLoading(false); // End loading
     };
 
     fetchUserImage();
   }, []);
-
 
   return (
     <View style={styles.memberItem}>
@@ -80,20 +71,18 @@ function MemberItem({
         {imageSource ? (
           <Image source={imageSource} style={styles.image} />
         ) : (
-          <Ionicons name="person-circle-outline" color="#6366f1" size={54} style={styles.icon} /> //size needs to be 100% of imageContaineir View
+          <Ionicons
+            name="person-circle-outline"
+            color="#6366f1"
+            size={50}
+          />
         )}
       </View>
-      <View>
+      <View style={{ flex: 1, marginLeft: 12 }}>
         <Text style={[styles.textBase, styles.title]}>{username}</Text>
         <Text style={[styles.textBase, styles.subtitle]}>{email}</Text>
       </View>
-      <View
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "row",
-        }}
-      >
+      <View style={{ flexDirection: "row" }}>
         {isCurrentUser ? (
           <Text style={styles.currentUserText}>You</Text>
         ) : isAdmin === true ? (
@@ -120,7 +109,7 @@ function MemberItem({
           />
         )}
       </View>
-    </View >
+    </View>
   );
 }
 
@@ -156,25 +145,24 @@ const styles = StyleSheet.create({
   currentUserText: {
     color: Colors.primary100,
     fontSize: 16,
-    //fontWeight: "bold",
     margin: 6,
     borderRadius: 20,
   },
   imageContainer: {
     aspectRatio: 1,
-    width: '15%',
-    maxWidth: 60,
+    width: "100%",
+    maxWidth: 50,
+    height: "100%",
     maxHeight: 60,
     borderRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
-    //marginRight: 12,
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
   },
   image: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 75,
+    width: "100%",
+    height: "100%",
+    borderRadius: 30,
     resizeMode: "cover",
   },
 });
