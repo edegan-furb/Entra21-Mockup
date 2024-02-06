@@ -7,7 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import Button from '../ui/Button';
 import Input from './Input';
 
-function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
+function AuthForm({ isLogin, onSubmit, credentialsInvalid, onFocus, onBlur }) {
   const [enteredEmail, setEnteredEmail] = useState('');
   const [enteredConfirmEmail, setEnteredConfirmEmail] = useState('');
   const [enteredPassword, setEnteredPassword] = useState('');
@@ -65,6 +65,8 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
           keyboardType="email-address"
           isInvalid={emailIsInvalid}
           height={0}
+          onFocus={onFocus}
+          onBlur={onBlur}
         />
         {!isLogin && (
           <Input
@@ -74,6 +76,8 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
             keyboardType="email-address"
             isInvalid={emailsDontMatch}
             height={0}
+            onFocus={onFocus}
+            onBlur={onBlur}
           />
         )}
         <Input
@@ -82,6 +86,8 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
           secure
           value={enteredPassword}
           isInvalid={passwordIsInvalid}
+          onFocus={onFocus}
+          onBlur={onBlur}
         />
         {!isLogin && (
           <Input
@@ -93,6 +99,8 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
             secure
             value={enteredConfirmPassword}
             isInvalid={passwordsDontMatch}
+            onFocus={onFocus}
+            onBlur={onBlur}
           />
         )}
         <View style={styles.buttonsContainer}>
@@ -123,12 +131,12 @@ export default AuthForm;
 const styles = StyleSheet.create({
   form: {
     width: '100%',
-    height: '80%',
+    height: '100%',
     alignItems: 'center',
     backgroundColor: Colors.neutral100,
   },
   inputAreaLogin: {
-    height: '70%',
+    height: '50%',
     width: '100%',
     gap: 20,
   },
@@ -138,7 +146,7 @@ const styles = StyleSheet.create({
   },
   buttonsContainer: {
     width: '100%',
-    height: '30%',
+    height: '35%',
     alignItems: 'center',
     justifyContent: "center",
   },
