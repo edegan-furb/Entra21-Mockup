@@ -317,6 +317,16 @@ export async function fetchGroups(callback) {
                 })
               );
 
+              // Fetch the designated user's username
+              let designatedUserUsername = "";
+              if (taskData.designatedUser) {
+                const userDocSnapshot = await getDoc(taskData.designatedUser);
+                if (userDocSnapshot.exists()) {
+                  const userData = userDocSnapshot.data();
+                  designatedUserUsername = userData.username; // Assuming the field is named 'email'
+                }
+              }
+
               return {
                 id: taskDoc.id,
                 title: taskData.title,
@@ -324,7 +334,7 @@ export async function fetchGroups(callback) {
                 date: taskData.date.toDate(), // Convert Firestore Timestamp to JavaScript Date
                 completed: taskData.completed,
                 owner: taskData.owner,
-                designatedUser: taskData.designatedUser,
+                designatedUser: designatedUserUsername,
                 group: taskData.group,
                 objectives: objectives, // Array of objectives
               };
@@ -573,13 +583,13 @@ export async function fetchGroupTasks(groupId, callback) {
         const taskData = docSnapshot.data();
         const taskId = docSnapshot.id;
 
-        // Fetch the designated user's email
-        let designatedUserEmail = "";
+        // Fetch the designated user's username
+        let designatedUserUsername = "";
         if (taskData.designatedUser) {
           const userDocSnapshot = await getDoc(taskData.designatedUser);
           if (userDocSnapshot.exists()) {
             const userData = userDocSnapshot.data();
-            designatedUserEmail = userData.username; // Assuming the field is named 'email'
+            designatedUserUsername = userData.username; // Assuming the field is named 'email'
           }
         }
 
@@ -593,7 +603,7 @@ export async function fetchGroupTasks(groupId, callback) {
           date: taskData.date.toDate(), // Converting Firestore Timestamp to JavaScript Date
           completed: taskData.completed,
           owner: taskData.owner,
-          designatedUser: designatedUserEmail, // Updated to include the user's email
+          designatedUser: designatedUserUsername, // Updated to include the user's username
           group: groupId,
           objectives: existingTask.objectives || [], // Preserve existing objectives if already fetched
         });
