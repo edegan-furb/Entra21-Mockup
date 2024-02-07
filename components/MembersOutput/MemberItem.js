@@ -80,12 +80,12 @@ function MemberItem({
         {imageSource ? (
           <Image source={imageSource} style={styles.image} />
         ) : (
-          <Ionicons name="person-circle-outline" color="#6366f1" size={54} style={styles.icon} /> //size needs to be 100% of imageContaineir View
+          <Ionicons name="person-circle-outline" color="#ffffff" size={50} style={styles.icon} /> //size needs to be 100% of imageContaineir View
         )}
       </View>
-      <View>
+      <View style={styles.textContainer}>
         <Text style={[styles.textBase, styles.title]}>{username}</Text>
-        <Text style={[styles.textBase, styles.subtitle]}>{email}</Text>
+        <Text style={[styles.textBase, styles.subtitle]} numberOfLines={1}>{email}</Text>
       </View>
       <View
         style={{
@@ -120,7 +120,7 @@ function MemberItem({
           />
         )}
       </View>
-    </View >
+    </View>
   );
 }
 
@@ -140,8 +140,13 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 4, height: 5 },
     shadowOpacity: .3,
   },
+  textContainer: {
+    width: '50%',
+    justifyContent: "center"
+  },
   textBase: {
     color: Colors.primary100,
+    width: '80%',
   },
   title: {
     fontSize: 16,
@@ -159,10 +164,9 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   imageContainer: {
-    aspectRatio: 1,
     width: '15%',
-    maxWidth: 60,
-    maxHeight: 60,
+    maxWidth: 50,
+    maxHeight: 50,
     borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',

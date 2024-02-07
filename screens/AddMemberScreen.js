@@ -37,12 +37,12 @@ function AddMembersScreen({ route, navigation }) {
         const memberId = await addMember(groupId, userId);
         console.log(memberId);
         console.log(memberId.id);
-        // groupsCtx.addMember({
-        //   id: memberId.id,
-        //   admin: memberData.isAdmin,
-        //   user: userId,
-        //   group: groupId,
-        // });
+          groupsCtx.addMember({
+          id: memberId.id,
+          admin: memberData.isAdmin,
+          user: userId,
+          group: groupId,
+        });
         await setAdminStatus(groupId, userId, memberData.isAdmin);
         navigation.goBack();
       }

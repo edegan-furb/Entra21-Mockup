@@ -4,7 +4,7 @@ import TasksList from "./TasksList";
 import { useNavigation } from "@react-navigation/native";
 import AddButton from '../GroupsOutput/AddButton';
 
-function TasksOutput({ tasks, firstText, secondText, title }) {
+function TasksOutput({ tasks, firstText, secondText, title, groupId }) {
 
   // Create the navigation component
   const navigation = useNavigation();
