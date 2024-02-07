@@ -1,5 +1,5 @@
 import { View, StyleSheet, Alert, TouchableWithoutFeedback, Keyboard } from "react-native";
-import { useLayoutEffect, useContext, useState } from "react";
+import { useLayoutEffect, useContext, useState, useEffect } from "react";
 import TaskForm from "../components/ManageTask/TaskForm";
 import { Colors } from "../constants/styles";
 import { GroupsContext } from "../store/groups-context";
@@ -10,7 +10,9 @@ import {
   getUserIdByEmail,
   isMember,
   updateTask,
+  deleteTask
 } from "../util/firestore";
+import IconButton from "../components/ui/IconButton";
 
 function ManageTasksScreen({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -51,6 +53,21 @@ function ManageTasksScreen({ navigation, route }) {
     console.log(groupId);
     navigation.goBack();
   }
+
+  async function deleteGroupHandler() {
+    setIsLoading(true);
+    try {
+      await deleteTask(editedTaskId);
+      groupsCtx.deleteTask(groupId, editedTaskId);
+      navigation.navigate("GroupScreen", {
+        groupId: groupId,
+      })
+    } catch (error) {
+      setError("Could not delete group - please try again later");
+      setIsLoading(false);
+    }
+  }
+
 
   async function confirmHandler(taskData) {
     setIsLoading(true);

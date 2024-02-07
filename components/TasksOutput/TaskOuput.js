@@ -33,7 +33,7 @@ function TasksOutput({ tasks, firstText, secondText, title }) {
 ;
 
   if (Array.isArray(tasks) && tasks.length > 0) {
-    content = <TasksList tasks={tasks} />;
+    content = <TasksList tasks={tasks} groupId={groupId} />;
   }
 
   return <View style={styles.container}>{content}</View>;

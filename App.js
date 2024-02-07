@@ -293,7 +293,7 @@ function Root() {
 export default function App() {
   return (
     <>
-      <StatusBar style="dark" />
+      <StatusBar style="light" />
       <ThemeProvider>
         <GroupsContextProvider>
           <AuthContextProvider>

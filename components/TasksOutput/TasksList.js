@@ -2,16 +2,12 @@ import { FlatList } from "react-native";
 import { StyleSheet, View } from "react-native";
 import TaskItem from "./TaskItem";
 
-function renderTaskItem(itemData) {
-    return <TaskItem {...itemData.item} />;
-}
-
-function TasksList({ tasks }) {
+function TasksList({ tasks, groupId }) {
     return (
         <View style={styles.listContainer}>
             <FlatList
                 data={tasks}
-                renderItem={renderTaskItem}
+                renderItem={({ item }) => <TaskItem {...item} groupId={groupId} />}
                 keyExtractor={(item) => item.id}
                 style={styles.list}
             />

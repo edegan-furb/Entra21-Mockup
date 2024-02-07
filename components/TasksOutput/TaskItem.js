@@ -7,7 +7,7 @@ import { auth } from "../../util/auth";
 import { GroupsContext } from "../../store/groups-context";
 import { useContext } from "react";
 
-function TaskItem({ id, title, designatedUser }) {
+function TaskItem({ id, title, designatedUser, groupId }) {
   const navigation = useNavigation();
   const currentUser = auth.currentUser.uid;
   const groupsCtx = useContext(GroupsContext);
@@ -16,6 +16,7 @@ function TaskItem({ id, title, designatedUser }) {
   function taskPressHandler() {
     navigation.navigate("TaskScreen", {
       taskId: id,
+      groupId: groupId,
     });
   }
 

@@ -3,6 +3,7 @@ import React, {
   useContext,
   useCallback,
   useState,
+  useEffect
 } from "react";
 import { View, Text, StyleSheet, ScrollView, Alert } from "react-native";
 import { Colors } from "../constants/styles";
@@ -22,6 +23,7 @@ function TaskScreen({ route, navigation }) {
   const currentUser = auth.currentUser.uid;
   const groupsCtx = useContext(GroupsContext);
   const taskId = route.params?.taskId;
+  const groupId = route.params?.groupId;
 
   let selectTask = null;
 
@@ -34,6 +36,15 @@ function TaskScreen({ route, navigation }) {
       });
     });
   }
+
+  useEffect(() => {
+    if (!selectTask) {
+      navigation.navigate("GroupScreen", {
+        groupId: groupId,
+      });
+      Alert.alert("Task Deleted", "This task no longer exists");
+    }
+  }, [navigation, selectTask]);
 
   const renderHeaderButtons = useCallback(() => {
     return (
