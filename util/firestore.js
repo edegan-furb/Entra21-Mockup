@@ -541,7 +541,10 @@ export async function fetchGroupTasks(groupId, callback) {
   const groupDocRef = doc(db, "groups", groupId);
 
   // Define a query for tasks of the specified group
-  const tasksQuery = query(collection(db, "tasks"), where("group", "==", groupDocRef));
+  const tasksQuery = query(
+    collection(db, "tasks"),
+    where("group", "==", groupDocRef)
+  );
 
   // Initialize an object to keep track of listeners for objectives
   const objectivesListeners = {};
@@ -552,7 +555,7 @@ export async function fetchGroupTasks(groupId, callback) {
   // Set up a real-time listener for changes in group tasks
   const stopListeningTasks = onSnapshot(tasksQuery, async (tasksSnapshot) => {
     // First, remove any tasks that have been deleted
-    const snapshotTaskIds = tasksSnapshot.docs.map(doc => doc.id);
+    const snapshotTaskIds = tasksSnapshot.docs.map((doc) => doc.id);
     tasksData.forEach((_, taskId) => {
       if (!snapshotTaskIds.includes(taskId)) {
         tasksData.delete(taskId);
@@ -565,57 +568,66 @@ export async function fetchGroupTasks(groupId, callback) {
     });
 
     // Process each task document
-    await Promise.all(tasksSnapshot.docs.map(async (docSnapshot) => {
-      const taskData = docSnapshot.data();
-      const taskId = docSnapshot.id;
+    await Promise.all(
+      tasksSnapshot.docs.map(async (docSnapshot) => {
+        const taskData = docSnapshot.data();
+        const taskId = docSnapshot.id;
 
-      // Fetch the designated user's email
-      let designatedUserEmail = "";
-      if (taskData.designatedUser) {
-        const userDocSnapshot = await getDoc(taskData.designatedUser);
-        if (userDocSnapshot.exists()) {
-          const userData = userDocSnapshot.data();
-          designatedUserEmail = userData.email; // Assuming the field is named 'email'
-        }
-      }
-
-      // Initialize or update tasksData map
-      const existingTask = tasksData.get(taskId) || {};
-      tasksData.set(taskId, {
-        ...existingTask,
-        id: taskId,
-        title: taskData.title,
-        description: taskData.description,
-        date: taskData.date.toDate(), // Converting Firestore Timestamp to JavaScript Date
-        completed: taskData.completed,
-        owner: taskData.owner,
-        designatedUser: designatedUserEmail, // Updated to include the user's email
-        group: groupId,
-        objectives: existingTask.objectives || [], // Preserve existing objectives if already fetched
-      });
-
-      // Immediately fetch and listen to objectives for this task
-      const objectivesRef = collection(db, `tasks/${taskId}/objectives`);
-      if (!objectivesListeners[taskId]) {
-        objectivesListeners[taskId] = onSnapshot(objectivesRef, (objectivesSnapshot) => {
-          const objectives = objectivesSnapshot.docs.map(doc => ({
-            id: doc.id,
-            value: doc.data().value,
-            completed: doc.data().completed,
-          }));
-
-          // Update the task's objectives and invoke the callback
-          const updatedTask = tasksData.get(taskId);
-          if (updatedTask) {
-            updatedTask.objectives = objectives;
-            tasksData.set(taskId, updatedTask); // Ensure the map is updated
-            callback(Array.from(tasksData.values())); // Convert Map values to an array
+        // Fetch the designated user's email
+        let designatedUserEmail = "";
+        if (taskData.designatedUser) {
+          const userDocSnapshot = await getDoc(taskData.designatedUser);
+          if (userDocSnapshot.exists()) {
+            const userData = userDocSnapshot.data();
+            designatedUserEmail = userData.email; // Assuming the field is named 'email'
           }
-        }, error => {
-          console.error(`Error fetching objectives for task ${taskId}:`, error);
+        }
+
+        // Initialize or update tasksData map
+        const existingTask = tasksData.get(taskId) || {};
+        tasksData.set(taskId, {
+          ...existingTask,
+          id: taskId,
+          title: taskData.title,
+          description: taskData.description,
+          date: taskData.date.toDate(), // Converting Firestore Timestamp to JavaScript Date
+          completed: taskData.completed,
+          owner: taskData.owner,
+          designatedUser: designatedUserEmail, // Updated to include the user's email
+          group: groupId,
+          objectives: existingTask.objectives || [], // Preserve existing objectives if already fetched
         });
-      }
-    }));
+
+        // Immediately fetch and listen to objectives for this task
+        const objectivesRef = collection(db, `tasks/${taskId}/objectives`);
+        if (!objectivesListeners[taskId]) {
+          objectivesListeners[taskId] = onSnapshot(
+            objectivesRef,
+            (objectivesSnapshot) => {
+              const objectives = objectivesSnapshot.docs.map((doc) => ({
+                id: doc.id,
+                value: doc.data().value,
+                completed: doc.data().completed,
+              }));
+
+              // Update the task's objectives and invoke the callback
+              const updatedTask = tasksData.get(taskId);
+              if (updatedTask) {
+                updatedTask.objectives = objectives;
+                tasksData.set(taskId, updatedTask); // Ensure the map is updated
+                callback(Array.from(tasksData.values())); // Convert Map values to an array
+              }
+            },
+            (error) => {
+              console.error(
+                `Error fetching objectives for task ${taskId}:`,
+                error
+              );
+            }
+          );
+        }
+      })
+    );
 
     // Invoke the callback after processing all tasks and their objectives
     callback(Array.from(tasksData.values()));
@@ -625,10 +637,11 @@ export async function fetchGroupTasks(groupId, callback) {
   return () => {
     stopListeningTasks();
     // Stop listening to all objectives listeners
-    Object.values(objectivesListeners).forEach(stopListener => stopListener());
+    Object.values(objectivesListeners).forEach((stopListener) =>
+      stopListener()
+    );
   };
 }
-
 
 export async function updateTask(taskId, updatedTaskData) {
   try {
@@ -636,7 +649,8 @@ export async function updateTask(taskId, updatedTaskData) {
     const taskDocRef = doc(db, "tasks", taskId);
 
     // Destructure the updated task data to separate objectives and designatedUser
-    const { objectives, designatedUser, ...taskDataWithoutObjectives } = updatedTaskData;
+    const { objectives, designatedUser, ...taskDataWithoutObjectives } =
+      updatedTaskData;
 
     // Convert designatedUser ID to a Firestore reference
     let userRef = null;
@@ -658,13 +672,15 @@ export async function updateTask(taskId, updatedTaskData) {
 
     // Retrieve all existing objectives
     const existingObjectivesSnap = await getDocs(objectivesRef);
-    const existingObjectives = existingObjectivesSnap.docs.map(doc => doc.id);
+    const existingObjectives = existingObjectivesSnap.docs.map((doc) => doc.id);
 
     // Identify objectives to delete
-    const objectivesToDelete = existingObjectives.filter(id => !objectives.some(objective => objective.id === id));
+    const objectivesToDelete = existingObjectives.filter(
+      (id) => !objectives.some((objective) => objective.id === id)
+    );
 
     // Delete objectives not in the updated list
-    const deleteObjectivesPromises = objectivesToDelete.map(id => {
+    const deleteObjectivesPromises = objectivesToDelete.map((id) => {
       const objectiveDocRef = doc(objectivesRef, id);
       return deleteDoc(objectiveDocRef);
     });
@@ -690,11 +706,19 @@ export async function updateTask(taskId, updatedTaskData) {
     });
 
     // Wait for all deletions, updates, and creations to complete
-    await Promise.all([...deleteObjectivesPromises, ...updateObjectivesPromises]);
+    await Promise.all([
+      ...deleteObjectivesPromises,
+      ...updateObjectivesPromises,
+    ]);
 
-    console.log("Task updated, objectives replaced or created, and unused objectives removed successfully.");
+    console.log(
+      "Task updated, objectives replaced or created, and unused objectives removed successfully."
+    );
   } catch (error) {
-    console.error("Error updating task, replacing or creating objectives, and removing unused ones:", error.message);
+    console.error(
+      "Error updating task, replacing or creating objectives, and removing unused ones:",
+      error.message
+    );
     throw error;
   }
 }
@@ -755,18 +779,56 @@ export async function updateTaskStatus(taskId) {
   }
 }
 
-
 export async function deleteTask(taskId) {
   try {
     // Create a reference to the task document
-    const taskDocRef = doc(db, 'tasks', taskId);
+    const taskDocRef = doc(db, "tasks", taskId);
 
     // Delete the document
     await deleteDoc(taskDocRef);
 
     console.log(`Task with ID ${taskId} has been successfully deleted.`);
   } catch (error) {
-    console.error('Error deleting task:', error);
-    throw new Error('Failed to delete task.');
+    console.error("Error deleting task:", error);
+    throw new Error("Failed to delete task.");
+  }
+}
+
+// Function to update an existing user.
+export async function updateUsername(newUsername) {
+  try {
+    const userId = auth.currentUser.uid;
+    // Create a reference to the specified user document
+    const userDocRef = doc(db, "users", userId);
+
+    // Update the group's title
+    await updateDoc(userDocRef, {
+      username: newUsername,
+    });
+    console.log("Username updated successfully.");
+  } catch (error) {
+    console.error("Error updating Username:", error.message);
+    throw error;
+  }
+}
+
+// Function to fetch username and email of the current user
+export async function fetchUsernameAndEmail() {
+  try {
+    const userId = auth.currentUser.uid;
+    const userDocRef = doc(db, "users", userId);
+
+    const docSnap = await getDoc(userDocRef);
+
+    if (docSnap.exists()) {
+      const userData = docSnap.data();
+      return { username: userData.username, email: userData.email };
+    } else {
+      console.log("No such document!");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching user data:", error.message);
+    throw error;
   }
 }
