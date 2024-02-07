@@ -3,15 +3,33 @@ import { useNavigation } from "@react-navigation/native";
 
 import { Colors } from "../../constants/styles";
 import { Feather, Ionicons } from "@expo/vector-icons";
+import { auth } from "../../util/auth";
+import { GroupsContext } from "../../store/groups-context";
+import { useContext } from "react";
 
-function TaskItem({ id, title }) {
+function TaskItem({ id, title, designatedUser }) {
   const navigation = useNavigation();
+  const currentUser = auth.currentUser.uid;
+  const groupsCtx = useContext(GroupsContext);
+  let foundMember = null;
 
   function taskPressHandler() {
     navigation.navigate("TaskScreen", {
       taskId: id,
     });
   }
+
+  if (groupsCtx.groups) {
+    groupsCtx.groups?.forEach((group) => {
+      group.members?.forEach((member) => {
+        if (member.user === currentUser) {
+          foundMember = member;
+          console.log(foundMember)
+        }
+      });
+    });
+  }
+
 
   return (
     <Pressable
@@ -26,13 +44,13 @@ function TaskItem({ id, title }) {
           <View style={styles.titleContent}>
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.textInf}>
-              <Ionicons name="person" color={Colors.primary100} size={15}/>  ariel_a_silva
+              <Ionicons name="person" color={Colors.primary100} size={15} />  {designatedUser}
               </Text>
             <Text style={styles.textInf}>
-              <Ionicons name="calendar-outline" color={Colors.primary100} size={15}/>  2020-10-23
+              <Ionicons name="calendar-outline" color={Colors.primary100} size={15}/>  {foundMember}
             </Text>
             <Text style={styles.textInf}>
-              <Feather name="target" color={Colors.primary100} size={15}/>  2
+              <Feather name="target" color={Colors.primary100} size={15}/>  {}
             </Text>
           </View>
           <View style={styles.iconContent}>

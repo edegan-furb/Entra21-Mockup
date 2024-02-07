@@ -5,7 +5,6 @@ import Button from "../ui/Button";
 import { Colors } from "../../constants/styles";
 import IconButton from "../ui/IconButton";
 import { getFormattedDate } from "../../util/date";
-import { TextInput } from "react-native-web";
 
 function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTitle }) {
   const [inputs, setInputs] = useState({
