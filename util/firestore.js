@@ -579,7 +579,7 @@ export async function fetchGroupTasks(groupId, callback) {
           const userDocSnapshot = await getDoc(taskData.designatedUser);
           if (userDocSnapshot.exists()) {
             const userData = userDocSnapshot.data();
-            designatedUserEmail = userData.email; // Assuming the field is named 'email'
+            designatedUserEmail = userData.username; // Assuming the field is named 'email'
           }
         }
 
@@ -829,6 +829,35 @@ export async function fetchUsernameAndEmail() {
     }
   } catch (error) {
     console.error("Error fetching user data:", error.message);
+    throw error;
+  }
+}
+
+export async function getEmailByUsername(username) {
+  try {
+    // Create a query to find a user document with the specified username
+    const usersQuery = query(
+      collection(db, "users"),
+      where("username", "==", username)
+    );
+
+    // Execute the query and retrieve the snapshot
+    const querySnapshot = await getDocs(usersQuery);
+
+    // If no user is found, return null
+    if (querySnapshot.empty) {
+      console.log("No user found with the specified username.");
+      return null;
+    }
+
+    // Retrieve the email from the first document in the snapshot
+    const userDoc = querySnapshot.docs[0];
+    const userEmail = userDoc.data().email; // Assuming the field for the email in the document is named 'email'
+
+    console.log("Email retrieved successfully:", userEmail);
+    return userEmail;
+  } catch (error) {
+    console.error("Error retrieving email by username:", error.message);
     throw error;
   }
 }

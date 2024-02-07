@@ -1,11 +1,12 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "./Input";
 import Button from "../ui/Button";
 import { Colors } from "../../constants/styles";
 import IconButton from "../ui/IconButton";
 import { getFormattedDate } from "../../util/date";
 import { generateUniqueId } from "../../util/generateUniqueId";
+import { getEmailByUsername } from "../../util/firestore";
 
 function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
   const [inputs, setInputs] = useState({
@@ -22,7 +23,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
       isValid: true,
     },
     designatedUser: {
-      value: defaultValues ? defaultValues.designatedUser : "",
+      value: defaultValues && defaultValues.designatedUser ? 'Loading email...' : '',
       isValid: true,
     },
     objectives:
@@ -42,6 +43,24 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
             },
           ],
   });
+
+  useEffect(() => {
+    if (defaultValues && defaultValues.designatedUser) {
+      getEmailByUsername(defaultValues.designatedUser)
+        .then((email) => {
+          if (email) {
+            setInputs((currentInputs) => ({
+              ...currentInputs,
+              designatedUser: { value: email, isValid: true },
+            }));
+          }
+        })
+        .catch((error) => {
+          console.error("Failed to fetch email", error);
+          // Handle error, possibly by setting state
+        });
+    }
+  }, [defaultValues, getEmailByUsername]);
 
   function inputChangeHandler(inputIdentifier, enteredValue, index = null) {
     if (inputIdentifier === "objectives") {
@@ -237,7 +256,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
               )}
             </View>
           ))}
-          <Button style={styles.button}  mode="flat" onPress={addObjective}>
+          <Button style={styles.button} mode="flat" onPress={addObjective}>
             Add Objective
           </Button>
         </View>
