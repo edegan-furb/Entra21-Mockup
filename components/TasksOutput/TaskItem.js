@@ -2,6 +2,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { Colors } from "../../constants/styles";
+import { Feather, Ionicons } from "@expo/vector-icons";
 
 function TaskItem({ id, title }) {
   const navigation = useNavigation();
@@ -18,8 +19,25 @@ function TaskItem({ id, title }) {
       style={({ pressed }) => pressed && styles.pressed}
     >
       <View style={styles.taskItem}>
-        <View>
-          <Text style={[styles.textBase, styles.title]}>{title}</Text>
+        <View style={styles.container}>
+          <View style={styles.iconContent}>
+            <Ionicons name="paper-plane" color={Colors.primary100} size={40}/>
+          </View>
+          <View style={styles.titleContent}>
+            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.textInf}>
+              <Ionicons name="person" color={Colors.primary100} size={15}/>  ariel_a_silva
+              </Text>
+            <Text style={styles.textInf}>
+              <Ionicons name="calendar-outline" color={Colors.primary100} size={15}/>  2020-10-23
+            </Text>
+            <Text style={styles.textInf}>
+              <Feather name="target" color={Colors.primary100} size={15}/>  2
+            </Text>
+          </View>
+          <View style={styles.iconContent}>
+            <Ionicons name="arrow-redo" color={Colors.primary100} size={25}/>
+          </View>
         </View>
       </View>
     </Pressable>
@@ -34,10 +52,10 @@ const styles = StyleSheet.create({
   },
   taskItem: {
     width: '100%',
-    height: 105,
+    height: 110,
     backgroundColor: Colors.primary950,
     justifyContent: "center",
-    alignItems: "flex-start",
+    alignItems: "center",
     flexDirection: 'row',
     marginVertical: 8,
     borderRadius: 5,
@@ -46,13 +64,33 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     shadowOffset: { width: 4, height: 5 },
     shadowOpacity: .3,
+    borderBottomColor: Colors.primary600,
+    borderEndColor: Colors.primary500,
+    borderStartColor: Colors.primary800,
+    borderTopColor: Colors.primary700,
+    borderWidth: 4,
   },
-  textBase: {
-    color: Colors.primary100,
+  container: {
+    width: '95%',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around"
+  },
+  titleContent: {
+    width: '65%',
+    overflow: "hidden",
   },
   title: {
     fontSize: 16,
-    marginBottom: 4,
+    paddingVertical: 5,
+    textAlign: "center",
     fontWeight: "bold",
+    color: Colors.primary50,
   },
+  textInf: {
+    padding: 4,
+    fontWeight: "500",
+    paddingLeft: 15,
+    color: Colors.neutral200,
+  }
 });

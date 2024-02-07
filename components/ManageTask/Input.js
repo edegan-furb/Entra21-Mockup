@@ -17,7 +17,7 @@ function Input({ label, style, textInputConfig, invalid }) {
       <Text style={[styles.label, invalid && styles.invalidLabel]}>
         {label}
       </Text>
-      <TextInput style={inputStyles} {...textInputConfig} />
+      <TextInput style={inputStyles} {...textInputConfig}/>
     </View>
   );
 }

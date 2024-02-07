@@ -204,8 +204,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
                 multiline: false,
                 onChangeText: inputChangeHandler.bind(this, "title"),
                 value: inputs.title.value,
-                onFocus: handleFocus,
-                onBlur: handleClose
+                
               }}
             />
             <Input
@@ -218,8 +217,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
                 maxLength: 10,
                 onChangeText: inputChangeHandler.bind(this, "date"),
                 value: inputs.date.value,
-                onFocus: handleFocus,
-                onBlur: handleClose
+                
               }}
             />
           </View>
@@ -231,8 +229,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
                 multiline: true,
                 onChangeText: inputChangeHandler.bind(this, "description"),
                 value: inputs.description.value,
-                onFocus: handleFocus,
-                onBlur: handleClose
+                
               }}
             />
           </View>
@@ -245,8 +242,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
                 multiline: false,
                 onChangeText: inputChangeHandler.bind(this, "designatedUser"),
                 value: inputs.designatedUser.value,
-                onFocus: handleFocus,
-                onBlur: handleClose
+                
               }}
             />
           </View>  
@@ -258,8 +254,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
                 invalid={!objective.isValid}
                 textInputConfig={{
                   multiline: false,
-                  onFocus: handleFocus,
-                  onBlur: handleClose,
+                  
                   onChangeText: (text) =>
                     inputChangeHandler("objectives", text, index),
                   value: objective.value,

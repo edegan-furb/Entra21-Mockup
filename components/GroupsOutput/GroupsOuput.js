@@ -21,8 +21,6 @@ function GroupsOutput({ groups, firstText, secondText, title }) {
     navigation.navigate("ManageGroupScreen");
   }
 
-  
-
   let content = 
     <View style={styles.textContainer}>
       <Text style={[styles.text, {color: colors.primary100}]}>
@@ -65,9 +63,6 @@ export default GroupsOutput;
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
-    backgroundColor: Colors.primary100,
-    width: '100%',
-    height: '100%'
   },
   headerContainer: {
     width: '100%',

@@ -62,7 +62,7 @@ function TaskScreen({ route, navigation }) {
       title:
         selectTask?.title +
           " - " +
-          (selectTask?.completed ? "completed" : "ongoing") || "Task",
+          (selectTask?.completed ? "Completed" : "Ongoing") || "Task",
       headerRight: renderHeaderButtons,
     });
   }, [navigation, selectTask, renderHeaderButtons]);
@@ -116,8 +116,8 @@ function TaskScreen({ route, navigation }) {
           <View style={styles.buttonContainer}>
             <IconButton
               icon={"checkmark-circle-outline"}
-              color={Colors.primary950}
-              size={24}
+              color={Colors.primary900}
+              size={35}
               onPress={() => onChangeTaskCompletedStatusHandler()}
             />
           </View>
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.primary800,
     justifyContent: "center",
-    textAlign: "center",
+    textAlign: "justify",
   },
   objectivesContainer: {
     marginVertical: 8,

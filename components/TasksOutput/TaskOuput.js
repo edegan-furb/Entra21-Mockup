@@ -44,9 +44,6 @@ export default TasksOutput;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 24,
-    paddingTop: 24,
-    paddingBottom: 0,
     backgroundColor: Colors.primary100,
   },
   textContainer: {
