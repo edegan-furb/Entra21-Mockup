@@ -12,6 +12,7 @@ import IconButton from "../components/ui/IconButton";
 import { auth } from "../util/auth";
 import { getFormattedDate } from "../util/date";
 import {
+  getEmailByUsername,
   getUserIdByEmail,
   updateObjectiveStatus,
   updateTaskStatus,
@@ -86,7 +87,8 @@ function TaskScreen({ route, navigation }) {
 
   async function onChangeCompletedStatusHandler(objectiveId) {
     try {
-      const designatedUser = await getUserIdByEmail(selectTask.designatedUser);
+      const email = await getEmailByUsername(selectTask.designatedUser)
+      const designatedUser = await getUserIdByEmail(email);
       if (designatedUser === currentUser) {
         groupsCtx.updateObjectiveStatus(selectTask.group, taskId, objectiveId);
         await updateObjectiveStatus(taskId, objectiveId);
