@@ -1,23 +1,22 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
-import {
-    heightPercentageToDP as hp,
-    widthPercentageToDP as wp
-} from "react-native-responsive-screen";
 import { Colors } from '../../constants/styles';
+import { useTheme } from "../../store/theme-context";
 
 export default function WelcomeComp({ onPress }) {
 
+    const { colors } = useTheme();
+
     return (
         <Pressable 
-            style={({ pressed }) => pressed ? [styles.pressed, styles.container] : styles.container}
+            style={({ pressed }) => pressed ? [styles.pressed, styles.container] : [styles.container, {backgroundColor: colors.primary50}]}
             onPress={onPress}>
 
             <View style={styles.textContainer}>
-                <Text style={styles.title}>
+                <Text style={[styles.title, {color: colors.primary900}]}>
                     Welcome!
                 </Text>
-                <Text style={styles.text}>
+                <Text style={[styles.text, {color: colors.primary800}]}>
                     Let's make today productive!
                 </Text>
             </View>
@@ -39,7 +38,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         borderWidth: 1,
         padding: '2%',
-        backgroundColor: '#fff',
+        backgroundColor: Colors.primary50,
         flexDirection: 'row'
     },
     textContainer: {

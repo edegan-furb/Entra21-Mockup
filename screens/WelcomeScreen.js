@@ -8,11 +8,11 @@ import { auth } from "../util/auth";
 import { fetchAllUserTask } from "../util/firestore";
 
 
-import TaskHome from "../components/homeComponents/TaskHome";
+import TaskHome from "../components/HomeComponents/TaskHome";
 
 import { Colors } from "../constants/styles";
-import WelcomeBanner from "../components/homeComponents/WelcomeBanner";
-
+import WelcomeBanner from "../components/HomeComponents/WelcomeBanner";
+import { useTheme } from "../store/theme-context"; 
 
 function WelcomeScreen({ navigation, route }) {
 
@@ -26,6 +26,7 @@ function WelcomeScreen({ navigation, route }) {
 
   let name = "Ariel"
   
+  const { colors } = useTheme(); 
 
   useEffect(() => {
     axios
@@ -96,7 +97,7 @@ function WelcomeScreen({ navigation, route }) {
     <SafeAreaView style={styles.rootContainer}>
 
       <View style={styles.hiContainer}>
-        <Text style={styles.hi}>Hi, {name}</Text>
+        <Text style={[styles.hi, {color: colors.primary950}]}>Hi, {name}</Text>
       </View>
 
       <View style={styles.container}>
@@ -106,7 +107,7 @@ function WelcomeScreen({ navigation, route }) {
         </View>
 
         <View style={styles.ongoingTasksContainer}>
-          <Text style={styles.ongoingTasks}>Ongoing task</Text>
+          <Text style={[styles.ongoingTasks, {color: colors.primary950}]}>Ongoing task</Text>
         </View>
 
         <View style={styles.tasksContainer}>
@@ -139,6 +140,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    padding: '2%'
   },
 
   welcomeContainer: {

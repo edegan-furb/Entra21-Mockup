@@ -8,6 +8,7 @@ import {
     getCurrrentUserImageName,
 } from "../../util/storage";
 import { fetchUsernameAndEmail, updateUsername } from "../../util/firestore";
+import { heightPercentageToDP, widthPercentageToDP } from "react-native-responsive-screen";
 
 export default function ModalInformationsPerfil() {
 
@@ -74,7 +75,7 @@ export default function ModalInformationsPerfil() {
                         ) : imageSource ? (
                             <Image source={imageSource} style={styles.image} />
                     ) : (
-                            <Ionicons name="person-circle-outline" color="#6366f1" size={135} />
+                            <Ionicons name="person-circle-outline" color="#6366f1" size={widthPercentageToDP('20%')} />
                     )}
                 </View>
             </View>

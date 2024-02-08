@@ -8,34 +8,39 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "../../constants/styles";
 import * as Progress from 'react-native-progress';
+import { useTheme } from "../../store/theme-context";
+
 
 export default function TaskHome({ deadline, taskName, groupName, taskProgress}) {
+
+    const { colors } = useTheme();
+
     return(
-        <View style={styles.container}>
+        <View style={[styles.container, {backgroundColor: colors.primary50}]}>
             <View>
-                <Text>{deadline}</Text>
+                <Text style={{color: colors.primary950}}>{deadline}</Text>
             </View>
 
             <View style={styles.taskContainer}>
                 <Ionicons
                     size={hp('7%')} 
                     name="reader-outline"
-                    color={Colors.primary600}
+                    color={colors.primary600}
                 />
                 <View style={styles.taskInfoContainer}>
-                    <Text style={styles.taskName}>{taskName}</Text>
-                    <Text style={styles.groupName}>{groupName}</Text>
+                    <Text style={[styles.taskName, {color: colors.neutral1100}]}>{taskName}</Text>
+                    <Text style={[styles.groupName, {color: colors.neutral1100}]}>{groupName}</Text>
                 </View>
             </View>
 
             <View style={styles.progressContainer}>
-                <Text style={styles.ProgressText}>Progress:</Text>
+                <Text style={[styles.ProgressText, {color: colors.neutral1100}]}>Progress:</Text>
                 <View style={styles.barContainer}>
                     <Progress.Bar 
                         progress={taskProgress}
                         color={Colors.primary600} 
                         width={wp('25%')} />
-                    <Text> { (taskProgress) * 100 }%</Text>
+                    <Text style={{color: colors.neutral1100}}> { (taskProgress) * 100 }%</Text>
                 </View>
             </View>
         </View>
@@ -50,7 +55,7 @@ const styles = StyleSheet.create({
         padding: '3%',
         borderWidth: 1,
         borderRadius: 20,
-        backgroundColor: '#fff'
+        backgroundColor: Colors.primary50
     },
     taskContainer: {
         height: '50%',

@@ -45,21 +45,19 @@ const themes = {
         error400: "#f87171",
         error500: '#ef4444',
 
-        // Violet
-        primary50: "#160633",
-        primary100: "#2e1065",
+        primary50: "#1a1327",
+        primary100: "#06030e",
         primary200: "#4c1d95",
         primary300: "#5b21b6",
         primary400: "#6d28d9",
         primary500: "#7c3aed",
         primary600: "#8b5cf6",
         primary700: "#a78bfa",
-        primary800: "#c4b5fd",
-        primary900: "#ddd6fe",
-        primary950: "#ede9fe",
+        primary800: "#a78bfa",
+        primary900: "#6d28d9",
+        primary950: "#8b5cf6",
         primary1000: "#f5f3ff",
 
-        // Neutral
         neutral50: "#262626",
         neutral100: "#404040",
         neutral200: "#525252",
@@ -69,15 +67,13 @@ const themes = {
         neutral600: "#e5e5e5",
         neutral700: "#f5f5f5",
         neutral800: "#fafafa",
-        neutral900: "#0000004d",
-        neutral950: "#000000d7",
-        neutral1000: "#000000",
-        neutral1100: "#0a0a0a",
+        neutral900: "#ffffff",
+        neutral950: "#ffffff",
+        neutral1100: "#ffffff",
 
-        // Red
         red500: "#ef4444",
         red600: "#dc2626",
-        red700: "#b91c1c",
+        red700: "#b91c1c"
     },
 };
 
@@ -90,7 +86,7 @@ const ThemeContext = createContext({
 export const useTheme = () => useContext(ThemeContext);
 
 export const ThemeProvider = ({ children }) => {
-    const [theme, setTheme] = useState('light');
+    const [theme, setTheme] = useState('dark');
 
     const toggleTheme = () => {
         setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
