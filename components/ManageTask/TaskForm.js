@@ -1,10 +1,12 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Input from "./Input";
 import Button from "../ui/Button";
 import { Colors } from "../../constants/styles";
 import IconButton from "../ui/IconButton";
 import { getFormattedDate } from "../../util/date";
+import { generateUniqueId } from "../../util/generateUniqueId";
+import { getEmailByUsername } from "../../util/firestore";
 
 function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTitle }) {
   const [inputs, setInputs] = useState({
@@ -43,6 +45,24 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
     }
   );
 
+  useEffect(() => {
+    if (defaultValues && defaultValues.designatedUser) {
+      getEmailByUsername(defaultValues.designatedUser)
+        .then((email) => {
+          if (email) {
+            setInputs((currentInputs) => ({
+              ...currentInputs,
+              designatedUser: { value: email, isValid: true },
+            }));
+          }
+        })
+        .catch((error) => {
+          console.error("Failed to fetch email", error);
+          // Handle error, possibly by setting state
+        });
+    }
+  }, [defaultValues, getEmailByUsername]);
+
   function inputChangeHandler(inputIdentifier, enteredValue, index = null) {
     if (inputIdentifier === "objectives") {
       setInputs((currentInputs) => {
@@ -63,17 +83,6 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
         };
       });
     }
-  }
-
-  function generateUniqueId() {
-    const characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let result = "";
-    const charactersLength = characters.length;
-    for (let i = 0; i < 20; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
   }
 
   function addObjective() {

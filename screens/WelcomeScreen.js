@@ -1,13 +1,8 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-
-
 import { StyleSheet, Text, View, SafeAreaView, FlatList } from "react-native";
 import { AuthContext } from "../store/auth-context";
 import { auth } from "../util/auth";
-import { fetchAllUserTask } from "../util/firestore";
-
-
 import TaskHome from "../components/HomeComponents/TaskHome";
 
 import { Colors } from "../constants/styles";
