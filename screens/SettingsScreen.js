@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet, SafeAreaView, Pressable, Modal} from "react-native";
+import { View, Text, StyleSheet, SafeAreaView, Modal} from "react-native";
 import { AuthContext } from "../store/auth-context";
-import { useContext, useState } from "react";
+import React, { useState, useContext } from "react";
 import { Colors } from "../constants/styles";
 import { Ionicons } from '@expo/vector-icons';
 import SettingsItem from "../components/Settings/SettingsItem";
