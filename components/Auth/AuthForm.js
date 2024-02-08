@@ -1,4 +1,4 @@
-import { Text, Pressable, ScrollView } from 'react-native';
+import { Text, Pressable } from 'react-native';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Colors } from "../../constants/styles";
@@ -130,8 +130,7 @@ export default AuthForm;
 
 const styles = StyleSheet.create({
   form: {
-    width: '100%',
-    height: '100%',
+    flex: 1,
     alignItems: 'center',
     backgroundColor: Colors.neutral100,
   },

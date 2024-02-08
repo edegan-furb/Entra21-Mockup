@@ -6,6 +6,10 @@ import { Ionicons } from '@expo/vector-icons';
 import SettingsItem from "../components/Settings/SettingsItem";
 import InfPerfil from "../components/Settings/InformationsPerfil";
 import ModalInformationsPerfil from "../components/Settings/AboutModal";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 function SettingsScreen() {
 
@@ -69,8 +73,8 @@ export default SettingsScreen;
 
 const styles = StyleSheet.create({
   rootContainer: {
-    width: '100%',
-    height: '100%',
+    width: wp('100%'),
+    height: hp('100%'),
     alignItems: "center",
     backgroundColor: Colors.primary100,
   },

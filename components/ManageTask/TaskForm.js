@@ -173,7 +173,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
   ;
 
   return (
-    <View style={inputs.objectives.length > 1 ? styles.container : styles.containerTest}>
+    <View style={styles.container}>
       <View style={styles.titleContainer}>
         <View style={styles.titleContent}>
           <Text style={styles.title}>{pageTitle}</Text>

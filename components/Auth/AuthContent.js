@@ -3,6 +3,8 @@ import {
   TouchableWithoutFeedback, 
   View, 
   Keyboard, 
+  KeyboardAvoidingView,
+  Platform
 } from "react-native";
 
 import { useState } from "react";
@@ -50,6 +52,10 @@ function AuthContent({ isLogin, onAuthenticate }) {
   }
 
   return (
+    <KeyboardAvoidingView 
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{flex: 1}}
+    >
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={styles.rootContainer}>
         <PagesTitle 
@@ -65,7 +71,8 @@ function AuthContent({ isLogin, onAuthenticate }) {
           />
         </View>
       </SafeAreaView>
-    </TouchableWithoutFeedback> 
+    </TouchableWithoutFeedback>
+    </KeyboardAvoidingView> 
   );
 }
 

@@ -2,8 +2,9 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Colors } from "../../constants/styles";
 import { Feather, Ionicons } from "@expo/vector-icons";
+import { getFormattedDate } from "../../util/date";
 
-function TaskItem({ id, title, designatedUser, groupId }) {
+function TaskItem({ id, title, designatedUser, groupId, date, objectives }) {
   const navigation = useNavigation();
 
   function taskPressHandler() {
@@ -21,22 +22,22 @@ function TaskItem({ id, title, designatedUser, groupId }) {
       <View style={styles.taskItem}>
         <View style={styles.container}>
           <View style={styles.iconContent}>
-            <Ionicons name="paper-plane" color={Colors.primary100} size={40}/>
+            <Ionicons name="paper-plane" color={Colors.primary400} size={40}/>
           </View>
           <View style={styles.titleContent}>
             <Text style={styles.title}>{title}</Text>
-            <Text style={styles.textInf}>
-              <Ionicons name="person" color={Colors.primary100} size={15} numberOfLines={1}/>   {designatedUser}
+              <Text style={styles.textInf} numberOfLines={1}>
+                <Ionicons name="person" color={Colors.neutral100} size={15}/>   {designatedUser}
               </Text>
             <Text style={styles.textInf}>
-              <Ionicons name="calendar-outline" color={Colors.primary100} size={15}/>  
+              <Ionicons name="calendar-outline" color={Colors.neutral100} size={15}/>   {getFormattedDate(date)} 
             </Text>
             <Text style={styles.textInf}>
-              <Feather name="target" color={Colors.primary100} size={15}/>  {}
+              <Feather name="target" color={Colors.neutral100} size={15}/>  {objectives.length}
             </Text>
           </View>
           <View style={styles.iconContent}>
-            <Ionicons name="arrow-redo" color={Colors.primary100} size={25}/>
+            <Ionicons name="arrow-redo" color={Colors.primary400} size={25}/>
           </View>
         </View>
       </View>
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
   },
   titleContent: {
     width: '65%',
-    overflow: "hidden",
+    height: '30%'
   },
   title: {
     fontSize: 16,
@@ -83,9 +84,9 @@ const styles = StyleSheet.create({
     color: Colors.primary50,
   },
   textInf: {
-    padding: 4,
-    fontWeight: "500",
+    paddingVertical: 2,
+    fontWeight: "400",
     paddingLeft: 15,
-    color: Colors.neutral200,
+    color: Colors.neutral100,
   }
 });
