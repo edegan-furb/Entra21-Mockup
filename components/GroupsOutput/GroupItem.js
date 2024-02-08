@@ -22,7 +22,7 @@ function GroupItem({ id, title, }) {
       onPress={groupPressHandler}
       style={({ pressed }) => pressed && styles.pressed}
     >
-      <View style={[styles.groupItem, { backgroundColor: colors.primary800, }]}>
+      <View style={[styles.groupItem, { backgroundColor: colors.primary950, }]}>
         <View style={styles.content}>
           <View style={styles.container}>
             <View style={styles.titleContainer}>

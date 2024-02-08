@@ -84,16 +84,10 @@ function MemberItem({
         )}
       </View>
       <View style={styles.textContainer}>
-        <Text style={[styles.textBase, styles.title]}>{username}</Text>
+        <Text style={[styles.textBase, styles.title]} numberOfLines={1}>{username}</Text>
         <Text style={[styles.textBase, styles.subtitle]} numberOfLines={1}>{email}</Text>
       </View>
-      <View
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "row",
-        }}
-      >
+      <View style={styles.btnContainer}>
         {isCurrentUser ? (
           <Text style={styles.currentUserText}>You</Text>
         ) : isAdmin === true ? (
@@ -156,6 +150,11 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 12,
   },
+  btnContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+  },
   currentUserText: {
     color: Colors.primary100,
     fontSize: 16,
@@ -170,13 +169,13 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    overflow: 'hidden',
-    //marginRight: 12,
   },
   image: {
     width: '100%',
     height: '100%',
     borderRadius: 75,
     resizeMode: "cover",
+    borderWidth: 1,
+    borderColor: Colors.primary100
   },
 });

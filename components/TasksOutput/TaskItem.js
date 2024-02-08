@@ -1,6 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
 import { Colors } from "../../constants/styles";
 import { Feather, Ionicons } from "@expo/vector-icons";
 
@@ -27,7 +26,7 @@ function TaskItem({ id, title, designatedUser, groupId }) {
           <View style={styles.titleContent}>
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.textInf}>
-              <Ionicons name="person" color={Colors.primary100} size={15} />  {designatedUser}
+              <Ionicons name="person" color={Colors.primary100} size={15} numberOfLines={1}/>   {designatedUser}
               </Text>
             <Text style={styles.textInf}>
               <Ionicons name="calendar-outline" color={Colors.primary100} size={15}/>  
@@ -65,11 +64,6 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     shadowOffset: { width: 4, height: 5 },
     shadowOpacity: .3,
-    borderBottomColor: Colors.primary600,
-    borderEndColor: Colors.primary500,
-    borderStartColor: Colors.primary800,
-    borderTopColor: Colors.primary700,
-    borderWidth: 4,
   },
   container: {
     width: '95%',
