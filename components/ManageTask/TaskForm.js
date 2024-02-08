@@ -26,21 +26,22 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
     },
     objectives:
       defaultValues && defaultValues.objectives
-        ? defaultValues.objectives.map((obj) => ({
-            id: obj.id,
-            value: obj.value,
-            completed: obj.completed,
-            isValid: true,
-          }))
-        : [
-            {
-              id: generateUniqueId(),
-              value: "",
-              completed: false,
-              isValid: true,
-            },
-          ],
-  });
+      ? defaultValues.objectives.map((obj) => ({
+        d: obj.id,
+        value: obj.value,
+        completed: obj.completed,
+        isValid: true,
+      }))
+      : [
+        {
+          id: generateUniqueId(),
+          value: "",
+          completed: false,
+          isValid: true,
+        },
+      ],
+    }
+  );
 
   function inputChangeHandler(inputIdentifier, enteredValue, index = null) {
     if (inputIdentifier === "objectives") {
@@ -171,19 +172,9 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
     inputs.objectives.some((objective) => !objective.isValid)
   ;
 
-  const [inputFocado, setInputFocado] = useState(false);
-
-  const handleFocus = () => {
-    setInputFocado(true);
-  };
-
-  const handleClose = () => {
-    setInputFocado(false);
-  };
-
   return (
     <View style={inputs.objectives.length > 1 ? styles.container : styles.containerTest}>
-      <View style={inputFocado === true ? [styles.titleContainer, { height: '18%'}] : styles.titleContainer}>
+      <View style={styles.titleContainer}>
         <View style={styles.titleContent}>
           <Text style={styles.title}>{pageTitle}</Text>
         </View>
@@ -203,7 +194,6 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
                 multiline: false,
                 onChangeText: inputChangeHandler.bind(this, "title"),
                 value: inputs.title.value,
-                
               }}
             />
             <Input
@@ -212,11 +202,9 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
               invalid={!inputs.date.isValid}
               textInputConfig={{
                 placeholder: "YYYY-MM-DD",
-                placeholderTextStyle: { fontSize: 1 },
                 maxLength: 10,
                 onChangeText: inputChangeHandler.bind(this, "date"),
                 value: inputs.date.value,
-                
               }}
             />
           </View>
@@ -228,7 +216,6 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
                 multiline: true,
                 onChangeText: inputChangeHandler.bind(this, "description"),
                 value: inputs.description.value,
-                
               }}
             />
           </View>
@@ -241,7 +228,6 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
                 multiline: false,
                 onChangeText: inputChangeHandler.bind(this, "designatedUser"),
                 value: inputs.designatedUser.value,
-                
               }}
             />
           </View>  
@@ -253,7 +239,6 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
                 invalid={!objective.isValid}
                 textInputConfig={{
                   multiline: false,
-                  
                   onChangeText: (text) =>
                     inputChangeHandler("objectives", text, index),
                   value: objective.value,
@@ -282,8 +267,8 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
             </Text>
           )}  
         </ScrollView>
-        <View style={inputFocado === true ? [styles.buttonsContainer, { height: '25%'}] : styles.buttonsContainer}>
-          <View style={inputFocado === true ? [styles.buttonContent, { height: '60%'}] : styles.buttonContent}>
+        <View style={styles.buttonsContainer}>
+          <View style={styles.buttonContent}>
             <Button mode="flat" onPress={onCancel}>
               Cancel
             </Button>
@@ -302,19 +287,20 @@ export default TaskForm;
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    height: '95%',
+    height: '80%',
     backgroundColor: Colors.primary900,
     borderRadius: 20,
+    marginTop: '15%',
   },
   containerTest: {
     width: '100%',
-    height: '85%',
+    height: '75%',
     backgroundColor: Colors.primary900,
     borderRadius: 20,
     marginTop: 15,
   },
   titleContainer: {
-    height: '12%',
+    height: '15%',
     width: '100%',
     backgroundColor: Colors.primary100,
     borderTopLeftRadius: 20,
@@ -370,7 +356,7 @@ const styles = StyleSheet.create({
     width: '80%'
   },
   removeButton: {
-    height: '65%',
+    height: '70%',
   },
   buttonAddObjective: {
     padding: 10,

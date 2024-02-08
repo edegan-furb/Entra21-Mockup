@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     fontWeight: 600
   },
   input: {
-    padding: 5,
+    padding: 8,
     borderRadius: 6,
     fontSize: 14,
     paddingLeft: 10,

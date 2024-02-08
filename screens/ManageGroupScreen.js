@@ -104,8 +104,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   formCreate: {
-    marginTop: 40,
-    height: hp('40%'),
+    marginTop: '25%',
+    height: hp('35%'),
     width: wp('90%'),
     borderRadius: 20,
     backgroundColor: Colors.primary900,
@@ -142,8 +142,8 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   formEditing: {
-    marginTop: 40,
-    height: hp('40%'),
+    marginTop: '25%',
+    height: hp('35%'),
     width: wp('90%'),
     borderRadius: 20,
     backgroundColor: Colors.primary900,

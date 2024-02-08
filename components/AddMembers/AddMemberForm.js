@@ -114,9 +114,9 @@ export default AddMemberForm;
 
 const styles = StyleSheet.create({
   form: {
-    marginTop: 40,
+    marginTop: '25%',
     width: wp('90%'),
-    height: hp('45%'),
+    height: hp('35%'),
     backgroundColor: Colors.primary900,
     borderRadius: 20,
   },
