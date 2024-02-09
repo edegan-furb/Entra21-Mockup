@@ -3,7 +3,7 @@ import TasksOutput from "../components/TasksOutput/TaskOuput"; // Ensure correct
 import { GroupsContext } from "../store/groups-context";
 import { fetchGroups, fetchUsernameAndEmail } from "../util/firestore";
 import { auth } from "../util/firebaseConfig";
-import { View, ActivityIndicator, Text } from "react-native";
+import { View, ActivityIndicator, Text, StyleSheet } from "react-native";
 import { Colors } from "../constants/styles";
 
 function WelcomeScreen() {
@@ -15,15 +15,15 @@ function WelcomeScreen() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-       
+
         await loadUserData();
       } else {
-    
+
         setLoading(false);
       }
     });
 
- 
+
     return () => unsubscribe();
   }, []);
 
@@ -45,7 +45,7 @@ function WelcomeScreen() {
           const tasks = getTasksForUser(groups, username);
           setUserTasks(tasks);
         }
-        
+
         setLoading(false);
       });
       return () => stopListening();
@@ -72,19 +72,16 @@ function WelcomeScreen() {
   }
 
   return (
-    <View style={{ flex: 1 }}>
-      <View style={{ flex: 0.5 }}></View>
-      <View style={{ flex: 1, justifyContent: "center" }}>
+    <View style={styles.container}>
+      <View style={styles.usernameContainer}>
+        <Text style={styles.text}>{username ? ("Hi, " + username) : ("Welcome back!")}
+        </Text>
+      </View>
+      <View style={styles.ongoingTasks}>
         <Text
-          style={{
-            textAlign: "left",
-            marginHorizontal: 25,
-            marginTop: 20,
-            fontSize: 20,
-            fontWeight: "bold",
-          }}
+          style={styles.text}
         >
-          Your Current Tasks :
+          Ongoing Tasks
         </Text>
         {loading ? (
           <ActivityIndicator size="large" color={Colors.primary800} />
@@ -97,3 +94,22 @@ function WelcomeScreen() {
 }
 
 export default WelcomeScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+  usernameContainer: {
+    flex: 1, padding: 24
+  },
+  text: {
+    textAlign: "left",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  ongoingTasks: {
+    flex: 1,
+    paddingHorizontal: 24
+  }
+})
+

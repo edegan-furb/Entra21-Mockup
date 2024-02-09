@@ -277,6 +277,7 @@ export async function removeMember(memberId) {
   }
 }
 
+
 export async function fetchGroups(callback) {
   // Get the UID of the current authenticated user
   const userRef = auth.currentUser.uid;
@@ -301,7 +302,7 @@ export async function fetchGroups(callback) {
             where("group", "==", groupRef)
           );
           const tasksSnapshot = await getDocs(tasksQuery);
-          const tasks = await Promise.all(
+          const tasks = (await Promise.all(
             tasksSnapshot.docs.map(async (taskDoc) => {
               const taskData = taskDoc.data();
 
@@ -317,13 +318,17 @@ export async function fetchGroups(callback) {
                 })
               );
 
+              // Calculate the length of the objectives array
+              const objectivesLength = objectives.length;
+
+
               // Fetch the designated user's username
               let designatedUserUsername = "";
               if (taskData.designatedUser) {
                 const userDocSnapshot = await getDoc(taskData.designatedUser);
                 if (userDocSnapshot.exists()) {
                   const userData = userDocSnapshot.data();
-                  designatedUserUsername = userData.username; // Assuming the field is named 'email'
+                  designatedUserUsername = userData.username; // Assuming the field is named 'username'
                 }
               }
 
@@ -337,9 +342,10 @@ export async function fetchGroups(callback) {
                 designatedUser: designatedUserUsername,
                 group: taskData.group,
                 objectives: objectives, // Array of objectives
+                objectivesLength: objectivesLength,
               };
             })
-          );
+          )).sort((a, b) => a.title.localeCompare(b.title)); // Sort tasks by title alphabetically
 
           return { ...groupData, tasks: tasks };
         })
@@ -355,6 +361,7 @@ export async function fetchGroups(callback) {
     stopListeningUserMemberships();
   };
 }
+
 
 // // Function to fetch all groups a user is a member of
 // export async function fetchGroups(callback) {
@@ -577,6 +584,7 @@ export async function fetchGroupTasks(groupId, callback) {
       }
     });
 
+
     // Process each task document
     await Promise.all(
       tasksSnapshot.docs.map(async (docSnapshot) => {
@@ -620,10 +628,15 @@ export async function fetchGroupTasks(groupId, callback) {
                 completed: doc.data().completed,
               }));
 
+
+              // Calculate the length of the objectives array
+              const objectivesLength = objectives.length;
+
               // Update the task's objectives and invoke the callback
               const updatedTask = tasksData.get(taskId);
               if (updatedTask) {
                 updatedTask.objectives = objectives;
+                updatedTask.objectivesLength = objectivesLength;
                 tasksData.set(taskId, updatedTask); // Ensure the map is updated
                 callback(Array.from(tasksData.values())); // Convert Map values to an array
               }

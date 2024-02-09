@@ -50,7 +50,7 @@ function GroupScreen({ route, navigation }) {
     };
 
     getTasks();
-  }, [initialLoad]);
+  }, []);
 
   useEffect(() => {
     if (!selectGroup) {
@@ -110,7 +110,7 @@ function GroupScreen({ route, navigation }) {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: selectGroup?.title || "Group",
+      title: `${selectGroup?.title || "Group"}'s Tasks`,
       headerRight: renderHeaderButtons,
     });
   }, [navigation, selectGroup, renderHeaderButtons]);

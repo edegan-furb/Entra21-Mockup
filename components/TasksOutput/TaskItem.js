@@ -2,8 +2,10 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { Colors } from "../../constants/styles";
+import { getFormattedDate } from "../../util/date";
+import { Ionicons } from "@expo/vector-icons";
 
-function TaskItem({ id, title, groupId }) {
+function TaskItem({ id, title, designatedUser, groupId, date, completed }) {
   const navigation = useNavigation();
 
   function taskPressHandler() {
@@ -20,7 +22,16 @@ function TaskItem({ id, title, groupId }) {
     >
       <View style={styles.taskItem}>
         <View>
-          <Text style={[styles.textBase, styles.title]}>{title}</Text>
+          <View style={styles.titleContainer}>
+            <Text style={[styles.textBase, styles.title]}>{title}</Text>
+            <Ionicons
+              name= {completed ? "checkmark-circle-outline" :"ellipse-outline" }
+              color={Colors.primary100}
+              size={21}
+            />
+          </View>
+          <Text style={[styles.textBase, styles.text]}>Assigned member: {designatedUser}</Text>
+          <Text style={[styles.textBase, styles.text]}>{getFormattedDate(date)}</Text>
         </View>
       </View>
     </Pressable>
@@ -33,9 +44,13 @@ const styles = StyleSheet.create({
   pressed: {
     opacity: 0.75,
   },
+  titleContainer: {
+    flexDirection: "row"
+  },
   taskItem: {
     padding: 12,
-    marginVertical: 8,
+    marginVertical: 6,
+    marginHorizontal: 8,
     backgroundColor: Colors.primary800,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -52,6 +67,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     marginBottom: 4,
+    marginRight: 8,
     fontWeight: "bold",
+  },
+  text: {
+    fontSize: 14,
+    marginBottom: 4,
   },
 });

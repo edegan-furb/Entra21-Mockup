@@ -59,16 +59,14 @@ function SettingsScreen() {
   const toggleEdit = () => {
     setIsEditing(!isEditing);
     if (isEditing) {
-      handleSavePress(); // Save the changes when toggling from editing to viewing
+      handleSavePress();
     }
   };
 
   const handleSavePress = async () => {
-    //setIsLoading(true);
     await updateUsername(editUsername);
     setUsername(editUsername);
     setIsEditing(false);
-    //setIsLoading(false);
   };
   return (
     <View style={styles.rootContainer}>
