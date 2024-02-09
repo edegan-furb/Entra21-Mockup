@@ -94,7 +94,8 @@ function GroupScreen({ route, navigation }) {
             });
           }}
         />
-        <IconButton
+        {isAdminStatus && (
+          <IconButton
           icon={"add-circle-outline"}
           color={Colors.primary100}
           size={24}
@@ -104,6 +105,7 @@ function GroupScreen({ route, navigation }) {
             });
           }}
         />
+        )}
       </View>
     );
   }, [isAdminStatus, navigation, groupId]);
