@@ -7,7 +7,6 @@ import { useContext, useEffect, useState } from "react";
 import { getImageUrlByName, getUserImageName } from '../../util/storage';
 import { Ionicons } from '@expo/vector-icons';
 
-
 function MemberItem({
   id,
   email,
@@ -18,9 +17,7 @@ function MemberItem({
   onChangeAdminStatus,
 }) {
 
-
   const [imageSource, setImageSource] = useState(null);
-
 
   const currentUser = auth.currentUser.uid;
   const groupsCtx = useContext(GroupsContext);

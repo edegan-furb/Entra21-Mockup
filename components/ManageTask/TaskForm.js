@@ -6,7 +6,7 @@ import { Colors } from "../../constants/styles";
 import IconButton from "../ui/IconButton";
 import { getFormattedDate } from "../../util/date";
 import { generateUniqueId } from "../../util/generateUniqueId";
-import { getEmailByUsername } from "../../util/firestore";
+import { getEmailByUsername, fetchUsernameAndEmail } from "../../util/firestore";
 
 function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTitle }) {
   const [inputs, setInputs] = useState({
@@ -23,18 +23,19 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
       isValid: true,
     },
     designatedUser: {
-      value: defaultValues ? defaultValues.designatedUser : "",
+      value:
+        defaultValues && defaultValues.designatedUser ? "Loading email..." : "",
       isValid: true,
     },
     objectives:
-      defaultValues && defaultValues.objectives
-      ? defaultValues.objectives.map((obj) => ({
-        d: obj.id,
+      defaultValues && defaultValues.objectives ? defaultValues.objectives.map((obj) => ({
+        id: obj.id,
         value: obj.value,
         completed: obj.completed,
         isValid: true,
       }))
-      : [
+      : 
+      [
         {
           id: generateUniqueId(),
           value: "",
@@ -44,6 +45,20 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
       ],
     }
   );
+  const [currentUserEmail, setCurrentUserEmail] = useState("");
+
+  useEffect(() => {
+    // Assuming fetchUsernameAndEmail is an async function that returns { email: userEmail }
+    fetchUsernameAndEmail()
+      .then((userDetails) => {
+          setCurrentUserEmail(userDetails.email);
+          console.log(currentUserEmail);
+      })
+      .catch((error) => {
+        console.error("Error fetching user email:", error);
+      }
+    );
+  }, []);
 
   useEffect(() => {
     if (defaultValues && defaultValues.designatedUser) {
@@ -59,7 +74,8 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
         .catch((error) => {
           console.error("Failed to fetch email", error);
           // Handle error, possibly by setting state
-        });
+        }
+      );
     }
   }, [defaultValues, getEmailByUsername]);
 
@@ -128,7 +144,10 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
     const titleIsValid = taskData.title.trim().length > 0;
     const dateIsValid = taskData.date.toString() !== "Invalid Date";
     const descriptionIsValid = taskData.description.trim().length > 0;
-    const designatedUserIsValid = taskData.designatedUser.includes("@");
+    const designatedUserIsValid =
+      taskData.designatedUser.includes("@") &&
+      taskData.designatedUser.toLowerCase() !== currentUserEmail
+    ;
     const objectivesAreValid = inputs.objectives.every(
       (objective) => objective.value.trim().length > 0
     );
@@ -270,12 +289,17 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
               Add Objective
             </Button>
           </View>
-          {formIsInvalid && (
-            <Text style={styles.errorText}>
-              Invalid input values - please check your entered data
-            </Text>
-          )}  
         </ScrollView>
+        {formIsInvalid && (
+          <Text style={styles.errorText}>
+            Invalid input values - please check your entered data
+          </Text>
+        )} 
+        {!inputs.designatedUser.isValid && (
+          <Text style={styles.errorText}>
+          You cannot assign a task to yourself.
+          </Text>
+        )}
         <View style={styles.buttonsContainer}>
           <View style={styles.buttonContent}>
             <Button mode="flat" onPress={onCancel}>
