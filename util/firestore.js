@@ -755,7 +755,6 @@ export async function updateTaskStatus(taskId) {
   }
 }
 
-
 export async function deleteTask(taskId) {
   try {
     // Create a reference to the task document

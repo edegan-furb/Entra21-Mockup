@@ -13,6 +13,7 @@ import {
   deleteTask
 } from "../util/firestore";
 import { generateUniqueId } from "../util/generateUniqueId";
+import IconButton from "../components/ui/IconButton";
 
 function ManageTasksScreen({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(false);

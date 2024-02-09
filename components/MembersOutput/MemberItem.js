@@ -114,7 +114,7 @@ function MemberItem({
           />
         )}
       </View>
-    </View>
+    </View >
   );
 }
 
