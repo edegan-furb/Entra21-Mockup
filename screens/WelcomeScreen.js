@@ -1,39 +1,34 @@
-import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { StyleSheet, Text, View, SafeAreaView, FlatList } from "react-native";
-import { AuthContext } from "../store/auth-context";
-import { auth } from "../util/auth";
-import TaskHome from "../components/HomeComponents/TaskHome";
-
+import { StyleSheet, Text, View, SafeAreaView, ActivityIndicator } from "react-native";
+import { GroupsContext } from "../store/groups-context";
 import { Colors } from "../constants/styles";
+import { fetchGroups, fetchUsernameAndEmail } from "../util/firestore";
 import WelcomeBanner from "../components/HomeComponents/WelcomeBanner";
 import { useTheme } from "../store/theme-context"; 
+import { auth } from "../util/firebaseConfig";
+import TasksOutput from "../components/TasksOutput/TaskOuput";
 
 function WelcomeScreen({ navigation, route }) {
 
-
-  const [fetchedMessage, setFetchedMesssage] = useState("");
-
-  const authCtx = useContext(AuthContext);
-  const token = authCtx.token;
-
-  const user = auth.currentUser;
-
-  let name = "Ariel"
+  const [loading, setLoading] = useState(true);
+  const [username, setUsername] = useState(null);
+  const [userTasks, setUserTasks] = useState([]);
+  const groupsCtx = useContext(GroupsContext);
   
   const { colors } = useTheme(); 
 
   useEffect(() => {
-    axios
-      .get(
-        "https://authapp-97508-default-rtdb.firebaseio.com//message.json?auth=" +
-        token
-      )
-      .then((response) => {
-        setFetchedMesssage(response.data);
-      });
-  }, [token]);
-
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      if (user) {
+       
+        await loadUserData();
+      } else {
+    
+        setLoading(false);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
   function goToGroups() {
     navigation.navigate("Groups", {
@@ -41,58 +36,55 @@ function WelcomeScreen({ navigation, route }) {
     });
   }
 
-  //USO PROVISÓRIO
-  let DATA = [
-    {
-      id: 1,
-      deadline: 'Jan, 31 2024',
-      taskName: "Dar Água pro cachorro pincher",
-      groupName: "Clube da Luta",
-      taskProgress: 0.8
-    },
-    {
-      id: 2,
-      deadline: 'Jan, 31 2024',
-      taskName: "Dar Água pro cachorro Bulldog",
-      groupName: "Clube da Luta",
-      taskProgress: 0.5
-    },
-    {
-      id: 3,
-      deadline: 'Jan, 31 2024',
-      taskName: "Dar Água pro cachorro pincher",
-      groupName: "Clube da Luta",
-      taskProgress: 0.8
-    },
-    {
-      id: 4,
-      deadline: 'Jan, 31 2024',
-      taskName: "Dar Água pro cachorro Bulldog",
-      groupName: "Clube da Luta",
-      taskProgress: 0.5
-    },
-    {
-      id: 5,
-      deadline: 'Jan, 31 2024',
-      taskName: "Dar Água pro cachorro pincher",
-      groupName: "Clube da Luta",
-      taskProgress: 0.8
-    },
-    {
-      id: 6,
-      deadline: 'Jan, 31 2024',
-      taskName: "Dar Água pro cachorro Bulldog",
-      groupName: "Clube da Luta",
-      taskProgress: 0.5
-    },
-  ]
+  const loadUserData = async () => {
+    try {
+      const userDetails = await fetchUsernameAndEmail();
+      setUsername(userDetails.username);
+      await loadGroups();
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
 
+  const loadGroups = async () => {
+    try {
+      const stopListening = await fetchGroups(async (groups) => {
+        groupsCtx.setGroups(groups);
+        if (username) {
+          const tasks = getTasksForUser(groups, username);
+          setUserTasks(tasks);
+        }
+        
+        setLoading(false);
+      });
+      return () => stopListening();
+    } catch (error) {
+      console.error("Error fetching groups:", error);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (username && groupsCtx.groups.length > 0) {
+      const tasks = getTasksForUser(groupsCtx.groups, username);
+      setUserTasks(tasks);
+    }
+  }, [username, groupsCtx.groups]);
+
+  function getTasksForUser(groups, username) {
+    return groups.reduce((tasksForUser, group) => {
+      const filteredTasks = group.tasks.filter(
+        (task) => task.designatedUser === username
+      );
+      return tasksForUser.concat(filteredTasks);
+    }, []);
+  }
 
   return (
     <SafeAreaView style={styles.rootContainer}>
 
       <View style={styles.hiContainer}>
-        <Text style={[styles.hi, {color: colors.primary950}]}>Hi, {name}</Text>
+        <Text style={[styles.hi, {color: colors.primary950}]}>Hi, {}</Text>
       </View>
 
       <View style={styles.container}>
@@ -106,7 +98,12 @@ function WelcomeScreen({ navigation, route }) {
         </View>
 
         <View style={styles.tasksContainer}>
-          <FlatList
+        {loading ? (
+          <ActivityIndicator size="small" color={Colors.primary800} />
+        ) : (
+          <TasksOutput tasks={userTasks} firstText="No Tasks" isWelcomeScreen={true} />
+        )}
+          {/* <FlatList
             data={DATA}
             renderItem={({ item }) => (
               <TaskHome
@@ -119,7 +116,7 @@ function WelcomeScreen({ navigation, route }) {
             numColumns={2}
             showsVerticalScrollIndicator={false}
             keyExtractor={(item) => item.id.toString()}
-          />
+          /> */}
         </View>
       </View>
     </SafeAreaView>
