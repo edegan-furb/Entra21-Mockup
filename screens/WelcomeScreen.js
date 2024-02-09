@@ -3,10 +3,10 @@ import { StyleSheet, Text, View, SafeAreaView, ActivityIndicator } from "react-n
 import { GroupsContext } from "../store/groups-context";
 import { Colors } from "../constants/styles";
 import { fetchGroups, fetchUsernameAndEmail } from "../util/firestore";
-import WelcomeBanner from "../components/HomeComponents/WelcomeBanner";
+import WelcomeBanner from "../components/homeComponents/WelcomeBanner";
 import { useTheme } from "../store/theme-context"; 
 import { auth } from "../util/firebaseConfig";
-import TasksOutput from "../components/TasksOutput/TaskOuput";
+import CurrentTasksOutput from '../components/CurrentTasksOutput/CurrentTaskOuput'
 
 function WelcomeScreen({ navigation, route }) {
 
@@ -40,6 +40,7 @@ function WelcomeScreen({ navigation, route }) {
     try {
       const userDetails = await fetchUsernameAndEmail();
       setUsername(userDetails.username);
+      console.log("Username:", username);
       await loadGroups();
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -84,7 +85,7 @@ function WelcomeScreen({ navigation, route }) {
     <SafeAreaView style={[styles.rootContainer, {backgroundColor: colors.background50}]}>
 
       <View style={styles.hiContainer}>
-        <Text style={[styles.hi, {color: colors.text900}]}>Hi, {}</Text>
+        <Text style={[styles.hi, {color: colors.text900}]}>Hi, {username}</Text>
       </View>
 
       <View style={styles.container}>
@@ -101,8 +102,10 @@ function WelcomeScreen({ navigation, route }) {
         {loading ? (
           <ActivityIndicator size="small" color={Colors.primary800} />
         ) : (
-          <TasksOutput tasks={userTasks} firstText="No Tasks" isWelcomeScreen={true} />
+          <CurrentTasksOutput tasks={[{id: 1, deadline: '2023', taskName: 'oi', groupName: 'FC', taskProgress: 0.8}]} firstText="No tasks found" />
         )}
+        {console.log("oi  ", userTasks)}
+        {console.log("Username:", username)}
           {/* <FlatList
             data={DATA}
             renderItem={({ item }) => (
