@@ -22,29 +22,29 @@ function GroupItem({ id, title, }) {
       onPress={groupPressHandler}
       style={({ pressed }) => pressed && styles.pressed}
     >
-      <View style={[styles.groupItem, { backgroundColor: colors.primary950, }]}>
+      <View style={[styles.groupItem, { backgroundColor: colors.background900, }]}>
         <View style={styles.content}>
           <View style={styles.container}>
             <View style={styles.titleContainer}>
-              <Text style={[styles.textBase, styles.title, {color: colors.primary100}]}>{title}</Text>
+              <Text style={[styles.title, {color: colors.text700}]}>{title}</Text>
             </View>
             <View style={styles.infGroupsContainer}>
               <View style={styles.infGroups}>
-                <Ionicons name="people" color={colors.primary100} size={17} />
-                <Text style={[styles.infTitleGroup, {color: colors.primary100}]}>
+                <Ionicons name="people" color={colors.text700} size={17} />
+                <Text style={[styles.infTitleGroup, {color: colors.text700}]}>
                  4
                 </Text>
               </View>
               <View style={styles.infGroups}>
-                <Foundation name="clipboard-pencil" color={colors.primary100} size={17}/>
-                <Text style={[styles.infTitleGroup, {color: colors.primary100}]}>
+                <Foundation name="clipboard-pencil" color={colors.text700} size={17}/>
+                <Text style={[styles.infTitleGroup, {color: colors.text700}]}>
                   4
                </Text>
               </View>  
             </View>
           </View>
           <View style={styles.graphiContainer}>
-            <Text style={[styles.graphiTextInf, {color: colors.primary100}]}>Concluido</Text>
+            <Text style={[styles.graphiTextInf, {color: colors.text700}]}>Concluido</Text>
             <GroupDonut concludedTasks={80} />
           </View>
         </View>
@@ -88,9 +88,6 @@ const styles = StyleSheet.create({
   titleContainer: {
     width: '100%',
     height: '45%',
-  },
-  textBase: {
-    //color: Colors.primary100,
   },
   title: {
     fontSize: 16,

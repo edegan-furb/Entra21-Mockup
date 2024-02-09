@@ -23,7 +23,7 @@ export default function TaskHome({ deadline, taskName, groupName, taskProgress})
 
             <View style={styles.taskContainer}>
                 <Ionicons
-                    size={hp('7%')} 
+                    size={30} 
                     name="reader-outline"
                     color={colors.primary600}
                 />

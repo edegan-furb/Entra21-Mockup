@@ -121,7 +121,7 @@ function TaskScreen({ route, navigation }) {
             </View>
             <View style={styles.dateContent}>
               <Text style={styles.designatedUserText}>Desinated: </Text>
-              <Text style={styles.designatedUser}>{selectTask?.designatedUser}</Text>
+              <Text style={styles.designatedUser}> {selectTask?.designatedUser}</Text>
             </View>
           </View>
           <View style={styles.buttonContainer}>

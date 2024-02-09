@@ -77,10 +77,10 @@ function AddMemberForm({ onCancel, onSubmit }) {
             <Switch
               activeText={''}
               inActiveText={''}
-              backgroundActive={Colors.primary800}
+              backgroundActive={Colors.primary950}
               backgroundInactive={Colors.neutral400}
-              circleActiveColor={Colors.primary100}
-              circleInActiveColor={Colors.primary100}
+              circleActiveColor={Colors.primary200}
+              circleInActiveColor={Colors.primary200}
               onValueChange={toggleSwitch}
               value={isChecked}
               circleSize={20}

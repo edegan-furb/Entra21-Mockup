@@ -81,10 +81,10 @@ function WelcomeScreen({ navigation, route }) {
   }
 
   return (
-    <SafeAreaView style={styles.rootContainer}>
+    <SafeAreaView style={[styles.rootContainer, {backgroundColor: colors.background50}]}>
 
       <View style={styles.hiContainer}>
-        <Text style={[styles.hi, {color: colors.primary950}]}>Hi, {}</Text>
+        <Text style={[styles.hi, {color: colors.text900}]}>Hi, {}</Text>
       </View>
 
       <View style={styles.container}>
@@ -94,7 +94,7 @@ function WelcomeScreen({ navigation, route }) {
         </View>
 
         <View style={styles.ongoingTasksContainer}>
-          <Text style={[styles.ongoingTasks, {color: colors.primary950}]}>Ongoing task</Text>
+          <Text style={[styles.ongoingTasks, {color: colors.text900}]}>Ongoing task</Text>
         </View>
 
         <View style={styles.tasksContainer}>

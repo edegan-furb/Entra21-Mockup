@@ -1,6 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
-import { Colors } from "../../constants/styles"; 
 import { useTheme } from "../../store/theme-context";
 
 export default function AddButton({ title, onPress, button }) {
@@ -10,16 +9,20 @@ export default function AddButton({ title, onPress, button }) {
     return(
         <View style={styles.addButtonContainer}>
             <Pressable 
-                style={({ pressed }) => pressed ? [styles.addButton, styles.pressed, {backgroundColor: colors.primary900}] : [styles.addButton, button]} 
-                android_ripple={{ color: Colors.primary950 }}
+                style={({ pressed }) => pressed ? 
+                    [styles.addButton, styles.pressed, {backgroundColor: colors.btnAdd50}] 
+                    : 
+                    [styles.addButton, button, {backgroundColor: colors.btnAdd50}]
+                } 
+                android_ripple={{ color: colors.btnAdd50 }}
                 onPress={onPress}
             >
                 <Ionicons
                     name="add-outline"
                     size={20}
-                    color={Colors.primary900}
+                    color={colors.icons800}
                 />
-                <Text style={styles.addButtonText}>{title}</Text>
+                <Text style={[styles.addButtonText, {color: colors.text100}]}>{title}</Text>
             </Pressable>
         </View>
     );
@@ -34,14 +37,13 @@ const styles = StyleSheet.create({
         width: '80%',
         height: '100%',
         borderRadius: 12,
-        backgroundColor: Colors.primary50,
         flexDirection: 'row',
         alignItems: "center",
         justifyContent: "center",
         borderWidth: 1,
-        borderColor: Colors.primary900,
+        borderColor: '#4c1d95',
         elevation: 4,
-        shadowColor: Colors.primary950,
+        shadowColor: '#2e1065',
         shadowRadius: 5,
         shadowOffset: { width: 1, height: 1 },
         shadowOpacity: .3,
@@ -49,7 +51,6 @@ const styles = StyleSheet.create({
     addButtonText: {
         fontFamily: "open-sans-bold",
         fontSize: 12,
-        color: Colors.primary900,
     },
     pressed: {
         opacity: 0.5,

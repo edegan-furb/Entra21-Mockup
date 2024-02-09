@@ -13,7 +13,6 @@ import {
   deleteTask
 } from "../util/firestore";
 import { generateUniqueId } from "../util/generateUniqueId";
-import IconButton from "../components/ui/IconButton";
 
 function ManageTasksScreen({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -37,17 +36,6 @@ function ManageTasksScreen({ navigation, route }) {
         }
       });
     });
-  }
-
-  function generateUniqueId() {
-    const characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let result = "";
-    const charactersLength = characters.length;
-    for (let i = 0; i < 20; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
   }
 
   function cancelHandler() {
@@ -142,6 +130,8 @@ function ManageTasksScreen({ navigation, route }) {
             onSubmit={confirmHandler}
             defaultValues={selectTask}
             pageTitle={!editedTaskId ? "Add Task " : "Update Task"}
+            isEditing={isEditing}
+            onPressDelete={deleteGroupHandler}
           />
         </View>
       </KeyboardAvoidingView>

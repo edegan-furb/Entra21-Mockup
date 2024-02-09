@@ -1,13 +1,11 @@
-import { StyleSheet, Text, View, StatusBar } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 
 import GroupsList from "./GroupsList";
 import AddButton from '../GroupsOutput/AddButton';
 import UpperLogo from '../../components/Start/UpperLogo';
-import { Colors } from "../../constants/styles";
 import { useTheme } from '../../store/theme-context';
-
 
 function GroupsOutput({ groups, firstText, secondText, title }) {
 
@@ -23,10 +21,10 @@ function GroupsOutput({ groups, firstText, secondText, title }) {
 
   let content = 
     <View style={styles.textContainer}>
-      <Text style={[styles.text, {color: colors.primary100}]}>
+      <Text style={[styles.text, {color: colors.text900}]}>
         {firstText}
       </Text>
-      <Text style={[styles.text, {color: colors.primary100}]}>
+      <Text style={[styles.text, {color: colors.text900}]}>
         {secondText}
       </Text>
       <View style={styles.addButtonContainer}>
@@ -44,7 +42,7 @@ function GroupsOutput({ groups, firstText, secondText, title }) {
   }
 
   return (
-    <SafeAreaView style={[styles.rootContainer, {backgroundColor: colors.primary100}]}>
+    <SafeAreaView style={[styles.rootContainer, {backgroundColor: colors.background50}]}>
       <View View style={styles.headerContainer}>
         <UpperLogo children={'TaskSync'}/>
         <AddButton 
@@ -83,7 +81,6 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     fontSize: 19,
     textAlign: "center",
-    color: Colors.primary900,
   },
   addButtonContainer: {
     width: '100%',

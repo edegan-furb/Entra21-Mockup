@@ -1,6 +1,5 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
-import { Colors } from '../../constants/styles';
 import { useTheme } from "../../store/theme-context";
 
 export default function WelcomeComp({ onPress }) {
@@ -9,14 +8,14 @@ export default function WelcomeComp({ onPress }) {
 
     return (
         <Pressable 
-            style={({ pressed }) => pressed ? [styles.pressed, styles.container] : [styles.container, {backgroundColor: colors.primary50}]}
+            style={({ pressed }) => pressed ? [styles.pressed, styles.container] : [styles.container, {backgroundColor: colors.background100}]}
             onPress={onPress}>
 
             <View style={styles.textContainer}>
-                <Text style={[styles.title, {color: colors.primary900}]}>
+                <Text style={[styles.title, {color: colors.text900}]}>
                     Welcome!
                 </Text>
-                <Text style={[styles.text, {color: colors.primary800}]}>
+                <Text style={[styles.text, {color: colors.text800}]}>
                     Let's make today productive!
                 </Text>
             </View>
@@ -38,7 +37,6 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         borderWidth: 1,
         padding: '2%',
-        backgroundColor: Colors.primary50,
         flexDirection: 'row'
     },
     textContainer: {
@@ -50,11 +48,9 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 22,
         fontWeight: 'bold',
-        color: Colors.primary950
     },
     text: {
         fontSize: 14,
-        color: Colors.primary800,
         textAlign: 'center'
     },
     imageContainer: {
@@ -67,6 +63,5 @@ const styles = StyleSheet.create({
     },
     pressed: {
         opacity: 0.75,
-        backgroundColor: Colors.primary100,
     },
 })

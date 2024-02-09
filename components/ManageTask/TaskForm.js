@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useState, useEffect } from "react";
 import Input from "./Input";
 import Button from "../ui/Button";
@@ -8,7 +8,7 @@ import { getFormattedDate } from "../../util/date";
 import { generateUniqueId } from "../../util/generateUniqueId";
 import { getEmailByUsername, fetchUsernameAndEmail } from "../../util/firestore";
 
-function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTitle }) {
+function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTitle, isEditing, onPressDelete }) {
   const [inputs, setInputs] = useState({
     title: {
       value: defaultValues ? defaultValues.title : "",
@@ -309,6 +309,17 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
               {submitButtonLabel}
             </Button>
           </View>
+          {isEditing && (
+          <Pressable style={styles.deleteContainer} onPress={onPressDelete}>
+            <Text style={styles.textButton}>Delete task</Text>
+            <IconButton
+              icon="trash"
+              color={Colors.error500}
+              size={20}
+              onPress={onPressDelete}
+            />
+            </Pressable>
+          )}
         </View>
       </View>
     </View>
@@ -404,17 +415,30 @@ const styles = StyleSheet.create({
   },
   buttonsContainer: {
     width: '100%',
-    height: '20%',
+    height: '25%',
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
     borderTopWidth: 2,
     borderColor: Colors.primary900
   },
   buttonContent: {
-    height: '45%',
+    height: '40%',
     width: '85%',
     flexDirection: "row",
     gap: 10,
     alignItems: "center",
+  },
+  deleteContainer: {
+    height: '40%',
+    width: '50%',
+    borderRadius: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: Colors.primary900
+  },
+  textButton: {
+    color: Colors.primary100,
+    fontWeight: "bold"
   }
 });

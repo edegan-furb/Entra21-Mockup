@@ -81,13 +81,13 @@ function AuthenticatedBottomTab() {
 
   return (
     <BottomTabs.Navigator
-      sceneContainerStyle={{ backgroundColor: colors.primary100 }}
+      sceneContainerStyle={{ backgroundColor: colors.background50 }}
       screenOptions={{
-        headerStyle: { backgroundColor: colors.primary500 },
-        headerTintColor: "white",
-        tabBarStyle: { backgroundColor: colors.primary900 },
-        tabBarActiveTintColor: colors.primary100,
-        tabBarShowLabel: false,
+        headerStyle: { backgroundColor: colors.background500 },
+        headerTintColor: "red",
+        tabBarStyle: { backgroundColor: colors.bgTabBar900},
+        tabBarActiveTintColor: colors.icons100,
+        tabBarShowLabel: true,
       }}
     >
       <BottomTabs.Screen
@@ -100,10 +100,10 @@ function AuthenticatedBottomTab() {
               return <Ionicons 
                 size={25} 
                 name="home-sharp"
-                color={colors.neutral50} 
+                color={colors.icons100} 
               />
             }
-            return <Ionicons size={25} color={colors.neutral400} name="home-outline"/>
+            return <Ionicons size={25} color={colors.iconFocused400} name="home-outline"/>
           },
         }}
       />
@@ -111,17 +111,16 @@ function AuthenticatedBottomTab() {
         name="Groups"
         component={AllGroupsScreen}
         options={{
-          tabBarShowLabel: false,
           headerShown: false,
           tabBarIcon: ({focused}) => {
             if(focused) {
             return <Ionicons 
                 size={25} 
                 name="people"
-                color={colors.neutral50} 
+                color={colors.icons100} 
               />
             }
-          return <Ionicons size={25} color={colors.neutral400} name="people-outline"/>
+          return <Ionicons size={25} color={colors.iconFocused400} name="people-outline"/>
         }
       }} 
       />
@@ -135,10 +134,10 @@ function AuthenticatedBottomTab() {
             return <Ionicons 
                 size={25} 
                 name="settings"
-                color={colors.neutral50} 
+                color={colors.text50} 
               />
             }
-            return <Ionicons size={25} color={colors.neutral400} name="settings-outline"/>
+            return <Ionicons size={25} color={colors.iconFocused400} name="settings-outline"/>
           }
         }}
       />
@@ -154,7 +153,7 @@ function AuthenticatedStack() {
     <Stack.Navigator
       screenOptions={{
         headerShown: true,
-        headerStyle: { backgroundColor: colors.primary900 },
+        headerStyle: { backgroundColor: colors.background900 },
         headerTintColor: "white",
       }}
     >

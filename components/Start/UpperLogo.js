@@ -11,9 +11,9 @@ function UpperLogo({ children }) {
       <Feather 
         name="check-square"
         size={17}
-        color={colors.primary1000}
+        color={colors.icons50}
       />
-      <Text style={styles.text}>{children}</Text>
+      <Text style={[styles.text, {color: colors.text50}]}>{children}</Text>
     </View>
   );
 }
