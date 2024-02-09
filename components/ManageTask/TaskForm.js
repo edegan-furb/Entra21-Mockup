@@ -6,7 +6,10 @@ import { Colors } from "../../constants/styles";
 import IconButton from "../ui/IconButton";
 import { getFormattedDate } from "../../util/date";
 import { generateUniqueId } from "../../util/generateUniqueId";
-import { getEmailByUsername } from "../../util/firestore";
+import {
+  getEmailByUsername,
+  fetchUsernameAndEmail,
+} from "../../util/firestore";
 
 function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
   const [inputs, setInputs] = useState({
@@ -23,7 +26,8 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
       isValid: true,
     },
     designatedUser: {
-      value: defaultValues && defaultValues.designatedUser ? 'Loading email...' : '',
+      value:
+        defaultValues && defaultValues.designatedUser ? "Loading email..." : "",
       isValid: true,
     },
     objectives:
@@ -43,6 +47,19 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
             },
           ],
   });
+  const [currentUserEmail, setCurrentUserEmail] = useState("");
+
+  useEffect(() => {
+    // Assuming fetchUsernameAndEmail is an async function that returns { email: userEmail }
+    fetchUsernameAndEmail()
+      .then((userDetails) => {
+        setCurrentUserEmail(userDetails.email);
+        console.log(currentUserEmail);
+      })
+      .catch((error) => {
+        console.error("Error fetching user email:", error);
+      });
+  }, []);
 
   useEffect(() => {
     if (defaultValues && defaultValues.designatedUser) {
@@ -127,7 +144,9 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
     const titleIsValid = taskData.title.trim().length > 0;
     const dateIsValid = taskData.date.toString() !== "Invalid Date";
     const descriptionIsValid = taskData.description.trim().length > 0;
-    const designatedUserIsValid = taskData.designatedUser.includes("@");
+    const designatedUserIsValid =
+      taskData.designatedUser.includes("@") &&
+      taskData.designatedUser.toLowerCase() !== currentUserEmail;
     const objectivesAreValid = inputs.objectives.every(
       (objective) => objective.value.trim().length > 0
     );
@@ -264,6 +283,11 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
       {formIsInvalid && (
         <Text style={styles.errorText}>
           Invalid input values - please check your entered data
+        </Text>
+      )}
+      {!inputs.designatedUser.isValid && (
+        <Text style={styles.errorText}>
+         You cannot assign a task to yourself.
         </Text>
       )}
       <View style={styles.buttons}>
