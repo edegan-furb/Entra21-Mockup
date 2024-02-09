@@ -1,4 +1,4 @@
-import { View, StyleSheet, Alert, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { View, StyleSheet, Alert, TouchableWithoutFeedback, Keyboard, Platform, KeyboardAvoidingView } from "react-native";
 import { useLayoutEffect, useContext, useState, useEffect } from "react";
 import TaskForm from "../components/ManageTask/TaskForm";
 import { Colors } from "../constants/styles";
@@ -130,15 +130,21 @@ function ManageTasksScreen({ navigation, route }) {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={styles.container}>
-        <TaskForm
-          onCancel={cancelHandler}
-          submitButtonLabel={isEditing ? "Update" : "Add"}
-          onSubmit={confirmHandler}
-          defaultValues={selectTask}
-          pageTitle={!editedTaskId ? "Add Task " : "Update Task"}
-        />
-      </View>
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}
+        keyboardVerticalOffset={isEditing ? -100 : -100}
+      >
+        <View style={styles.container}>
+          <TaskForm
+            onCancel={cancelHandler}
+            submitButtonLabel={isEditing ? "Update" : "Add"}
+            onSubmit={confirmHandler}
+            defaultValues={selectTask}
+            pageTitle={!editedTaskId ? "Add Task " : "Update Task"}
+          />
+        </View>
+      </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
 }

@@ -53,27 +53,26 @@ function AuthContent({ isLogin, onAuthenticate }) {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-
-    <KeyboardAvoidingView 
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{flex: 1}}
-      keyboardVerticalOffset={isLogin ? -200 : -170}
-    >
-      <SafeAreaView style={styles.rootContainer}>
-        <PagesTitle 
-          style={styles.containerPageTitle}
-          title={isLogin ? 'Wellcome back!' : 'Hello!'} 
-          subTitle={isLogin ? 'Hello there, login to continue' : 'Create a new account to continue'}
-        />
-        <View style={styles.inputsContainer}>
-          <AuthForm
-            isLogin={isLogin}
-            onSubmit={submitHandler}
-            credentialsInvalid={credentialsInvalid}
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}
+        keyboardVerticalOffset={isLogin ? -200 : -170}
+      >
+        <SafeAreaView style={styles.rootContainer}>
+          <PagesTitle 
+            style={styles.containerPageTitle}
+            title={isLogin ? 'Wellcome back!' : 'Hello!'} 
+            subTitle={isLogin ? 'Hello there, login to continue' : 'Create a new account to continue'}
           />
-        </View>
-      </SafeAreaView>
-    </KeyboardAvoidingView>   
+          <View style={styles.inputsContainer}>
+            <AuthForm
+              isLogin={isLogin}
+              onSubmit={submitHandler}
+              credentialsInvalid={credentialsInvalid}
+            />
+          </View>
+        </SafeAreaView>
+      </KeyboardAvoidingView>   
     </TouchableWithoutFeedback>
   );
 }
