@@ -35,7 +35,6 @@ function TasksOutput({ tasks, firstText, secondText, title, groupId, isWelcomeSc
           title={title} 
           onPress={modalPress} 
           button={tasks.length > 0 ? styles.btnNone : styles.button} 
-          
         />
       </View>
     </View> 

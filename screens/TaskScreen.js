@@ -15,6 +15,7 @@ import {
   getUserIdByEmail,
   updateObjectiveStatus,
   updateTaskStatus,
+  getEmailByUsername
 } from "../util/firestore";
 import Error from "../components/ui/Error";
 
@@ -50,19 +51,17 @@ function TaskScreen({ route, navigation }) {
     return (
       <View style={{ flexDirection: "row" }}>
         {selectTask.owner.id === currentUser && (
-          <>
-            <IconButton
-              icon={"create-outline"}
-              color={Colors.primary100}
-              size={24}
-              onPress={() => {
-                navigation.navigate("ManageTasksScreen", {
-                  editedTaskId: taskId,
-                  groupId: selectTask.group,
-                });
-              }}
-            />
-          </>
+          <IconButton
+            icon={"create-outline"}
+            color={Colors.primary100}
+            size={24}
+            onPress={() => {
+              navigation.navigate("ManageTasksScreen", {
+                editedTaskId: taskId,
+                groupId: selectTask.group,
+              });
+            }}
+          />
         )}
       </View>
     );
@@ -72,15 +71,16 @@ function TaskScreen({ route, navigation }) {
     navigation.setOptions({
       title:
         selectTask?.title +
-          " - " +
-          (selectTask?.completed ? "Completed" : "Ongoing") || "Task",
+        " - " +
+        (selectTask?.completed ? "completed" : "ongoing") || "Task",
       headerRight: renderHeaderButtons,
     });
   }, [navigation, selectTask, renderHeaderButtons]);
 
   async function onChangeCompletedStatusHandler(objectiveId) {
     try {
-      const designatedUser = await getUserIdByEmail(selectTask.designatedUser);
+      const email = await getEmailByUsername(selectTask.designatedUser)
+      const designatedUser = await getUserIdByEmail(email);
       if (designatedUser === currentUser) {
         groupsCtx.updateObjectiveStatus(selectTask.group, taskId, objectiveId);
         await updateObjectiveStatus(taskId, objectiveId);

@@ -67,15 +67,17 @@ export default function ModalInformationsPerfil() {
 
     return(
         <SafeAreaView style={styles.pictureContainer}>
-            <View style={styles.pictureContent}>
-                <View style={styles.picture}>
-                    {isLoading ? (
-                        <ActivityIndicator size="small" color="#f4f5f7" />
-                        ) : imageSource ? (
-                            <Image source={imageSource} style={styles.image} />
-                    ) : (
-                            <Ionicons name="person" color={Colors.primary100} size={55} />
-                    )}
+            <View style={styles.content}>
+                <View style={styles.pictureContent}>
+                    <View style={styles.picture}>
+                        {isLoading ? (
+                            <ActivityIndicator size="small" color="#f4f5f7" />
+                            ) : imageSource ? (
+                                <Image source={imageSource} style={styles.image} />
+                        ) : (
+                                <Ionicons name="person" color={Colors.primary100} size={55} />
+                        )}
+                    </View>
                 </View>
             </View>
             <Pressable style={styles.buttonContainer} onPress={handleUploadPicture}>
@@ -130,8 +132,15 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         alignItems: "center",
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         borderColor: Colors.primary950,
+        paddingVertical: 10
+    },
+    content: {
+        width: '100%',
+        height: '30%',
+        alignItems: "center",
+        justifyContent: 'center',
     },
     pictureContent: {
         width: 100,
@@ -170,14 +179,14 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         alignItems: "center",
         justifyContent: "center",
-        bottom: "15%",
+        bottom: "10%",
         left: '10%',
         borderWidth: 2,
         borderColor: Colors.primary950,
     },
     infContainer: {
         width: '100%',
-        height: '30%',
+        height: '35%',
         alignItems: "center",
         justifyContent: "space-evenly",
     },

@@ -50,7 +50,7 @@ function GroupScreen({ route, navigation }) {
     };
 
     getTasks();
-  }, [initialLoad]);
+  }, []);
 
   useEffect(() => {
     if (!selectGroup) {
