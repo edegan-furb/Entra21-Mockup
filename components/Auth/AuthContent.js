@@ -52,11 +52,13 @@ function AuthContent({ isLogin, onAuthenticate }) {
   }
 
   return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+
     <KeyboardAvoidingView 
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1}}
+      keyboardVerticalOffset={isLogin ? -200 : -170}
     >
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={styles.rootContainer}>
         <PagesTitle 
           style={styles.containerPageTitle}
@@ -71,8 +73,8 @@ function AuthContent({ isLogin, onAuthenticate }) {
           />
         </View>
       </SafeAreaView>
+    </KeyboardAvoidingView>   
     </TouchableWithoutFeedback>
-    </KeyboardAvoidingView> 
   );
 }
 
