@@ -1,83 +1,99 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from "react";
 import TasksOutput from "../components/TasksOutput/TaskOuput"; // Ensure correct import path
-import { GroupsContext } from '../store/groups-context';
-import { fetchGroups, fetchUsernameAndEmail } from '../util/firestore';
-import { auth } from '../util/firebaseConfig';
+import { GroupsContext } from "../store/groups-context";
+import { fetchGroups, fetchUsernameAndEmail } from "../util/firestore";
+import { auth } from "../util/firebaseConfig";
+import { View, ActivityIndicator, Text } from "react-native";
+import { Colors } from "../constants/styles";
 
 function WelcomeScreen() {
-  const [initialLoad, setInitialLoad] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState(null);
   const [userTasks, setUserTasks] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Tracks if the user is logged in
   const groupsCtx = useContext(GroupsContext);
 
   useEffect(() => {
-    // Auth state listener to react to user login/logout
-    const unsubscribe = auth.onAuthStateChanged(user => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        setIsLoggedIn(true); // User is logged in
-        // Optionally, trigger username loading here
-        loadUsername();
+       
+        await loadUserData();
       } else {
-        setIsLoggedIn(false); // User is logged out
-        // Reset state as needed
-        setUsername(null);
-        setUserTasks([]);
+    
+        setLoading(false);
       }
     });
 
-    return () => unsubscribe(); // Cleanup auth listener
+ 
+    return () => unsubscribe();
   }, []);
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      console.log('No user logged in');
-      return;
+  const loadUserData = async () => {
+    try {
+      const userDetails = await fetchUsernameAndEmail();
+      setUsername(userDetails.username);
+      await loadGroups();
+    } catch (error) {
+      console.error("Error fetching user data:", error);
     }
+  };
 
-    const getGroups = async () => {
-      try {
-        const stopListening = await fetchGroups((groups) => {
-          groupsCtx.setGroups(groups);
-          if (initialLoad) {
-            setInitialLoad(false);
-          }
-        });
-        return () => stopListening();
-      } catch (error) {
-        console.error("Error fetching groups:", error);
-      }
-    };
-    getGroups();
-  }, [initialLoad, isLoggedIn]); // Reacts to isLoggedIn
+  const loadGroups = async () => {
+    try {
+      const stopListening = await fetchGroups(async (groups) => {
+        groupsCtx.setGroups(groups);
+        if (username) {
+          const tasks = getTasksForUser(groups, username);
+          setUserTasks(tasks);
+        }
+        
+        setLoading(false);
+      });
+      return () => stopListening();
+    } catch (error) {
+      console.error("Error fetching groups:", error);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    if (username && groupsCtx.groups && groupsCtx.groups.length > 0) {
+    if (username && groupsCtx.groups.length > 0) {
       const tasks = getTasksForUser(groupsCtx.groups, username);
       setUserTasks(tasks);
     }
   }, [username, groupsCtx.groups]);
 
   function getTasksForUser(groups, username) {
-    const tasksForUser = [];
-    groups.forEach(group => {
-      const filteredTasks = group.tasks.filter(task => task.designatedUser === username);
-      tasksForUser.push(...filteredTasks);
-    });
-    return tasksForUser;
+    return groups.reduce((tasksForUser, group) => {
+      const filteredTasks = group.tasks.filter(
+        (task) => task.designatedUser === username
+      );
+      return tasksForUser.concat(filteredTasks);
+    }, []);
   }
 
-  // Function to load username
-  async function loadUsername() {
-    try {
-      const userDetails = await fetchUsernameAndEmail();
-      setUsername(userDetails.username);
-    } catch (error) {
-      console.error("Error fetching username:", error);
-    }
-  }
-
-  return <TasksOutput tasks={userTasks} fallbackText={"No Tasks"} />;
+  return (
+    <View style={{ flex: 1 }}>
+      <View style={{ flex: 0.5 }}></View>
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <Text
+          style={{
+            textAlign: "left",
+            marginHorizontal: 25,
+            marginTop: 20,
+            fontSize: 20,
+            fontWeight: "bold",
+          }}
+        >
+          Your Current Tasks :
+        </Text>
+        {loading ? (
+          <ActivityIndicator size="large" color={Colors.primary800} />
+        ) : (
+          <TasksOutput tasks={userTasks} fallbackText="No Tasks" />
+        )}
+      </View>
+    </View>
+  );
 }
 
 export default WelcomeScreen;
