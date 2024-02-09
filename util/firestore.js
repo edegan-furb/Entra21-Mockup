@@ -277,6 +277,7 @@ export async function removeMember(memberId) {
   }
 }
 
+
 export async function fetchGroups(callback) {
   // Get the UID of the current authenticated user
   const userRef = auth.currentUser.uid;
@@ -301,7 +302,7 @@ export async function fetchGroups(callback) {
             where("group", "==", groupRef)
           );
           const tasksSnapshot = await getDocs(tasksQuery);
-          const tasks = await Promise.all(
+          const tasks = (await Promise.all(
             tasksSnapshot.docs.map(async (taskDoc) => {
               const taskData = taskDoc.data();
 
@@ -317,6 +318,20 @@ export async function fetchGroups(callback) {
                 })
               );
 
+              // Calculate the length of the objectives array
+              const objectivesLength = objectives.length;
+
+
+              // Fetch the designated user's username
+              let designatedUserUsername = "";
+              if (taskData.designatedUser) {
+                const userDocSnapshot = await getDoc(taskData.designatedUser);
+                if (userDocSnapshot.exists()) {
+                  const userData = userDocSnapshot.data();
+                  designatedUserUsername = userData.username; // Assuming the field is named 'username'
+                }
+              }
+
               return {
                 id: taskDoc.id,
                 title: taskData.title,
@@ -324,12 +339,13 @@ export async function fetchGroups(callback) {
                 date: taskData.date.toDate(), // Convert Firestore Timestamp to JavaScript Date
                 completed: taskData.completed,
                 owner: taskData.owner,
-                designatedUser: taskData.designatedUser,
+                designatedUser: designatedUserUsername,
                 group: taskData.group,
                 objectives: objectives, // Array of objectives
+                objectivesLength: objectivesLength,
               };
             })
-          );
+          )).sort((a, b) => a.title.localeCompare(b.title)); // Sort tasks by title alphabetically
 
           return { ...groupData, tasks: tasks };
         })
@@ -345,6 +361,7 @@ export async function fetchGroups(callback) {
     stopListeningUserMemberships();
   };
 }
+
 
 // // Function to fetch all groups a user is a member of
 // export async function fetchGroups(callback) {
@@ -541,7 +558,10 @@ export async function fetchGroupTasks(groupId, callback) {
   const groupDocRef = doc(db, "groups", groupId);
 
   // Define a query for tasks of the specified group
-  const tasksQuery = query(collection(db, "tasks"), where("group", "==", groupDocRef));
+  const tasksQuery = query(
+    collection(db, "tasks"),
+    where("group", "==", groupDocRef)
+  );
 
   // Initialize an object to keep track of listeners for objectives
   const objectivesListeners = {};
@@ -552,7 +572,7 @@ export async function fetchGroupTasks(groupId, callback) {
   // Set up a real-time listener for changes in group tasks
   const stopListeningTasks = onSnapshot(tasksQuery, async (tasksSnapshot) => {
     // First, remove any tasks that have been deleted
-    const snapshotTaskIds = tasksSnapshot.docs.map(doc => doc.id);
+    const snapshotTaskIds = tasksSnapshot.docs.map((doc) => doc.id);
     tasksData.forEach((_, taskId) => {
       if (!snapshotTaskIds.includes(taskId)) {
         tasksData.delete(taskId);
@@ -564,58 +584,73 @@ export async function fetchGroupTasks(groupId, callback) {
       }
     });
 
+
     // Process each task document
-    await Promise.all(tasksSnapshot.docs.map(async (docSnapshot) => {
-      const taskData = docSnapshot.data();
-      const taskId = docSnapshot.id;
+    await Promise.all(
+      tasksSnapshot.docs.map(async (docSnapshot) => {
+        const taskData = docSnapshot.data();
+        const taskId = docSnapshot.id;
 
-      // Fetch the designated user's email
-      let designatedUserEmail = "";
-      if (taskData.designatedUser) {
-        const userDocSnapshot = await getDoc(taskData.designatedUser);
-        if (userDocSnapshot.exists()) {
-          const userData = userDocSnapshot.data();
-          designatedUserEmail = userData.email; // Assuming the field is named 'email'
-        }
-      }
-
-      // Initialize or update tasksData map
-      const existingTask = tasksData.get(taskId) || {};
-      tasksData.set(taskId, {
-        ...existingTask,
-        id: taskId,
-        title: taskData.title,
-        description: taskData.description,
-        date: taskData.date.toDate(), // Converting Firestore Timestamp to JavaScript Date
-        completed: taskData.completed,
-        owner: taskData.owner,
-        designatedUser: designatedUserEmail, // Updated to include the user's email
-        group: groupId,
-        objectives: existingTask.objectives || [], // Preserve existing objectives if already fetched
-      });
-
-      // Immediately fetch and listen to objectives for this task
-      const objectivesRef = collection(db, `tasks/${taskId}/objectives`);
-      if (!objectivesListeners[taskId]) {
-        objectivesListeners[taskId] = onSnapshot(objectivesRef, (objectivesSnapshot) => {
-          const objectives = objectivesSnapshot.docs.map(doc => ({
-            id: doc.id,
-            value: doc.data().value,
-            completed: doc.data().completed,
-          }));
-
-          // Update the task's objectives and invoke the callback
-          const updatedTask = tasksData.get(taskId);
-          if (updatedTask) {
-            updatedTask.objectives = objectives;
-            tasksData.set(taskId, updatedTask); // Ensure the map is updated
-            callback(Array.from(tasksData.values())); // Convert Map values to an array
+        // Fetch the designated user's username
+        let designatedUserUsername = "";
+        if (taskData.designatedUser) {
+          const userDocSnapshot = await getDoc(taskData.designatedUser);
+          if (userDocSnapshot.exists()) {
+            const userData = userDocSnapshot.data();
+            designatedUserUsername = userData.username; // Assuming the field is named 'email'
           }
-        }, error => {
-          console.error(`Error fetching objectives for task ${taskId}:`, error);
+        }
+
+        // Initialize or update tasksData map
+        const existingTask = tasksData.get(taskId) || {};
+        tasksData.set(taskId, {
+          ...existingTask,
+          id: taskId,
+          title: taskData.title,
+          description: taskData.description,
+          date: taskData.date.toDate(), // Converting Firestore Timestamp to JavaScript Date
+          completed: taskData.completed,
+          owner: taskData.owner,
+          designatedUser: designatedUserUsername, // Updated to include the user's username
+          group: groupId,
+          objectives: existingTask.objectives || [], // Preserve existing objectives if already fetched
         });
-      }
-    }));
+
+        // Immediately fetch and listen to objectives for this task
+        const objectivesRef = collection(db, `tasks/${taskId}/objectives`);
+        if (!objectivesListeners[taskId]) {
+          objectivesListeners[taskId] = onSnapshot(
+            objectivesRef,
+            (objectivesSnapshot) => {
+              const objectives = objectivesSnapshot.docs.map((doc) => ({
+                id: doc.id,
+                value: doc.data().value,
+                completed: doc.data().completed,
+              }));
+
+
+              // Calculate the length of the objectives array
+              const objectivesLength = objectives.length;
+
+              // Update the task's objectives and invoke the callback
+              const updatedTask = tasksData.get(taskId);
+              if (updatedTask) {
+                updatedTask.objectives = objectives;
+                updatedTask.objectivesLength = objectivesLength;
+                tasksData.set(taskId, updatedTask); // Ensure the map is updated
+                callback(Array.from(tasksData.values())); // Convert Map values to an array
+              }
+            },
+            (error) => {
+              console.error(
+                `Error fetching objectives for task ${taskId}:`,
+                error
+              );
+            }
+          );
+        }
+      })
+    );
 
     // Invoke the callback after processing all tasks and their objectives
     callback(Array.from(tasksData.values()));
@@ -625,10 +660,11 @@ export async function fetchGroupTasks(groupId, callback) {
   return () => {
     stopListeningTasks();
     // Stop listening to all objectives listeners
-    Object.values(objectivesListeners).forEach(stopListener => stopListener());
+    Object.values(objectivesListeners).forEach((stopListener) =>
+      stopListener()
+    );
   };
 }
-
 
 export async function updateTask(taskId, updatedTaskData) {
   try {
@@ -636,7 +672,8 @@ export async function updateTask(taskId, updatedTaskData) {
     const taskDocRef = doc(db, "tasks", taskId);
 
     // Destructure the updated task data to separate objectives and designatedUser
-    const { objectives, designatedUser, ...taskDataWithoutObjectives } = updatedTaskData;
+    const { objectives, designatedUser, ...taskDataWithoutObjectives } =
+      updatedTaskData;
 
     // Convert designatedUser ID to a Firestore reference
     let userRef = null;
@@ -658,13 +695,15 @@ export async function updateTask(taskId, updatedTaskData) {
 
     // Retrieve all existing objectives
     const existingObjectivesSnap = await getDocs(objectivesRef);
-    const existingObjectives = existingObjectivesSnap.docs.map(doc => doc.id);
+    const existingObjectives = existingObjectivesSnap.docs.map((doc) => doc.id);
 
     // Identify objectives to delete
-    const objectivesToDelete = existingObjectives.filter(id => !objectives.some(objective => objective.id === id));
+    const objectivesToDelete = existingObjectives.filter(
+      (id) => !objectives.some((objective) => objective.id === id)
+    );
 
     // Delete objectives not in the updated list
-    const deleteObjectivesPromises = objectivesToDelete.map(id => {
+    const deleteObjectivesPromises = objectivesToDelete.map((id) => {
       const objectiveDocRef = doc(objectivesRef, id);
       return deleteDoc(objectiveDocRef);
     });
@@ -690,11 +729,19 @@ export async function updateTask(taskId, updatedTaskData) {
     });
 
     // Wait for all deletions, updates, and creations to complete
-    await Promise.all([...deleteObjectivesPromises, ...updateObjectivesPromises]);
+    await Promise.all([
+      ...deleteObjectivesPromises,
+      ...updateObjectivesPromises,
+    ]);
 
-    console.log("Task updated, objectives replaced or created, and unused objectives removed successfully.");
+    console.log(
+      "Task updated, objectives replaced or created, and unused objectives removed successfully."
+    );
   } catch (error) {
-    console.error("Error updating task, replacing or creating objectives, and removing unused ones:", error.message);
+    console.error(
+      "Error updating task, replacing or creating objectives, and removing unused ones:",
+      error.message
+    );
     throw error;
   }
 }
@@ -758,15 +805,15 @@ export async function updateTaskStatus(taskId) {
 export async function deleteTask(taskId) {
   try {
     // Create a reference to the task document
-    const taskDocRef = doc(db, 'tasks', taskId);
+    const taskDocRef = doc(db, "tasks", taskId);
 
     // Delete the document
     await deleteDoc(taskDocRef);
 
     console.log(`Task with ID ${taskId} has been successfully deleted.`);
   } catch (error) {
-    console.error('Error deleting task:', error);
-    throw new Error('Failed to delete task.');
+    console.error("Error deleting task:", error);
+    throw new Error("Failed to delete task.");
   }
 }
 

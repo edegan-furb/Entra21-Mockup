@@ -3,13 +3,12 @@ import { StyleSheet, Text, View, SafeAreaView, ActivityIndicator } from "react-n
 import { GroupsContext } from "../store/groups-context";
 import { Colors } from "../constants/styles";
 import { fetchGroups, fetchUsernameAndEmail } from "../util/firestore";
-import WelcomeBanner from "../components/homeComponents/WelcomeBanner";
+import WelcomeBanner from "../components/HomeComponents/WelcomeBanner";
 import { useTheme } from "../store/theme-context"; 
 import { auth } from "../util/firebaseConfig";
 import CurrentTasksOutput from '../components/CurrentTasksOutput/CurrentTaskOuput'
 
-function WelcomeScreen({ navigation, route }) {
-
+function WelcomeScreen() {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState(null);
   const [userTasks, setUserTasks] = useState([]);
@@ -20,27 +19,22 @@ function WelcomeScreen({ navigation, route }) {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-       
+
         await loadUserData();
       } else {
-    
+
         setLoading(false);
       }
     });
+
+
     return () => unsubscribe();
   }, []);
-
-  function goToGroups() {
-    navigation.navigate("Groups", {
-      editedGroupId: route.params?.groupId,
-    });
-  }
 
   const loadUserData = async () => {
     try {
       const userDetails = await fetchUsernameAndEmail();
       setUsername(userDetails.username);
-      console.log("Username:", username);
       await loadGroups();
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -55,7 +49,7 @@ function WelcomeScreen({ navigation, route }) {
           const tasks = getTasksForUser(groups, username);
           setUserTasks(tasks);
         }
-        
+
         setLoading(false);
       });
       return () => stopListening();
@@ -74,18 +68,28 @@ function WelcomeScreen({ navigation, route }) {
 
   function getTasksForUser(groups, username) {
     return groups.reduce((tasksForUser, group) => {
-      const filteredTasks = group.tasks.filter(
-        (task) => task.designatedUser === username
-      );
-      return tasksForUser.concat(filteredTasks);
+      if (group.tasks && Array.isArray(group.tasks)) {
+        const filteredTasks = group.tasks.filter(
+          (task) => task.designatedUser === username
+        );
+        return tasksForUser.concat(filteredTasks);
+      } else {
+        return tasksForUser;
+      }
     }, []);
+  }
+
+  function goToGroups() {
+    navigation.navigate("Groups", {
+      editedGroupId: route.params?.groupId,
+    });
   }
 
   return (
     <SafeAreaView style={[styles.rootContainer, {backgroundColor: colors.background50}]}>
 
       <View style={styles.hiContainer}>
-        <Text style={[styles.hi, {color: colors.text900}]}>Hi, {username}</Text>
+        <Text style={[styles.hi, {color: colors.text900}]}>{username ? ("Hi, " + username) : ("Welcome back!")}</Text>
       </View>
 
       <View style={styles.container}>

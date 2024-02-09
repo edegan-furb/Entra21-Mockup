@@ -15,7 +15,6 @@ import WelcomeScreen from "./screens/WelcomeScreen";
 import AllGroupsScreen from "./screens/AllGroupsScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import ManageGroupScreen from "./screens/ManageGroupScreen";
-import { Colors } from "./constants/styles";
 import AuthContextProvider, { AuthContext } from "./store/auth-context";
 import { ThemeProvider } from "./store/theme-context"
 import IconButton from "./components/ui/IconButton";
