@@ -114,9 +114,9 @@ export default AddMemberForm;
 
 const styles = StyleSheet.create({
   form: {
-    marginTop: '25%',
+    marginTop: '30%',
     width: wp('90%'),
-    height: hp('35%'),
+    height: hp('40%'),
     backgroundColor: Colors.primary900,
     borderRadius: 20,
   },
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
   },
   buttonContent: {
     width: '70%',
-    height: '55%',
+    height: '50%',
     gap: 10,
     flexDirection: "row",
     backgroundColor: Colors.primary100,

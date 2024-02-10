@@ -104,8 +104,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   formCreate: {
-    marginTop: '25%',
-    height: hp('35%'),
+    marginTop: '30%',
+    height: hp('40%'),
     width: wp('90%'),
     borderRadius: 20,
     backgroundColor: Colors.primary900,
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
   },
   buttonCreate: {
     width: '80%',
-    height: '70%',
+    height: '60%',
     borderRadius: 12,
     flexDirection: "row",
     alignItems: "center",
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   },
   formEditing: {
     marginTop: '25%',
-    height: hp('35%'),
+    height: hp('40%'),
     width: wp('90%'),
     borderRadius: 20,
     backgroundColor: Colors.primary900,
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
   },
   buttonEdit: {
     width: '80%',
-    height: '30%',
+    height: '25%',
     borderRadius: 12,
     flexDirection: "row",
     alignItems: "center",
@@ -182,6 +182,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     width: '90%',
-    height: '60%',
+    height: '55%',
   },
 });

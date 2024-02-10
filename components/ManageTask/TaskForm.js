@@ -300,8 +300,8 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
           You cannot assign a task to yourself.
           </Text>
         )}
-        <View style={styles.buttonsContainer}>
-          <View style={styles.buttonContent}>
+        <View style={isEditing ? styles.buttonsContainerEdit : styles.buttonsContainer}>
+          <View style={isEditing ? styles.buttonContentEdit : styles.buttonContent}>
             <Button mode="flat" onPress={onCancel}>
               Cancel
             </Button>
@@ -415,6 +415,14 @@ const styles = StyleSheet.create({
   },
   buttonsContainer: {
     width: '100%',
+    height: '20%',
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    borderTopWidth: 2,
+    borderColor: Colors.primary900
+  },
+  buttonsContainerEdit: {
+    width: '100%',
     height: '25%',
     alignItems: "center",
     justifyContent: "space-evenly",
@@ -422,14 +430,21 @@ const styles = StyleSheet.create({
     borderColor: Colors.primary900
   },
   buttonContent: {
-    height: '40%',
+    height: '45%',
+    width: '85%',
+    flexDirection: "row",
+    gap: 10,
+    alignItems: "center",
+  },
+  buttonContentEdit: {
+    height: '35%',
     width: '85%',
     flexDirection: "row",
     gap: 10,
     alignItems: "center",
   },
   deleteContainer: {
-    height: '40%',
+    height: '35%',
     width: '50%',
     borderRadius: 10,
     flexDirection: "row",
@@ -439,6 +454,7 @@ const styles = StyleSheet.create({
   },
   textButton: {
     color: Colors.primary100,
-    fontWeight: "bold"
+    fontWeight: "bold",
+    paddingLeft: 15
   }
 });
