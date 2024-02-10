@@ -7,6 +7,7 @@ import WelcomeBanner from "../components/HomeComponents/WelcomeBanner";
 import { useTheme } from "../store/theme-context"; 
 import { auth } from "../util/firebaseConfig";
 import CurrentTasksOutput from '../components/CurrentTasksOutput/CurrentTaskOuput'
+import { useNavigation } from "@react-navigation/core";
 
 function WelcomeScreen() {
   const [loading, setLoading] = useState(true);
@@ -14,6 +15,8 @@ function WelcomeScreen() {
   const [userTasks, setUserTasks] = useState([]);
   const groupsCtx = useContext(GroupsContext);
   
+  const navigation = useNavigation();
+
   const { colors } = useTheme(); 
 
   useEffect(() => {
@@ -26,7 +29,6 @@ function WelcomeScreen() {
         setLoading(false);
       }
     });
-
 
     return () => unsubscribe();
   }, []);
@@ -80,9 +82,7 @@ function WelcomeScreen() {
   }
 
   function goToGroups() {
-    navigation.navigate("Groups", {
-      editedGroupId: route.params?.groupId,
-    });
+    navigation.navigate("Groups");
   }
 
   return (

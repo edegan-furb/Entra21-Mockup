@@ -39,7 +39,8 @@ export default function TaskHome({ deadline, taskName, groupName, taskProgress})
                     <Progress.Bar 
                         progress={taskProgress}
                         color={Colors.primary600} 
-                        width={wp('25%')} />
+                        width={wp('25%')} 
+                    />
                     <Text style={{color: colors.neutral1100}}> { (taskProgress) * 100 }%</Text>
                 </View>
             </View>

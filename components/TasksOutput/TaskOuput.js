@@ -4,7 +4,7 @@ import TasksList from "./TasksList";
 import { useNavigation } from "@react-navigation/native";
 import AddButton from '../GroupsOutput/AddButton';
 
-function TasksOutput({ tasks, firstText, secondText, title, groupId, isWelcomeScreen }) {
+function TasksOutput({ tasks, firstText, secondText, title, groupId }) {
 
   // Create the navigation component
   const navigation = useNavigation();
@@ -12,14 +12,6 @@ function TasksOutput({ tasks, firstText, secondText, title, groupId, isWelcomeSc
   // Function to open the team creation modal
   function modalPress() {
     navigation.navigate("ManageTasksScreen");
-  }
-
-  if (isWelcomeScreen) {
-    return (
-      <Text style={styles.text}>
-        {firstText}
-      </Text>
-    );
   }
 
   let content = 

@@ -17,7 +17,7 @@ export default function ModalInformationsPerfil() {
     const [email, setEmail] = useState("Loading..");
     const [isEditing, setIsEditing] = useState(false);
     const [editUsername, setEditUsername] = useState("");
-  
+
     useEffect(() => {
         setIsLoading(true);
         const fetchUserDetails = async () => {
@@ -120,7 +120,7 @@ export default function ModalInformationsPerfil() {
                     )}
                 </View>
                 <Text style={styles.textInf}>{email}</Text>
-                <Text style={styles.textInf}>Registered groups: 5</Text>
+                <Text style={styles.textInf}>Registered groups: {}</Text>
             </View>         
         </SafeAreaView>
         

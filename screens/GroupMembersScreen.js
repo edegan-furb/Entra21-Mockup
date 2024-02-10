@@ -145,7 +145,7 @@ function GroupMembersScreen({ navigation, route }) {
     setIsLoading(true);
     try {
       await removeMember(memberId);
-      // groupsCtx.deleteMember(groupId, memberId);
+      groupsCtx.deleteMember(groupId, memberId);
     } catch (error) {
       setError("Could not delete member - please try again later");
       setIsLoading(false);
@@ -155,7 +155,7 @@ function GroupMembersScreen({ navigation, route }) {
   async function onChangeAdminStatusHandler(memberId) {
     setIsLoading(true);
     try {
-      //groupsCtx.updateAdmin(groupId, memberId);
+      groupsCtx.updateAdmin(groupId, memberId);
       await updateAdminStatus(memberId);
     } catch {
       setError("Could not delete member - please try again later");
