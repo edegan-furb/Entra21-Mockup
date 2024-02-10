@@ -18,6 +18,7 @@ function MembersList({ members, onRemoveMember, onChangeAdminStatus }) {
       data={members}
       renderItem={renderMemberItem}
       keyExtractor={(item) => item.id}
+      showsVerticalScrollIndicator={false}
     />
   );
 }

@@ -133,7 +133,7 @@ function AuthenticatedBottomTab() {
             return <Ionicons 
                 size={25} 
                 name="settings"
-                color={colors.text50} 
+                color={colors.icons100} 
               />
             }
             return <Ionicons size={25} color={colors.iconFocused400} name="settings-outline"/>

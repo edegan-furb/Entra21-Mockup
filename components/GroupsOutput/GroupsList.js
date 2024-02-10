@@ -13,6 +13,7 @@ function GroupsList({ groups }) {
         data={groups}
         renderItem={renderGroupItem}
         keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={false}
         style={styles.list}
       />
     </View>

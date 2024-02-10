@@ -1,8 +1,12 @@
 import { StyleSheet, Text, View } from "react-native";
 import { Colors } from "../../constants/styles";
 import MembersList from "./MembersList";
+import { useTheme } from "../../store/theme-context";
 
 function MembersOutput({ members, onRemoveMember, onChangeAdminStatus }) {
+
+  const { colors } = useTheme();
+
   if (Array.isArray(members) && members.length > 0) {
     content = (
       <MembersList
@@ -13,7 +17,7 @@ function MembersOutput({ members, onRemoveMember, onChangeAdminStatus }) {
     );
   }
 
-  return <View style={styles.container}>{content}</View>;
+  return <View style={[styles.container, {backgroundColor: colors.background50} ]}>{content}</View>;
 }
 
 export default MembersOutput;

@@ -8,8 +8,11 @@ import {
     getCurrrentUserImageName,
 } from "../../util/storage";
 import { fetchUsernameAndEmail, updateUsername } from "../../util/firestore";
+import { useTheme } from "../../store/theme-context";
 
 export default function ModalInformationsPerfil() {
+
+    const { colors } = useTheme();
 
     const [imageSource, setImageSource] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -66,16 +69,16 @@ export default function ModalInformationsPerfil() {
     };
 
     return(
-        <SafeAreaView style={styles.pictureContainer}>
+        <View style={styles.pictureContainer}>
             <View style={styles.content}>
-                <View style={styles.pictureContent}>
+                <View style={[styles.pictureContent, {borderWidth: 3, borderColor: colors.border500}]}>
                     <View style={styles.picture}>
                         {isLoading ? (
                             <ActivityIndicator size="small" color="#f4f5f7" />
                             ) : imageSource ? (
                                 <Image source={imageSource} style={styles.image} />
                         ) : (
-                                <Ionicons name="person" color={Colors.primary100} size={55} />
+                                <Ionicons name="person" color={colors.icons100} size={55} />
                         )}
                     </View>
                 </View>
@@ -84,7 +87,7 @@ export default function ModalInformationsPerfil() {
                 <Entypo 
                     name="pencil"
                     size={15}
-                    color={Colors.primary900}
+                    color={colors.icons500}
                 />
             </Pressable>
             <View style={styles.infContainer}>
@@ -92,7 +95,7 @@ export default function ModalInformationsPerfil() {
                     {isEditing ? (
                         <>
                             <TextInput
-                                style={styles.textInput}
+                                style={[styles.textInput, {color: colors.text900}]}
                                 onChangeText={setEditUsername}
                                 value={editUsername}
                                 autoFocus={true}
@@ -102,27 +105,27 @@ export default function ModalInformationsPerfil() {
                                 <Ionicons
                                     name="save-outline"
                                     size={15}
-                                    color={Colors.primary900}
+                                    color={colors.icons500}
                                 />
                             </Pressable>
                         </>
                     ) : (
                         <>
-                            <Text style={styles.userInfoText}>{username}</Text>
+                            <Text style={[styles.userInfoText, {color: colors.text900}]} numberOfLines={1} ellipsizeMode="middle">{username}</Text>
                             <Pressable style={styles.buttonContainerEdit} onPress={toggleEdit}>
                                 <Entypo 
                                     name="pencil"
                                     size={15}
-                                    color={Colors.primary900}
+                                    color={colors.icons500}
                                 />
                             </Pressable>
                         </>
                     )}
                 </View>
-                <Text style={styles.textInf}>{email}</Text>
-                <Text style={styles.textInf}>Registered groups: {}</Text>
+                <Text style={[styles.textInf, {color: colors.text900}]}>{email}</Text>
+                <Text style={[styles.textInf, {color: colors.text900}]}>Registered groups: {}</Text>
             </View>         
-        </SafeAreaView>
+        </View>
         
     );
 }
@@ -133,7 +136,6 @@ const styles = StyleSheet.create({
         height: '100%',
         alignItems: "center",
         justifyContent: 'flex-end',
-        borderColor: Colors.primary950,
         paddingVertical: 10
     },
     content: {
@@ -146,8 +148,6 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         borderRadius: 100,
-        borderWidth: 3,
-        borderColor: Colors.primary950,
         alignItems: "center",
         justifyContent: "center",
         elevation: 4,
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
         width: '95%',
         height: '95%',
         borderRadius: 100,
-        backgroundColor: Colors.primary900,
+        backgroundColor: '#4c1d95',
         alignItems: "center",
         justifyContent: "center",
         borderWidth: 5,
@@ -175,14 +175,14 @@ const styles = StyleSheet.create({
     buttonContainer: {
         width: 30,
         height: 30,
-        backgroundColor: Colors.primary300,
+        backgroundColor: '#c4b5fd',
         borderRadius: 100,
         alignItems: "center",
         justifyContent: "center",
         bottom: "10%",
         left: '10%',
         borderWidth: 2,
-        borderColor: Colors.primary950,
+        borderColor: "#5b21b6",
     },
     infContainer: {
         width: '100%',
@@ -199,28 +199,25 @@ const styles = StyleSheet.create({
     buttonContainerEdit: {
         width: 25,
         height: 25,
-        backgroundColor: Colors.primary300,
+        backgroundColor: '#c4b5fd',
         borderRadius: 100,
         alignItems: "center",
         justifyContent: "center",
         borderWidth: 2,
-        borderColor: Colors.primary950,
+        borderColor: "#5b21b6",
     },
     textInf: {
         fontWeight: "bold",
-        color: Colors.primary950,
         fontSize: 12
     },
     userInfoText: {
         fontWeight: "bold",
-        color: Colors.primary950,
-        fontSize: 25
+        fontSize: 25,
     },
     textInput: {
         textAlign: "center",
         fontSize: 25,
         padding: 5,
-        color: Colors.primary900,
         borderColor: Colors.primary950,
         borderBottomWidth: 2,
     },
