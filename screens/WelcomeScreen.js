@@ -110,7 +110,6 @@ function WelcomeScreen() {
         )}
         {console.log("oi  ", userTasks)}
         {console.log("Username:", username)}
-        {console.log("objetivo: ", userTasks.objectives)}
           {/* <FlatList
             data={DATA}
             renderItem={({ item }) => (

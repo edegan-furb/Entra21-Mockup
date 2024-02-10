@@ -5,17 +5,8 @@ import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "../../store/theme-context";
 
 function CurrentTaskOuput({ tasks, firstText, title, groupId }) {
-
   // Use the theme colors
   const { colors } = useTheme()
-
-  // Create the navigation component
-  const navigation = useNavigation();
-    
-  // Function to open the team creation modal
-  function modalPress() {
-    navigation.navigate("ManageTasksScreen");
-  }
 
   let content = 
     <View style={styles.textContainer}>
@@ -26,7 +17,7 @@ function CurrentTaskOuput({ tasks, firstText, title, groupId }) {
   ;
 
   if (Array.isArray(tasks) && tasks.length > 0) {
-    content = <TasksList tasks={tasks} groupId={groupId} />;
+    content = <TasksList tasks={tasks} groupId={groupId}/>;
   }
 
   return <View style={[styles.container, {backgroundColor: colors.primary100}]}>{content}</View>;
