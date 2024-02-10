@@ -19,28 +19,19 @@ import {
   getEmailByUsername
 } from "../util/firestore";
 import Error from "../components/ui/Error";
+import { useTheme } from "../store/theme-context";
 
 function TaskScreen({ route, navigation, user }) {
+
+  const { colors } = useTheme();
 
   const [error, setError] = useState();
   const currentUser = auth.currentUser.uid;
   const groupsCtx = useContext(GroupsContext);
   const taskId = route.params?.taskId;
   const groupId = route.params?.groupId;
-  const [taskCompleted, setTaskCompleted] = useState('');
-  
+
   let selectTask = null;
-  let foundMember = null;
-  
-  if (groupsCtx.groups) {
-    groupsCtx.groups?.forEach((group) => {
-      group.members?.forEach((member) => {
-        if (member.user === currentUser) {
-          foundMember = member;
-        }
-      });
-    });
-  }
 
   if (groupsCtx.groups) {
     groupsCtx.groups?.forEach((group) => {
@@ -51,10 +42,6 @@ function TaskScreen({ route, navigation, user }) {
       });
     });
   }
-
-  const isAdmin = foundMember && foundMember.admin === true;
-  const userId = user?._key?.path?.segments[user._key.path.segments.length - 1];
-  const isCurrentUser = currentUser === userId;
 
   useEffect(() => {
     if (!selectTask) {
@@ -69,17 +56,25 @@ function TaskScreen({ route, navigation, user }) {
     return (
       <View style={{ flexDirection: "row" }}>
         {selectTask.owner.id === currentUser && (
-          <IconButton
-            icon={"create-outline"}
-            color={Colors.primary100}
-            size={24}
-            onPress={() => {
-              navigation.navigate("ManageTasksScreen", {
-                editedTaskId: taskId,
-                groupId: selectTask.group,
-              });
-            }}
-          />
+          <>
+            <IconButton
+              icon={"create-outline"}
+              color={Colors.primary100}
+              size={24}
+              onPress={() => {
+                navigation.navigate("ManageTasksScreen", {
+                  editedTaskId: taskId,
+                  groupId: selectTask.group,
+                });
+              }}
+            />
+            <IconButton
+              icon={"checkmark-circle-outline"}
+              color={Colors.primary100}
+              size={24}
+              onPress={() => onChangeTaskCompletedStatusHandler()}
+            />
+          </>
         )}
       </View>
     );
@@ -87,10 +82,13 @@ function TaskScreen({ route, navigation, user }) {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: selectTask?.title + ' - ' + (taskCompleted ? 'completed' : 'ongoing') || 'Task',
+      title:
+        selectTask?.title +
+        " - " +
+        (selectTask?.completed ? "completed" : "ongoing") || "Task",
       headerRight: renderHeaderButtons,
     });
-  }, [navigation, selectTask, renderHeaderButtons, taskCompleted]);
+  }, [navigation, selectTask, renderHeaderButtons]);
 
   async function onChangeCompletedStatusHandler(objectiveId) {
     try {
@@ -112,16 +110,10 @@ function TaskScreen({ route, navigation, user }) {
     }
   }
 
-  async function onChangeTaskCompletedStatusHandler(taskId) {
+  async function onChangeTaskCompletedStatusHandler() {
     try {
-      // Atualizar o status da tarefa
+      groupsCtx.updateTaskStatus(selectTask.group, taskId);
       await updateTaskStatus(taskId);
-  
-      // Verificar se todas as metas da tarefa estão concluídas
-      const allObjectivesCompleted = selectTask?.objectives.every(objective => objective.completed);
-  
-      // Atualizar o estado da tarefa concluída
-      setTaskCompleted(allObjectivesCompleted);
     } catch {
       setError("Could not update task status - please try again later");
     }
@@ -132,8 +124,8 @@ function TaskScreen({ route, navigation, user }) {
   }
 
   return (
-    <View style={styles.rootContainer}>
-      <View style={styles.infoContainer}>
+    <View style={[styles.rootContainer, {backgroundColor: colors.background50}]}>
+      <View style={[styles.infoContainer, {backgroundColor: colors.background50}]}>
         <View style={styles.dateContainer}>
           <View style={styles.designatedUserContainer}>
             <View style={styles.dateContent}>
@@ -154,10 +146,10 @@ function TaskScreen({ route, navigation, user }) {
       </View>
       <View style={styles.descriptionContainer}>
         <View style={styles.titleContent}>
-          <Ionicons name="document-text-outline" color={Colors.primary900} size={16} />
-          <Text style={styles.title}>Description</Text>
+          <Ionicons name="document-text-outline" color={colors.text900} size={16} />
+          <Text style={[styles.title, {color: colors.text900}]}>Description</Text>
         </View>
-        <View style={styles.descriptionContent}>
+        <View style={[styles.descriptionContent, {backgroundColor: colors.background900}]}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <Text style={styles.description}>{selectTask?.description}</Text>
           </ScrollView>
@@ -165,31 +157,31 @@ function TaskScreen({ route, navigation, user }) {
       </View>
       <View style={styles.objectivesContainer}>
         <View style={styles.titleContent}>
-          <Feather name="target" color={Colors.primary900} size={15}/>
-          <Text style={styles.title}>Objectives</Text>
+          <Feather name="target" color={colors.text900} size={15}/>
+          <Text style={[styles.title, {color: colors.text900}]}>Objectives</Text>
         </View>
-        <View style={styles.objectivesScrollContainer}>
+        <ScrollView contentContainerStyle={styles.objectivesScrollContainer} showsVerticalScrollIndicator={false}>
           {selectTask?.objectives.map((objective, index) => (
-            <ScrollView key={index} contentContainerStyle={styles.objectivesInnerContainer} showsVerticalScrollIndicator={false}>
+            <View key={index} style={[styles.objectivesInnerContainer, {backgroundColor: colors.background900}]}>
               {objective?.completed ? (
                 <IconButton
                   onPress={() => onChangeCompletedStatusHandler(objective?.id)}
                   icon={"checkmark-circle-outline"}
-                  color={Colors.primary100}
+                  color={colors.icons400}
                   size={32}
                 />
               ) : (
                 <IconButton
                   onPress={() => onChangeCompletedStatusHandler(objective?.id)}
                   icon={"ellipse-outline"}
-                  color={Colors.primary100}
+                  color={colors.icons400}
                   size={32}
                 />
               )}
-              <Text style={styles.objectives}> {objective.value}</Text>
-            </ScrollView>
+              <Text style={[styles.objectives, {color: colors.text700}]}> {objective.value}</Text>
+            </View>
           ))}
-        </View>
+        </ScrollView>
       </View>
     </View>
   );
@@ -199,7 +191,6 @@ export default TaskScreen;
 
 const styles = StyleSheet.create({
   rootContainer: {
-    backgroundColor: Colors.primary100,
     width: '100%',
     height: '100%',
     alignItems: "center",
@@ -207,7 +198,6 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     flex: 1,
-    backgroundColor: Colors.primary100,
   },
   dateContainer: {
     flexDirection: "row",
@@ -276,12 +266,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: "500",
-    color: Colors.primary900
   },
   descriptionContent: {
     flex: 1,
     width: '90%',
-    backgroundColor: Colors.primary900,
     borderWidth: 2,
     borderColor: Colors.primary500,
     borderRadius: 12,
@@ -301,19 +289,21 @@ const styles = StyleSheet.create({
   },
   objectivesContainer: {
     flex: 3,
+    alignItems: "center",
     width: '100%',
-    alignItems: "center"
   },
   objectivesScrollContainer: {
-    width: '90%'
+    alignItems: "center",
+    justifyContent: 'flex-start',
   },
   objectivesInnerContainer: {
-    backgroundColor: Colors.primary900,
-    alignItems: "center",
     flexDirection: "row",
-    width: '100%',
+    justifyContent: 'flex-start',
+    alignItems: "center",
+    width: 300,
+    paddingVertical: 10,
     borderWidth: 2,
-    borderColor: Colors.primary100,
+    borderColor: Colors.primary500,
     borderRadius: 12,
     elevation: 3,
     shadowColor: Colors.primary100,
@@ -322,9 +312,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.4,
   },
   objectives: {
-    color: Colors.primary100,
-    fontSize: 16,
-    textAlign: "left",
-    flexShrink: 1,
+    fontSize: 14,
   },
 });

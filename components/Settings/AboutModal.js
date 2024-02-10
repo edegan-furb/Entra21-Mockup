@@ -1,12 +1,16 @@
-import { View, Text, StyleSheet, Pressable, Modal, SafeAreaView, ScrollView} from "react-native";
+import { View, Text, StyleSheet, Pressable, SafeAreaView, ScrollView} from "react-native";
 import { Ionicons } from '@expo/vector-icons';
-import { Colors } from "../../constants/styles";
+import { useTheme } from "../../store/theme-context";
 
 export default function AboutText({ onPress }) {
+
+  const { colors } = useTheme();
+  const textColor = {color: colors.text50};
+
   return (
-    <SafeAreaView style={styles.modalContainer}>
+    <SafeAreaView style={[styles.modalContainer, {backgroundColor: colors.background50}]}>
       <Pressable onPress={onPress} style={styles.iconContent}>
-        <Ionicons name="close" size={30} color={Colors.neutral900}/>
+        <Ionicons name="close" size={30} color={textColor}/>
       </Pressable>
       <View>
         <View style={styles.textContainer}>
@@ -14,9 +18,9 @@ export default function AboutText({ onPress }) {
             bounces={false}
             showsVerticalScrollIndicator={false}
           >
-            <Text style={styles.mainTitle}>TaskSync</Text>
-            <Text style={styles.subTitle}>About</Text>
-            <Text style={styles.text}>
+            <Text style={[styles.mainTitle, textColor]}>TaskSync</Text>
+            <Text style={[styles.subTitle, textColor]}>About</Text>
+            <Text style={[styles.text, textColor]}>
               O foco principal do aplicativo que desenvolvemos é organizar e delegar tarefas aos membros de equipes. 
               A inspiração para esta ideia surgiu depois de presenciarmos em primeira mão a importância de ter uma 
               equipe organizada e com uma compreensão clara das responsabilidades de cada membro. Nossa escolha é um reflexo
@@ -24,11 +28,11 @@ export default function AboutText({ onPress }) {
               a necessidade de uma ferramenta capaz de simplificar o gerenciamento de tarefas. Assim, nosso aplicativo nasceu
               não apenas como uma solução para nossos próprios desafios, mas também como uma resposta às necessidades comuns de muitas outras equipes.
             </Text>
-            <Text style={styles.text}>
+            <Text style={[styles.text, textColor]}>
               Nosso aplicativo incorpora uma variedade de funcionalidades. 
               Entre elas, destacam-se:
             </Text>
-            <Text style={styles.textInf}>
+            <Text style={[styles.textInf, textColor]}>
               1: Atualizações em Tempo Real: Uma das características mais importantes do nosso aplicativo é a capacidade de atualizar qualquer alteração
               feita em grupos, tarefas ou na composição da equipe é imediatamente refletida para todos os membros, garantindo que todos estejam sempre informados 
               sobre as últimas mudanças e atualizações. {'\n'}{'\n'}
@@ -39,10 +43,10 @@ export default function AboutText({ onPress }) {
               5: Administração de membros: Adicionar ou remover membros de grupos é um processo ágil. {'\n'}{'\n'}
               6: Permissões para membros: O aplicativo oferece um sistema de permissão, permitindo que os administradores escolham o que cada membro poderá acessar. {'\n'}{'\n'}
             </Text>
-            <Text style={styles.text}>
+            <Text style={[styles.text, textColor]}>
               No desenvolvimento do nosso aplicativo, utilizamos uma combinação de tecnologias para garantir eficiência e uma experiência de usuário excepcional. As principais tecnologias incluem:
             </Text>
-            <Text style={styles.textInf}>
+            <Text style={[styles.textInf, textColor]}>
               1: React Native: Framework principal para o desenvolvimento do aplicativo. Nos permitiu criar um aplicativo móvel tanto em dispositivos Android quanto iOS. O React Native foi essencial por 
               causa de sua eficiência e pela capacidade de integrar perfeitamente com componentes nativos.{'\n'}{'\n'}
               2: Firebase Authentication: Esta plataforma oferece um sistema para autenticação de usuários, suportando uma variedade de provedores. Assim simplificando o processo de login, 
@@ -64,7 +68,6 @@ export default function AboutText({ onPress }) {
 
 const styles = StyleSheet.create({
   modalContainer: {
-    backgroundColor: Colors.primary100,
     flex: 1
   },
   iconContent: {

@@ -10,26 +10,29 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import { useTheme } from "../store/theme-context";
 
 function SettingsScreen() {
+
+  const { colors } = useTheme();
 
   const authCtx = useContext(AuthContext);
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
-    <SafeAreaView style={styles.rootContainer}>
-      <View style={styles.contentPerfil}>
+    <SafeAreaView style={[styles.rootContainer, {backgroundColor: colors.background50}]}>
+      <View style={[styles.contentPerfil, {borderBottomWidth: 2, borderColor: colors.border500,}]}>
         <InfPerfil/>
       </View>
 
       <View style={styles.containerBody}>
         <View style={styles.contentBody}>
-          <Text style={styles.titleSettings}>Settings</Text>
+          <Text style={[styles.titleSettings, {color: colors.text900}]}>Settings</Text>
           <SettingsItem
             nameIcon={"sunny-outline"}
             text={'Theme'}
-            activeText={<Ionicons name={'moon'} size={15} color={Colors.primary100}/>}
-            inActiveText={<Ionicons name={'sunny'} size={15} color={Colors.primary100}/>}
+            activeText={<Ionicons name={'moon'} size={15} color={colors.swich200}/>}
+            inActiveText={<Ionicons name={'sunny'} size={15} color={colors.swich200}/>}
           />
           <SettingsItem
             nameIcon={"language-outline"}
@@ -76,13 +79,10 @@ const styles = StyleSheet.create({
     width: wp('100%'),
     height: hp('100%'),
     alignItems: "center",
-    backgroundColor: Colors.primary100,
   },
   contentPerfil: {
     width: '90%',
     height: '35%',
-    borderBottomWidth: 2,
-    borderColor: Colors.primary950,
   },
   containerBody: {
     width: '100%',
@@ -96,7 +96,6 @@ const styles = StyleSheet.create({
     height: '50%',
   },
   titleSettings: {
-    color: Colors.primary950,
     fontSize: 14,
     fontFamily: 'open-sans-bold'
   },

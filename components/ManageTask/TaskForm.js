@@ -221,6 +221,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
                 multiline: false,
                 onChangeText: inputChangeHandler.bind(this, "title"),
                 value: inputs.title.value,
+                maxLength: 10
               }}
             />
             <Input
@@ -266,6 +267,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
                 invalid={!objective.isValid}
                 textInputConfig={{
                   multiline: false,
+                  maxLength: 30,
                   onChangeText: (text) =>
                     inputChangeHandler("objectives", text, index),
                   value: objective.value,

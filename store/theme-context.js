@@ -50,6 +50,7 @@ const themes = {
         icons500: "#4c1d95",
         icons800: "#5b21b6",
         icons900: "#171717",
+        icons100: "#4c1d95",
 
         // Tab bar colors
         bgTabBar900: "#4c1d95",
@@ -58,7 +59,8 @@ const themes = {
 
         // Borders
         border950: "#2e1065",
-        border900: '#4c1d95',
+        border900: "#2e1065",
+        border500: '#4c1d95',
         border100: "#ede9fe",
 
 
@@ -141,6 +143,7 @@ const themes = {
        icons500: "#4c1d95",
        icons800: "#ffffff",
        icons900: "#171717",
+       icons200: "#f5f3ff",
 
        // Tab bar colors
        bgTabBar900: "#4c1d95",
@@ -150,6 +153,7 @@ const themes = {
        // Borders
        border950: "#2e1065",
        border900: '#4c1d95',
+       border500: "#8b5cf6",
        border100: "#ede9fe",
     },
 };

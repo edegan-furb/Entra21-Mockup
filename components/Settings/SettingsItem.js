@@ -3,38 +3,46 @@ import { useState } from "react";
 import { Colors } from "../../constants/styles";
 import { Ionicons } from '@expo/vector-icons';
 import { Switch } from "react-native-switch";
-
+import { useTheme } from "../../store/theme-context";
 
 export default function SettingsItem({ text, nameIcon, swich, activeText, inActiveText, onPress }) {
 
-    const [icon, setIcon] = useState(true);
-    
+    const [icon, setIcon] = useState(false);
+    const { colors, toggleTheme } = useTheme();
+
     return(
         <Pressable 
-            style={({ pressed }) => pressed && swich ? [styles.contentItem, styles.pressed] : styles.contentItem}
+            style={({ pressed }) => pressed && swich ?
+                [styles.contentItem, styles.pressed, {borderBottomWidth: 1, borderColor: colors.border500}]
+                :
+                [styles.contentItem, {borderBottomWidth: 1, borderColor: colors.border500}]
+            }
             onPress={onPress}
         >
             <Ionicons 
                 name={nameIcon} 
                 size={23} 
-                color={Colors.primary950} 
+                color={colors.text900} 
                 style={styles.icon} 
             />
-            <Text style={styles.nameItem}>{text}</Text>
+            <Text style={[styles.nameItem, {color: colors.text900}]}>{text}</Text>
             {!swich && ( 
                 <Switch
-                activeText={activeText}
-                inActiveText={inActiveText}
-                value={icon}
-                onValueChange={(valor) => setIcon(valor)}
-                backgroundActive={Colors.primary950}
-                circleActiveColor={Colors.primary200}
-                backgroundInactive={Colors.primary500}
-                circleInActiveColor={Colors.primary200}
-                circleSize={25}
-                barHeight={30}
-                switchWidthMultiplier={3} 
-            />
+                    activeText={activeText}
+                    inActiveText={inActiveText}
+                    value={icon}
+                    onValueChange={(valor) => {
+                        setIcon(valor)
+                        toggleTheme()
+                    }}
+                    backgroundActive={colors.swich950}
+                    circleActiveColor={colors.swich200}
+                    backgroundInactive={colors.swich500}
+                    circleInActiveColor={colors.swich200}
+                    circleSize={25}
+                    barHeight={30}
+                    switchWidthMultiplier={3} 
+                />
             )}
             
         </Pressable>  
@@ -48,8 +56,6 @@ const styles = StyleSheet.create({
         height: '30%',
         alignItems: "center",
         justifyContent: 'flex-start',
-        borderBottomWidth: 1,
-        borderColor: '#000',
         shadowColor: Colors.primary950,
         shadowRadius: 6,
         shadowOffset: { width: 1, height: 1 },

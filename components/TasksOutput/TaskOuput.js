@@ -3,8 +3,11 @@ import { Colors } from "../../constants/styles";
 import TasksList from "./TasksList";
 import { useNavigation } from "@react-navigation/native";
 import AddButton from '../GroupsOutput/AddButton';
+import { useTheme } from "../../store/theme-context";
 
 function TasksOutput({ tasks, firstText, secondText, title, groupId }) {
+
+  const { colors } = useTheme();
 
   // Create the navigation component
   const navigation = useNavigation();
@@ -36,7 +39,7 @@ function TasksOutput({ tasks, firstText, secondText, title, groupId }) {
     content = <TasksList tasks={tasks} groupId={groupId} />;
   }
 
-  return <View style={styles.container}>{content}</View>;
+  return <View style={[styles.container, {backgroundColor: colors.background50}]}>{content}</View>;
 }
 
 export default TasksOutput;
