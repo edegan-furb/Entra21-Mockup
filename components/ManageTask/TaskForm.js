@@ -210,7 +210,6 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
 
       <View style={styles.form}>
         <ScrollView
-          bounces={false}
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.contentInput}>

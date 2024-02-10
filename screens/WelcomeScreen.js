@@ -14,11 +14,10 @@ function WelcomeScreen() {
   const [username, setUsername] = useState(null);
   const [userTasks, setUserTasks] = useState([]);
   const groupsCtx = useContext(GroupsContext);
-  
   const navigation = useNavigation();
 
   const { colors } = useTheme(); 
-
+  
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
@@ -70,14 +69,10 @@ function WelcomeScreen() {
 
   function getTasksForUser(groups, username) {
     return groups.reduce((tasksForUser, group) => {
-      if (group.tasks && Array.isArray(group.tasks)) {
-        const filteredTasks = group.tasks.filter(
-          (task) => task.designatedUser === username
-        );
-        return tasksForUser.concat(filteredTasks);
-      } else {
-        return tasksForUser;
-      }
+      const filteredTasks = group.tasks.filter(
+        (task) => task.designatedUser === username
+      );
+      return tasksForUser.concat(filteredTasks);
     }, []);
   }
 
@@ -89,7 +84,7 @@ function WelcomeScreen() {
     <SafeAreaView style={[styles.rootContainer, {backgroundColor: colors.background50}]}>
 
       <View style={styles.hiContainer}>
-        <Text style={[styles.hi, {color: colors.text900}]}>{username ? ("Hi, " + username) : ("Welcome back!")}</Text>
+        <Text style={[styles.hi, {color: colors.text900}]} numberOfLines={1}>{username ? ("Hi, " + username) : ("Welcome back!")}</Text>
       </View>
 
       <View style={styles.container}>

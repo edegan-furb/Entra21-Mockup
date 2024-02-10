@@ -108,7 +108,7 @@ export default function ModalInformationsPerfil() {
                         </>
                     ) : (
                         <>
-                            <Text style={styles.userInfoText}>{username}</Text>
+                            <Text style={styles.userInfoText} numberOfLines={1} ellipsizeMode="middle">{username}</Text>
                             <Pressable style={styles.buttonContainerEdit} onPress={toggleEdit}>
                                 <Entypo 
                                     name="pencil"
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     userInfoText: {
         fontWeight: "bold",
         color: Colors.primary950,
-        fontSize: 25
+        fontSize: 25,
     },
     textInput: {
         textAlign: "center",

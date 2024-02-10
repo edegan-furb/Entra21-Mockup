@@ -9,6 +9,7 @@ function TasksList({ tasks, groupId }) {
         data={tasks}
         renderItem={({ item }) => <TaskItem {...item} groupId={groupId} />}
         keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={false}
         style={styles.list}
       />
     </View>
