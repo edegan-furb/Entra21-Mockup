@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, SafeAreaView, ActivityIndicator } from "react-n
 import { GroupsContext } from "../store/groups-context";
 import { Colors } from "../constants/styles";
 import { fetchGroups, fetchUsernameAndEmail } from "../util/firestore";
-import WelcomeBanner from "../components/homeComponents/WelcomeBanner";
+import WelcomeBanner from "../components/HomeComponents/WelcomeBanner";
 import { useTheme } from "../store/theme-context"; 
 import { auth } from "../util/firebaseConfig";
 import CurrentTasksOutput from '../components/CurrentTasksOutput/CurrentTaskOuput'
