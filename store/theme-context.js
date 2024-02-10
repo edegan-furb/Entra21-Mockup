@@ -47,6 +47,7 @@ const themes = {
         // Icons colors
         icons50: "#000000",
         icons400: "#a78bfa",
+        icons500: "#4c1d95",
         icons800: "#5b21b6",
         icons900: "#171717",
 
@@ -137,6 +138,7 @@ const themes = {
        // Icons colors
        icons50: "#f5f3ff",
        icons400: "#a78bfa",
+       icons500: "#4c1d95",
        icons800: "#ffffff",
        icons900: "#171717",
 
