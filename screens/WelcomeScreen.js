@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, SafeAreaView, ActivityIndicator } from "react-n
 import { GroupsContext } from "../store/groups-context";
 import { Colors } from "../constants/styles";
 import { fetchGroups, fetchUsernameAndEmail } from "../util/firestore";
-import WelcomeBanner from "../components/HomeComponents/WelcomeBanner";
+import WelcomeBanner from "../components/homeComponents/WelcomeBanner";
 import { useTheme } from "../store/theme-context"; 
 import { auth } from "../util/firebaseConfig";
 import CurrentTasksOutput from '../components/CurrentTasksOutput/CurrentTaskOuput'
@@ -106,10 +106,11 @@ function WelcomeScreen() {
         {loading ? (
           <ActivityIndicator size="small" color={Colors.primary800} />
         ) : (
-          <CurrentTasksOutput tasks={[{id: 1, deadline: '2023', taskName: 'oi', groupName: 'FC', taskProgress: 0.8}]} firstText="No tasks found" />
+          <CurrentTasksOutput tasks={userTasks} firstText="No tasks found" />
         )}
         {console.log("oi  ", userTasks)}
         {console.log("Username:", username)}
+        {console.log("objetivo: ", userTasks.objectives)}
           {/* <FlatList
             data={DATA}
             renderItem={({ item }) => (

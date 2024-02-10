@@ -50,7 +50,7 @@ export default function TaskHome({ deadline, taskName, groupName, taskProgress})
 
 const styles = StyleSheet.create({
     container: {
-        width: '46%',
+        width: '45%',
         height: hp('22%'),
         margin: wp('2%'),
         padding: '3%',

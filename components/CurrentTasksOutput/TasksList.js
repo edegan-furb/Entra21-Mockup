@@ -3,13 +3,37 @@ import { StyleSheet, View } from "react-native";
 import TaskHome from "./TaskHome";
 
 function TasksList({ tasks, groupId }) {
+
+  function ProgressCalc (numOfObjectives){
+
+  }
+
+  function dateFormating(date) {
+    //inicializing variables
+    let dateOriginal = date.toString();
+    let formatDate = new Date(dateOriginal)
+
+    //Configuring format options
+    let options = { 
+      year: 'numeric', 
+      month: 'short', 
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZone: 'UTC'
+    };
+
+    return formatDate.toLocaleDateString('en-US', options)
+  }
+
   return (
     <View style={styles.listContainer}>
       <FlatList
         data={tasks}
         renderItem={({ item }) => 
         <TaskHome
-          {...item}
+          taskName={item.title}
+          deadline={dateFormating(item.date)}
           groupId={groupId}
         />}
         numColumns={2}
@@ -32,6 +56,6 @@ const styles = StyleSheet.create({
     paddingTop: 20
   },
   list: {
-    width: '80%',
+    width: '100%',
   }
 })
