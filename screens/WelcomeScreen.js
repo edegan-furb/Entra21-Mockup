@@ -1,9 +1,10 @@
-import { useContext, useEffect, useState } from "react";
-import TasksOutput from "../components/TasksOutput/TaskOuput"; // Ensure correct import path
+import React, { useContext, useEffect, useState, useCallback } from "react";
+import { View, ActivityIndicator, Text, StyleSheet } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
+import TasksOutput from "../components/TasksOutput/TaskOuput";
 import { GroupsContext } from "../store/groups-context";
 import { fetchGroups, fetchUsernameAndEmail } from "../util/firestore";
 import { auth } from "../util/firebaseConfig";
-import { View, ActivityIndicator, Text, StyleSheet } from "react-native";
 import { Colors } from "../constants/styles";
 
 function WelcomeScreen() {
@@ -15,25 +16,38 @@ function WelcomeScreen() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-
         await loadUserData();
       } else {
-
         setLoading(false);
       }
     });
 
-
     return () => unsubscribe();
   }, []);
 
+  useFocusEffect(
+    useCallback(() => {
+      const fetchIfUserExists = async () => {
+        const user = auth.currentUser;
+        if (user) {
+          await loadUserData();
+        } else {
+          setLoading(false);
+        }
+      };
+
+      fetchIfUserExists();
+    }, [])
+  );
+
   const loadUserData = async () => {
+    setLoading(true);
     try {
       const userDetails = await fetchUsernameAndEmail();
       setUsername(userDetails.username);
       await loadGroups();
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      setLoading(false);
     }
   };
 
@@ -45,12 +59,10 @@ function WelcomeScreen() {
           const tasks = getTasksForUser(groups, username);
           setUserTasks(tasks);
         }
-
         setLoading(false);
       });
       return () => stopListening();
     } catch (error) {
-      console.error("Error fetching groups:", error);
       setLoading(false);
     }
   };
@@ -74,15 +86,12 @@ function WelcomeScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.usernameContainer}>
-        <Text style={styles.text}>{username ? ("Hi, " + username) : ("Welcome back!")}
+        <Text style={styles.text}>
+          {username ? "Hi, " + username : "Welcome back!"}
         </Text>
       </View>
       <View style={styles.ongoingTasks}>
-        <Text
-          style={styles.text}
-        >
-          Ongoing Tasks
-        </Text>
+        <Text style={styles.text}>Ongoing Tasks</Text>
         {loading ? (
           <ActivityIndicator size="large" color={Colors.primary800} />
         ) : (
@@ -97,10 +106,11 @@ export default WelcomeScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   usernameContainer: {
-    flex: 1, padding: 24
+    flex: 1,
+    padding: 24,
   },
   text: {
     textAlign: "left",
@@ -109,7 +119,6 @@ const styles = StyleSheet.create({
   },
   ongoingTasks: {
     flex: 1,
-    paddingHorizontal: 24
-  }
-})
-
+    paddingHorizontal: 24,
+  },
+});
