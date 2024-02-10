@@ -18,17 +18,19 @@ export default function TaskHome({ deadline, taskName, groupName, taskProgress})
     return(
         <View style={[styles.container, {backgroundColor: colors.swich400}]}>
             <View>
-                <Text style={{color: colors.primary950}}>{deadline}</Text>
+                <Text style={[styles.date, {color: colors.primary950}]}>{deadline}</Text>
             </View>
 
             <View style={styles.taskContainer}>
                 <Ionicons
-                    size={30} 
+                    size={wp('16')} 
                     name="reader-outline"
-                    color={colors.primary600}
+                    color={colors.icons500}
                 />
                 <View style={styles.taskInfoContainer}>
-                    <Text style={[styles.taskName, {color: colors.neutral1100}]}>{taskName}</Text>
+                    <Text style={[styles.taskName, {color: colors.neutral1100}]} numberOfLines={3}>
+                        {taskName}
+                    </Text>
                     <Text style={[styles.groupName, {color: colors.neutral1100}]}>{groupName}</Text>
                 </View>
             </View>
@@ -38,7 +40,7 @@ export default function TaskHome({ deadline, taskName, groupName, taskProgress})
                 <View style={styles.barContainer}>
                     <Progress.Bar 
                         progress={taskProgress}
-                        color={Colors.primary600} 
+                        color={Colors.icons500} 
                         width={wp('25%')} 
                     />
                     <Text style={{color: colors.neutral1100}}> { (taskProgress) * 100 }%</Text>
@@ -50,7 +52,7 @@ export default function TaskHome({ deadline, taskName, groupName, taskProgress})
 
 const styles = StyleSheet.create({
     container: {
-        width: '46%',
+        width: '45%',
         height: hp('22%'),
         margin: wp('2%'),
         padding: '3%',
@@ -59,16 +61,23 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.primary50
     },
     taskContainer: {
+        alignItems: 'center',
         height: '50%',
-        marginTop: '5%',
+        maxWidth: '82%',
+        marginTop: '10%',
         flexDirection: 'row'
     },
     taskInfoContainer:{
+        alignContent: 'center',
+        justifyContent: 'center',
         height: '100%',
         maxWidth: '70%',
     },
     ProgressText: {
         color: Colors.neutral1100
+    },
+    date: {
+        fontSize: 13
     },
     taskName: {
         fontSize: 14,
