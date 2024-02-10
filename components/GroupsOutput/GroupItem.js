@@ -1,16 +1,29 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import * as Progress from 'react-native-progress';
 
 import { Colors } from "../../constants/styles";
 import { useTheme } from '../../store/theme-context'; // Adj
 import { Ionicons, Foundation } from '@expo/vector-icons';
-import GroupDonut from './GroupDonut';
 
-function GroupItem({ id, title, }) {
+function GroupItem({ id, title, tasks }) {
 
   const { colors } = useTheme();
   const navigation = useNavigation();
+  
+  const numberTasks = tasks.length;
+  let progress;
 
+  if (numberTasks > 0) {
+    const CompletedTasks = tasks.filter(task => task.completed === true).length;
+    progress = CompletedTasks / numberTasks;
+  } else {
+    progress = 0;
+  }
+
+const numberCompletedTasks = progress * 100;
+
+  console.log(progress)
   function groupPressHandler() {
     navigation.navigate("GroupScreen", {
       groupId: id,
@@ -38,14 +51,20 @@ function GroupItem({ id, title, }) {
               <View style={styles.infGroups}>
                 <Foundation name="clipboard-pencil" color={colors.text700} size={17}/>
                 <Text style={[styles.infTitleGroup, {color: colors.text700}]}>
-                  4
+                  {numberTasks}
                </Text>
               </View>  
             </View>
           </View>
           <View style={styles.graphiContainer}>
-            <Text style={[styles.graphiTextInf, {color: colors.text700}]}>Concluido</Text>
-            <GroupDonut concludedTasks={80} />
+            <Text style={[styles.graphiTextInf, {color: colors.text700}]}>Concluido {numberCompletedTasks.toFixed(0)}%</Text>
+              <Progress.Bar 
+                progress={progress}
+                color={colors.background300} 
+                width={100} 
+                animationType={"timing"}
+                
+              />
           </View>
         </View>
       </View>
