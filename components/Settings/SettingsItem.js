@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Switch } from "react-native-switch";
 import { useTheme } from "../../store/theme-context";
 
-export default function SettingsItem({ text, nameIcon, swichLanguage, activeText, inActiveText, onPress, swichTheme }) {
+export default function SettingsItem({ text, nameIcon, swich, swichLanguage, activeText, inActiveText, onPress, swichTheme }) {
 
     const [icon, setIcon] = useState(false);
     const { colors, toggleTheme, theme } = useTheme();
@@ -26,7 +26,7 @@ export default function SettingsItem({ text, nameIcon, swichLanguage, activeText
 
     return(
         <Pressable 
-            style={({ pressed }) => pressed ?
+            style={({ pressed }) => pressed && !swich ?
                 [styles.contentItem, styles.pressed, {borderBottomWidth: 1, borderColor: colors.border500}]
                 :
                 [styles.contentItem, {borderBottomWidth: 1, borderColor: colors.border500}]

@@ -10,7 +10,7 @@ export default function AboutText({ onPress }) {
   return (
     <SafeAreaView style={[styles.modalContainer, {backgroundColor: colors.background50}]}>
       <Pressable onPress={onPress} style={styles.iconContent}>
-        <Ionicons name="close" size={30} color={textColor}/>
+        <Ionicons name="close" size={30} color={colors.text50}/>
       </Pressable>
       <View>
         <View style={styles.textContainer}>
