@@ -61,7 +61,7 @@ export default function SettingsItem({ text, nameIcon, swichLanguage, activeText
                     inActiveText={inActiveText}
                     value={icon}
                     onValueChange={(valor) => setIcon(valor)}
-                    backgroundActive={colors.swich950}
+                    backgroundActive={colors.swich500}
                     circleActiveColor={colors.swich200}
                     backgroundInactive={colors.swich500}
                     circleInActiveColor={colors.swich200}

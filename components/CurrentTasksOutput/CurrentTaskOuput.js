@@ -1,16 +1,14 @@
 import { StyleSheet, Text, View } from "react-native";
-import { Colors } from "../../constants/styles";
 import TasksList from "./TasksList";
-import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "../../store/theme-context";
 
-function CurrentTaskOuput({ tasks, firstText, title, groupId }) {
+function CurrentTaskOuput({ tasks, firstText, groupId }) {
   // Use the theme colors
   const { colors } = useTheme()
 
   let content = 
     <View style={styles.textContainer}>
-      <Text style={styles.text}>
+      <Text style={[styles.text, { color: colors.text200 }]}>
         {firstText}
       </Text>
     </View> 
@@ -20,7 +18,7 @@ function CurrentTaskOuput({ tasks, firstText, title, groupId }) {
     content = <TasksList tasks={tasks} groupId={groupId}/>;
   }
 
-  return <View style={[styles.container, {backgroundColor: colors.primary100}]}>{content}</View>;
+  return <View style={styles.container}>{content}</View>;
 }
 
 export default CurrentTaskOuput;
@@ -28,7 +26,6 @@ export default CurrentTaskOuput;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.primary100,
   },
   textContainer: {
     width: '100%',
@@ -42,7 +39,6 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     fontSize: 19,
     textAlign: "center",
-    color: Colors.primary900,
   },
   addButtonContainer: {
     width: '100%',

@@ -87,7 +87,7 @@ export default function ModalInformationsPerfil() {
                 <Entypo 
                     name="pencil"
                     size={15}
-                    color={colors.icons500}
+                    color={'#4c1d95'}
                 />
             </Pressable>
             <View style={styles.infContainer}>
@@ -105,7 +105,7 @@ export default function ModalInformationsPerfil() {
                                 <Ionicons
                                     name="save-outline"
                                     size={15}
-                                    color={colors.icons500}
+                                    color={'#4c1d95'}
                                 />
                             </Pressable>
                         </>
@@ -116,7 +116,7 @@ export default function ModalInformationsPerfil() {
                                 <Entypo 
                                     name="pencil"
                                     size={15}
-                                    color={colors.icons500}
+                                    color={'#4c1d95'}
                                 />
                             </Pressable>
                         </>
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         elevation: 4,
-        shadowColor: Colors.primary950,
+        shadowColor: "#2e1065",
         shadowRadius: 10,
         shadowOffset: { width: 1, height: 1 },
         shadowOpacity: .4,

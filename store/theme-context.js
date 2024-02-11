@@ -32,6 +32,7 @@ const themes = {
         text700: "#ffffff",
         text50: "#000000",
         text100: "#4c1d95",
+        text200: '#4c1d95',
 
         // Swichs colors
         // Cirle
@@ -124,6 +125,7 @@ const themes = {
        text700: "#ffffff",
        text50: "#f5f3ff",
        text100: "#fff",
+       text200: '#4c1d95',
 
        // Swichs colors
        // Cirle

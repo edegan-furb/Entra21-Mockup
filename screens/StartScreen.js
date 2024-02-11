@@ -30,7 +30,7 @@ function StartScreen() {
     return (
       <SafeAreaView style={styles.rootContainer}>
         <View style={styles.upperLogoContainer}>
-          <UpperLogo children={"TaskSync"} />
+          <UpperLogo children={"TaskSync"} isStart={true}/>
         </View>
         <Banner />
         <Description

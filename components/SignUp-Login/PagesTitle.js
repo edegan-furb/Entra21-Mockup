@@ -8,7 +8,7 @@ export default function PagesTitle({ title, subTitle, style }) {
   const navigation = useNavigation();
 
   function onPressHandler() {
-      navigation.navigate('Start')
+    navigation.navigate('Start')
   }
 
   return(

@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
         padding: '3%',
         borderWidth: 1,
         borderRadius: 20,
-        backgroundColor: Colors.primary50
     },
     taskContainer: {
         alignItems: 'center',

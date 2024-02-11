@@ -7,6 +7,7 @@ import Loading from "../components/ui/LoadingOverlay";
 import { useContext, useState } from "react";
 import { GroupsContext } from "../store/groups-context";
 import { generateUniqueId } from "../util/generateUniqueId";
+import { useTheme } from "../store/theme-context";
 
 function AddMembersScreen({ route, navigation }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -15,6 +16,8 @@ function AddMembersScreen({ route, navigation }) {
   const groupsCtx = useContext(GroupsContext);
   const groupId = route.params?.groupId;
   const selectGroup = groupsCtx.groups.find((group) => group.id === groupId);
+
+  const { colors } = useTheme();
 
   function cancelHandler() {
     navigation.goBack();
@@ -59,11 +62,11 @@ function AddMembersScreen({ route, navigation }) {
     return <Error message={error} />;
   }
   if (isLoading) {
-    return <Loading style={{ backgroundColor: Colors.primary800 }} />;
+    return <Loading style={{ backgroundColor: colors.background800 }} />;
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background1000 }]}>
       <AddMemberForm onCancel={cancelHandler} onSubmit={confirmHandler} />
     </View>
   );
@@ -74,7 +77,6 @@ export default AddMembersScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
-    backgroundColor: Colors.primary1000,
+    padding: 10,
   },
 });

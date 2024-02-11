@@ -19,7 +19,6 @@ export default function WelcomeComp({ onPress }) {
                     Let's make today productive!
                 </Text>
             </View>
-
             <View style={styles.imageContainer}>
                 <Image
                     style={styles.image}

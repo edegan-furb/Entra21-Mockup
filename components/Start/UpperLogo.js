@@ -2,7 +2,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { Feather } from '@expo/vector-icons'; 
 import { useTheme } from "../../store/theme-context";
 
-function UpperLogo({ children }) {
+function UpperLogo({ children, isStart }) {
 
   const { colors } = useTheme()
 
@@ -11,9 +11,9 @@ function UpperLogo({ children }) {
       <Feather 
         name="check-square"
         size={17}
-        color={colors.icons50}
+        color={isStart ? colors.icons900 : colors.icons50}
       />
-      <Text style={[styles.text, {color: colors.text50}]}>{children}</Text>
+      <Text style={[styles.text, isStart ? {color: colors.icons900} : {color: colors.text50}]}>{children}</Text>
     </View>
   );
 }

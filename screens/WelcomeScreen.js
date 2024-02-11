@@ -90,29 +90,22 @@ function WelcomeScreen() {
 
   return (
     <SafeAreaView style={[styles.rootContainer, {backgroundColor: colors.background50}]}>
-
       <View style={styles.hiContainer}>
         <Text style={[styles.hi, {color: colors.text900}]} numberOfLines={1}>{username ? ("Hi, " + username) : ("Welcome back!")}</Text>
       </View>
-
       <View style={styles.container}>
-
         <View style={styles.welcomeContainer}>
           <WelcomeBanner onPress={goToGroups} />
         </View>
-
         <View style={styles.ongoingTasksContainer}>
           <Text style={[styles.ongoingTasks, {color: colors.text900}]}>Ongoing task</Text>
         </View>
-
         <View style={styles.tasksContainer}>
         {loading ? (
           <ActivityIndicator size="small" color={Colors.primary800} />
         ) : (
           <CurrentTasksOutput tasks={userTasks} firstText="No tasks found" />
         )}
-        {console.log("oi  ", userTasks)}
-        {console.log("Username:", username)}
           {/* <FlatList
             data={DATA}
             renderItem={({ item }) => (
@@ -144,7 +137,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: '2%'
   },
-
   welcomeContainer: {
     width: '95%',
     height: '20%',
@@ -161,12 +153,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: 'center',
     flexDirection: 'row',
-    flexWrap: "wrap",
   },
   hi: {
     fontSize: 28,
     fontWeight: "bold",
-    color: Colors.primary950
   },
   ongoingTasksContainer: {
     alignSelf: 'flex-start',
@@ -177,6 +167,5 @@ const styles = StyleSheet.create({
   ongoingTasks: {
     fontSize: 20,
     fontWeight: "bold",
-    color: Colors.primary950
   },
 });

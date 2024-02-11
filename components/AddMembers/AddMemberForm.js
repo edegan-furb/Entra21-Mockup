@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View, TouchableWithoutFeedback, Keyboard } from "react-native";
 import Input from "../AddMembers/Input";
-import { Colors } from "../../constants/styles";
 import Button from "../ui/Button";
 import { useState } from "react";
 import { Switch } from "react-native-switch";
@@ -8,8 +7,12 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import { useTheme } from "../../store/theme-context";
 
 function AddMemberForm({ onCancel, onSubmit }) {
+
+  const { colors } = useTheme();
+
   const [isChecked, setIsChecked] = useState(false);
   const [inputs, setInputs] = useState({
     email: {
@@ -55,14 +58,13 @@ function AddMemberForm({ onCancel, onSubmit }) {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={styles.form}>
-        <View style={styles.titleContainer}>
-          <View style={styles.titleContent}> 
-            <Text style={styles.title}>Add Members</Text>
+      <View style={[styles.form, { backgroundColor: colors.background900 }]}>
+        <View style={[styles.titleContainer, { backgroundColor: colors.background50 }]}>
+          <View style={[styles.titleContent, { backgroundColor: colors.background900 }]}> 
+            <Text style={[styles.title, { color: colors.text700 }]}>Add Members</Text>
           </View>
         </View>
-
-        <View style={styles.inputContainer}>
+        <View style={[styles.inputContainer, { backgroundColor: colors.background50 }]}>
           <Input
             label={"User by Email"}
             textInputConfig={{
@@ -71,16 +73,16 @@ function AddMemberForm({ onCancel, onSubmit }) {
             }}
           />
         </View>
-        <View style={styles.switch}>
+        <View style={[styles.switch, { backgroundColor: colors.background50 }]}>
           <View style={styles.switchContent}> 
-            <Text style={styles.text}>Set as Admin</Text>
+            <Text style={[styles.text, { color: colors.text900 }]}>Set as Admin</Text>
             <Switch
               activeText={''}
               inActiveText={''}
-              backgroundActive={Colors.primary950}
-              backgroundInactive={Colors.neutral400}
-              circleActiveColor={Colors.primary200}
-              circleInActiveColor={Colors.primary200}
+              backgroundActive={colors.swich500}
+              backgroundInactive={colors.swich400}
+              circleActiveColor={colors.swich200}
+              circleInActiveColor={colors.swich200}
               onValueChange={toggleSwitch}
               value={isChecked}
               circleSize={20}
@@ -89,12 +91,12 @@ function AddMemberForm({ onCancel, onSubmit }) {
             />
           </View>
           {formIsInvalid && (
-              <Text style={styles.errorText}>
+              <Text style={[styles.errorText, {color: colors.error500}]}>
                 Invalid email - please check your entered data
               </Text>
             )}
         </View>
-        <View style={styles.buttonsContainer}>
+        <View style={[styles.buttonsContainer, { backgroundColor: colors.background50 }]}>
           <View style={styles.buttonContent}>
             <Button mode={"flat"} onPress={onCancel}>
               Cancel
@@ -115,15 +117,13 @@ export default AddMemberForm;
 const styles = StyleSheet.create({
   form: {
     marginTop: '30%',
-    width: wp('90%'),
+    width: wp('95%'),
     height: hp('40%'),
-    backgroundColor: Colors.primary900,
     borderRadius: 20,
   },
   titleContainer: {
     height: '25%',
     width: '100%',
-    backgroundColor: Colors.primary100,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
@@ -132,7 +132,6 @@ const styles = StyleSheet.create({
     height: '100%',
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: Colors.primary900,
     borderTopEndRadius: 20,
     borderTopStartRadius: 20,
     borderBottomLeftRadius: 30,
@@ -140,11 +139,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: "bold",
-    color: Colors.primary100,
     textAlign: "center",
   },
   inputContainer: {
-    backgroundColor: Colors.primary100,
     borderTopEndRadius: 30,
     justifyContent: "flex-end",
     width: '100%',
@@ -153,7 +150,6 @@ const styles = StyleSheet.create({
   switch: {
     alignItems: "flex-start",
     height: '20%',
-    backgroundColor: Colors.primary100,
   },
   switchContent: {
     flexDirection: "row",
@@ -165,11 +161,9 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 15,
-    color: Colors.primary900,
     fontWeight: "600"
   },
   errorText: {
-    color: Colors.error500,
     paddingHorizontal: 30
   },
   buttonsContainer: {
@@ -179,14 +173,12 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     borderBottomEndRadius: 20,
     borderBottomStartRadius: 20,
-    backgroundColor: Colors.primary100,
   },
   buttonContent: {
     width: '70%',
     height: '50%',
     gap: 10,
     flexDirection: "row",
-    backgroundColor: Colors.primary100,
     borderBottomEndRadius: 20,
     borderBottomStartRadius: 20,
   }
