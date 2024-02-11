@@ -26,7 +26,7 @@ export default function SettingsItem({ text, nameIcon, swichLanguage, activeText
 
     return(
         <Pressable 
-            style={({ pressed }) => pressed && swich ?
+            style={({ pressed }) => pressed ?
                 [styles.contentItem, styles.pressed, {borderBottomWidth: 1, borderColor: colors.border500}]
                 :
                 [styles.contentItem, {borderBottomWidth: 1, borderColor: colors.border500}]

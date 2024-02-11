@@ -5,23 +5,34 @@ import * as Progress from 'react-native-progress';
 import { Colors } from "../../constants/styles";
 import { useTheme } from '../../store/theme-context'; // Adj
 import { Ionicons, Foundation } from '@expo/vector-icons';
+import { useEffect, useState } from "react";
 
 function GroupItem({ id, title, tasks }) {
 
   const { colors } = useTheme();
   const navigation = useNavigation();
   
-  const numberTasks = tasks.length;
-  let progress;
+  // const numberTasks = tasks.length;
+  // const CompletedTasks = tasks.filter(task => task.completed === true).length;
+  // const numberCompletedTasks = (CompletedTasks / numberTasks) * 100;
+  // const progress = CompletedTasks / numberTasks;
 
-  if (numberTasks > 0) {
-    const CompletedTasks = tasks.filter(task => task.completed === true).length;
-    progress = CompletedTasks / numberTasks;
-  } else {
-    progress = 0;
-  }
+  const [numberOfTasks, setNumberOfTasks] = useState(0);
+  const [completedTasks, setCompletedTasks] = useState(0);
 
-  const numberCompletedTasks = progress * 100;
+  // Atualiza o estado local sempre que as tarefas compartilhadas mudarem
+  useEffect(() => {
+      // Verifica se tasks está definido antes de chamar filter
+      const completedTasksCount = tasks ? tasks.filter(task => task.completed).length : 0;
+      setNumberOfTasks(tasks ? tasks.length : 0);
+      setCompletedTasks(completedTasksCount);
+  }, [tasks]);
+
+  // Cálculos relacionados às tarefas
+  const numberCompletedTasks = numberOfTasks === 0 ? 0 : (completedTasks / numberOfTasks) * 100;
+  const progress = numberOfTasks === 0 ? 0 : completedTasks / numberOfTasks;
+
+  console.log(numberCompletedTasks)
 
   function groupPressHandler() {
     navigation.navigate("GroupScreen", {
@@ -50,7 +61,7 @@ function GroupItem({ id, title, tasks }) {
               <View style={styles.infGroups}>
                 <Foundation name="clipboard-pencil" color={colors.text700} size={17}/>
                 <Text style={[styles.infTitleGroup, {color: colors.text700}]}>
-                  {numberTasks}
+                  {numberOfTasks}
                </Text>
               </View>  
             </View>

@@ -69,10 +69,18 @@ function WelcomeScreen() {
 
   function getTasksForUser(groups, username) {
     return groups.reduce((tasksForUser, group) => {
-      const filteredTasks = group.tasks.filter(
-        (task) => task.designatedUser === username
-      );
-      return tasksForUser.concat(filteredTasks);
+      // Verifica se group e group.tasks estão definidos antes de acessá-los
+      if (group && group.tasks) {
+        // Filtra as tarefas do grupo para o usuário designado
+        const filteredTasks = group.tasks.filter(
+          (task) => task.designatedUser === username
+        );
+        // Concatena as tarefas filtradas ao array de tarefas para o usuário
+        return tasksForUser.concat(filteredTasks);
+      } else {
+        // Se group ou group.tasks não estiverem definidos, retorna o array de tarefas sem modificações
+        return tasksForUser;
+      }
     }, []);
   }
 

@@ -45,18 +45,15 @@ function SettingsScreen() {
           <SettingsItem
             nameIcon={"help-circle-outline"}
             text={'About'}
-            swich={true}
             onPress={() => setModalVisible(true)}
           />
           <SettingsItem
             nameIcon={"close-circle-outline"}
             text={'Delete account'}
-            swich={true}
           />
           <SettingsItem
             nameIcon={"log-out-outline"}
             text={'Logout'}
-            swich={true}
             onPress={authCtx.logout}
           />
         </View>
