@@ -1,14 +1,28 @@
 import { Text, StyleSheet, Pressable} from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Colors } from "../../constants/styles";
 import { Ionicons } from '@expo/vector-icons';
 import { Switch } from "react-native-switch";
 import { useTheme } from "../../store/theme-context";
 
-export default function SettingsItem({ text, nameIcon, swich, activeText, inActiveText, onPress }) {
+export default function SettingsItem({ text, nameIcon, swichLanguage, activeText, inActiveText, onPress, swichTheme }) {
 
     const [icon, setIcon] = useState(false);
-    const { colors, toggleTheme } = useTheme();
+    const { colors, toggleTheme, theme } = useTheme();
+
+    // Define o estado inicial do switch com base no tema atual
+    const [switchValue, setSwitchValue] = useState(theme === 'dark');
+
+    // Atualiza o estado do switch quando o tema muda
+    useEffect(() => {
+        setSwitchValue(theme === 'dark');
+    }, [theme]);
+
+    // Função para lidar com a mudança do switch
+    const handleSwitchChange = () => {
+        setSwitchValue(previousValue => !previousValue);
+        toggleTheme();
+    };
 
     return(
         <Pressable 
@@ -26,15 +40,12 @@ export default function SettingsItem({ text, nameIcon, swich, activeText, inActi
                 style={styles.icon} 
             />
             <Text style={[styles.nameItem, {color: colors.text900}]}>{text}</Text>
-            {!swich && ( 
+            {swichTheme && ( 
                 <Switch
                     activeText={activeText}
                     inActiveText={inActiveText}
-                    value={icon}
-                    onValueChange={(valor) => {
-                        setIcon(valor)
-                        toggleTheme()
-                    }}
+                    value={switchValue}
+                    onValueChange={handleSwitchChange}
                     backgroundActive={colors.swich950}
                     circleActiveColor={colors.swich200}
                     backgroundInactive={colors.swich500}
@@ -44,7 +55,21 @@ export default function SettingsItem({ text, nameIcon, swich, activeText, inActi
                     switchWidthMultiplier={3} 
                 />
             )}
-            
+            {swichLanguage && ( 
+                <Switch
+                    activeText={activeText}
+                    inActiveText={inActiveText}
+                    value={icon}
+                    onValueChange={(valor) => setIcon(valor)}
+                    backgroundActive={colors.swich950}
+                    circleActiveColor={colors.swich200}
+                    backgroundInactive={colors.swich500}
+                    circleInActiveColor={colors.swich200}
+                    circleSize={25}
+                    barHeight={30}
+                    switchWidthMultiplier={3} 
+                />
+            )}
         </Pressable>  
     );
 }

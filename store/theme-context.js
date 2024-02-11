@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Define your themes here
 const themes = {
@@ -102,7 +103,7 @@ const themes = {
 
        // Backgrounds colors
        // Primary
-       background100: "#363636",
+       background100: "#c4b5fd",
        //modal background
        background1000: "#160633",
        // TaskHome and Banner
@@ -159,16 +160,30 @@ const themes = {
 const ThemeContext = createContext({
     theme: 'dark',
     toggleTheme: () => { },
-    colors: themes.dark, // Default to light theme
+    colors: themes.dark, // Padrão para o tema escuro
 });
 
 export const useTheme = () => useContext(ThemeContext);
 
 export const ThemeProvider = ({ children }) => {
-    const [theme, setTheme] = useState('dark');
+    // Verifica se o tema está salvo no AsyncStorage
+    useEffect(() => {
+        AsyncStorage.getItem('selectedTheme')
+            .then(theme => {
+                if (theme) {
+                    setTheme(theme);
+                }
+            })
+            .catch(error => console.error('Erro ao recuperar o tema:', error));
+    }, []);
+
+    const [theme, setTheme] = useState('light');
 
     const toggleTheme = () => {
-        setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+        const newTheme = theme === 'light' ? 'dark' : 'light';
+        setTheme(newTheme);
+        AsyncStorage.setItem('selectedTheme', newTheme)
+            .catch(error => console.error('Erro ao definir o tema:', error));
     };
 
     const colors = themes[theme];

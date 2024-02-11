@@ -33,12 +33,14 @@ function SettingsScreen() {
             text={'Theme'}
             activeText={<Ionicons name={'moon'} size={15} color={colors.swich200}/>}
             inActiveText={<Ionicons name={'sunny'} size={15} color={colors.swich200}/>}
+            swichTheme={true}
           />
           <SettingsItem
             nameIcon={"language-outline"}
             text={'Language'}
             activeText={'Br'}
             inActiveText={'En'}
+            swichLanguage={true}
           />
           <SettingsItem
             nameIcon={"help-circle-outline"}
