@@ -2,11 +2,10 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { Colors } from "../../constants/styles";
-import { useTheme } from '../../store/theme-context';
+import { useTheme } from "../../store/theme-context";
 import { Ionicons } from "@expo/vector-icons";
 
 function GroupItem({ id, title, tasks }) {
-
   const { colors } = useTheme();
   const navigation = useNavigation();
 
@@ -16,25 +15,49 @@ function GroupItem({ id, title, tasks }) {
     });
   }
 
-  const numberCompletedTasks = tasks.filter(task => task.completed === true).length;
+  const safeTasks = tasks || [];
+  const numberCompletedTasks = safeTasks.filter(
+    (task) => task.completed === true
+  ).length;
+  const numberTasks = safeTasks.length;
 
   return (
     <Pressable
       onPress={groupPressHandler}
       style={({ pressed }) => pressed && styles.pressed}
     >
-      <View style={[styles.groupItem, { backgroundColor: colors.primary800, }]}>
+      <View style={[styles.groupItem, { backgroundColor: colors.primary800 }]}>
         <View>
           <View style={styles.titleContainer}>
-            <Text style={[styles.textBase, styles.title, { color: colors.primary100, }]}>{title}</Text>
+            <Text
+              style={[
+                styles.textBase,
+                styles.title,
+                { color: colors.primary100 },
+              ]}
+            >
+              {title}
+            </Text>
             <Ionicons
-              name={tasks.length === numberCompletedTasks ? "checkmark-circle-outline" : "ellipse-outline"}
+              name={
+                numberTasks === numberCompletedTasks
+                  ? "checkmark-circle-outline"
+                  : "ellipse-outline"
+              }
               color={Colors.primary100}
               size={21}
             />
           </View>
-          <Text style={[styles.textBase, styles.text, { color: colors.primary100, }]}>Tasks: {tasks.length}</Text>
-          <Text style={[styles.textBase, styles.text, { color: colors.primary100, }]}>Completed Tasks: {numberCompletedTasks}</Text>
+          <Text
+            style={[styles.textBase, styles.text, { color: colors.primary100 }]}
+          >
+            Tasks: {numberTasks}
+          </Text>
+          <Text
+            style={[styles.textBase, styles.text, { color: colors.primary100 }]}
+          >
+            Completed Tasks: {numberCompletedTasks}
+          </Text>
         </View>
       </View>
     </Pressable>
@@ -48,7 +71,7 @@ const styles = StyleSheet.create({
     opacity: 0.75,
   },
   titleContainer: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   groupItem: {
     padding: 12,

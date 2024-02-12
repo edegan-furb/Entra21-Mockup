@@ -76,9 +76,10 @@ function WelcomeScreen() {
 
   function getTasksForUser(groups, username) {
     return groups.reduce((tasksForUser, group) => {
-      const filteredTasks = group.tasks.filter(
-        (task) => task.designatedUser === username
-      );
+      const filteredTasks =
+        group.tasks && Array.isArray(group.tasks)
+          ? group.tasks.filter((task) => task.designatedUser === username)
+          : [];
       return tasksForUser.concat(filteredTasks);
     }, []);
   }
