@@ -23,7 +23,7 @@ export default function TaskHome({ deadline, taskName, groupName, taskProgress, 
     }
 
     const { colors } = useTheme();
-
+    
     return(
         <Pressable 
             style={({ pressed }) => 
