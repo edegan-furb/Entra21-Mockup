@@ -5,7 +5,7 @@ import { Colors } from "../../constants/styles";
 import { useTheme } from "../../store/theme-context";
 import { Ionicons } from "@expo/vector-icons";
 
-function GroupItem({ id, title, tasks }) {
+function GroupItem({ id, title, tasks, memberCount }) {
   const { colors } = useTheme();
   const navigation = useNavigation();
 
@@ -20,6 +20,7 @@ function GroupItem({ id, title, tasks }) {
     (task) => task.completed === true
   ).length;
   const numberTasks = safeTasks.length;
+  const numberMembers = memberCount || 0;
 
   return (
     <Pressable
@@ -57,6 +58,11 @@ function GroupItem({ id, title, tasks }) {
             style={[styles.textBase, styles.text, { color: colors.primary100 }]}
           >
             Completed Tasks: {numberCompletedTasks}
+          </Text>
+          <Text
+            style={[styles.textBase, styles.text, { color: colors.primary100 }]}
+          >
+            Members: {numberMembers}
           </Text>
         </View>
       </View>
