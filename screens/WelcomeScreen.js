@@ -101,25 +101,11 @@ function WelcomeScreen() {
           <Text style={[styles.ongoingTasks, {color: colors.text900}]}>Ongoing task</Text>
         </View>
         <View style={styles.tasksContainer}>
-        {loading ? (
-          <ActivityIndicator size="small" color={Colors.primary800} />
-        ) : (
-          <CurrentTasksOutput tasks={userTasks} firstText="No tasks found" />
-        )}
-          {/* <FlatList
-            data={DATA}
-            renderItem={({ item }) => (
-              <TaskHome
-                deadline={item.deadline}
-                taskName={item.taskName}
-                groupName={item.groupName}
-                taskProgress={item.taskProgress}
-              />
-            )}
-            numColumns={2}
-            showsVerticalScrollIndicator={false}
-            keyExtractor={(item) => item.id.toString()}
-          /> */}
+          {loading ? (
+            <ActivityIndicator size="small" color={Colors.primary800} />
+          ) : (
+            <CurrentTasksOutput tasks={userTasks} firstText="No tasks found" />
+          )}
         </View>
       </View>
     </SafeAreaView>
