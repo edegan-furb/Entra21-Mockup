@@ -221,7 +221,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
                 multiline: false,
                 onChangeText: inputChangeHandler.bind(this, "title"),
                 value: inputs.title.value,
-                maxLength: 10
+                maxLength: 25
               }}
             />
             <Input
@@ -230,7 +230,6 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
               invalid={!inputs.date.isValid}
               textInputConfig={{
                 placeholder: "YYYY-MM-DD",
-                maxLength: 10,
                 onChangeText: inputChangeHandler.bind(this, "date"),
                 value: inputs.date.value,
               }}
