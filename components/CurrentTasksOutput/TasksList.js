@@ -11,10 +11,13 @@ function TasksList({ tasks, groupId }) {
     if (typeof(numOfObjectives) != "number" || typeof(numOfObjectives) != "number"){
       return 0;
     }
-    const progress = (completedObjectives / numOfObjectives)
-    return progress
+    const progress = (completedObjectives / numOfObjectives);
+    return progress.toFixed(2);
   }
-  
+  //  Getting the numebr of completed objectives 
+  const numberCompletedObjectives = objectives => objectives.filter(objective => (objective.completed === true)).length;
+
+
   //Formaiting date 
   function dateFormating(date) {
     //inicializing variables
@@ -42,9 +45,10 @@ function TasksList({ tasks, groupId }) {
         data={tasks}
         renderItem={({ item }) => 
         <TaskHome
+          objectives={item.objectives}
           taskName={item.title}
           deadline={dateFormating(item.date)}
-          taskProgress={progressCalc(item.completed, item.objectivesLength, 0)}
+          taskProgress={progressCalc(item.completed, item.objectivesLength, numberCompletedObjectives(item.objectives))}
           groupId={groupId}
           id={item.id}
         />}
