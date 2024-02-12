@@ -4,7 +4,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SplashScreen from "expo-splash-screen";
-import * as Font from "expo-font";
 import { useContext, useEffect, useState, useCallback } from "react";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -26,6 +25,7 @@ import AddMemberScreen from "./screens/AddMemberScreen";
 import ManageTasksScreen from "./screens/ManageTasksScreen";
 import TaskScreen from "./screens/TaskScreen";
 import { useTheme } from "./store/theme-context";
+import Fonts from "./store/font-context";
 
 const BottomTabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -33,39 +33,10 @@ const Stack = createNativeStackNavigator();
 SplashScreen.preventAutoHideAsync();
 
 function AuthStack() {
-
-  const [isReady, setIsReady] = useState(false);
-
-  useEffect(() => {
-    async function prepare() {
-      try {
-        await Font.loadAsync({
-          "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
-          "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
-        });
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        setIsReady(true);
-      }
-    }
-    prepare();
-  }, []);
-
-  const onLayoutRootView = useCallback(async () => {
-    if (isReady) {
-      await SplashScreen.hideAsync();
-    }
-  }, [isReady]);
-
-  if (!isReady) {
-    return null;
-  }
-
   return (
     <Stack.Navigator 
-      screenOptions={{ headerShown: false }} 
-      onLayout={onLayoutRootView}
+      screenOptions={{ headerShown: false }}
+      onLayout={Fonts} 
     >
       <Stack.Screen name="Start" component={StartScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
@@ -87,6 +58,7 @@ function AuthenticatedBottomTab() {
         tabBarActiveTintColor: colors.icons100,
         tabBarShowLabel: true,
       }}
+      onLayout={Fonts}
     >
       <BottomTabs.Screen
         name="Welcome"
@@ -154,6 +126,7 @@ function AuthenticatedStack() {
         headerStyle: { backgroundColor: colors.background900 },
         headerTintColor: "white",
       }}
+      onLayout={Fonts}
     >
       <Stack.Screen
         name="Teste"
@@ -258,9 +231,12 @@ function Root() {
 }
 
 export default function App() {
+
+  const { theme } = useTheme();
+
   return (
     <>
-      <StatusBar style="light" />
+      <StatusBar style={theme == 'dark' ? 'light' : 'dark'} />
       <ThemeProvider>
         <GroupsContextProvider>
           <AuthContextProvider>

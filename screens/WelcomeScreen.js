@@ -3,11 +3,11 @@ import { StyleSheet, Text, View, SafeAreaView, ActivityIndicator } from "react-n
 import { GroupsContext } from "../store/groups-context";
 import { Colors } from "../constants/styles";
 import { fetchGroups, fetchUsernameAndEmail } from "../util/firestore";
-import WelcomeBanner from "../components/HomeComponents/WelcomeBanner";
 import { useTheme } from "../store/theme-context"; 
 import { auth } from "../util/firebaseConfig";
 import CurrentTasksOutput from '../components/CurrentTasksOutput/CurrentTaskOuput'
 import { useNavigation } from "@react-navigation/core";
+import WelcomeComp from "../components/Home/WelcomeBanner";
 
 function WelcomeScreen() {
   const [loading, setLoading] = useState(true);
@@ -95,7 +95,7 @@ function WelcomeScreen() {
       </View>
       <View style={styles.container}>
         <View style={styles.welcomeContainer}>
-          <WelcomeBanner onPress={goToGroups} />
+          <WelcomeComp  onPress={goToGroups}/>
         </View>
         <View style={styles.ongoingTasksContainer}>
           <Text style={[styles.ongoingTasks, {color: colors.text900}]}>Ongoing task</Text>
