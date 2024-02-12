@@ -12,10 +12,10 @@ export default function WelcomeComp({ onPress }) {
             onPress={onPress}
         >
             <View style={styles.textContainer}>
-                <Text style={[styles.title, {color: colors.text900}]}>
+                <Text style={[styles.title, {color: colors.swich950}]}>
                     Welcome!
                 </Text>
-                <Text style={[styles.text, {color: colors.text800}]}>
+                <Text style={[styles.text, {color: colors.text200}]}>
                     Let's make today productive!
                 </Text>
             </View>

@@ -34,32 +34,32 @@ export default function TaskHome({ deadline, taskName, groupName, taskProgress, 
             onPress={taskPressHandler}
         >
             <View>
-                <Text style={[styles.date, {color: colors.text800}]}>{deadline}</Text>
+                <Text style={[styles.date, {color: colors.text200}]}>{deadline}</Text>
             </View>
 
             <View style={styles.taskContainer}>
                 <Ionicons
                     size={wp('16')} 
                     name="reader-outline"
-                    color={colors.text900}
+                    color={colors.text200}
                 />
                 <View style={styles.taskInfoContainer}>
-                    <Text style={[styles.taskName, {color: colors.text800}]} numberOfLines={3}>
+                    <Text style={[styles.taskName, {color: colors.text200}]} numberOfLines={3}>
                         {taskName}
                     </Text>
-                    <Text style={[styles.groupName, {color: colors.text800}]}>{groupName}</Text>
+                    <Text style={[styles.groupName, {color: colors.text200}]}>{groupName}</Text>
                 </View>
             </View>
 
             <View style={styles.progressContainer}>
-                <Text style={[styles.ProgressText, {color: colors.text800}]}>Progress:</Text>
+                <Text style={[styles.ProgressText, {color: colors.text200}]}>Progress:</Text>
                 <View style={styles.barContainer}>
                     <Progress.Bar 
                         progress={taskProgress}
-                        color={'green'} 
+                        color={colors.text200} 
                         width={wp('25%')} 
                     />
-                    <Text style={{color: colors.text800}}> { (taskProgress) * 100 }%</Text>
+                    <Text style={{color: colors.text200}}> { (taskProgress) * 100 }%</Text>
                 </View>
             </View>
         </Pressable>
