@@ -6,7 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SplashScreen from "expo-splash-screen";
 import { useContext, useEffect, useState, useCallback } from "react";
 import { Ionicons } from "@expo/vector-icons";
-
+import * as Font from "expo-font";
 import StartScreen from "./screens/StartScreen";
 import LoginScreen from "./screens/LoginScreen";
 import SignupScreen from "./screens/SignupScreen";
@@ -25,7 +25,6 @@ import AddMemberScreen from "./screens/AddMemberScreen";
 import ManageTasksScreen from "./screens/ManageTasksScreen";
 import TaskScreen from "./screens/TaskScreen";
 import { useTheme } from "./store/theme-context";
-import Fonts from "./store/font-context";
 
 const BottomTabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -33,10 +32,40 @@ const Stack = createNativeStackNavigator();
 SplashScreen.preventAutoHideAsync();
 
 function AuthStack() {
+
+  const [isReady, setIsReady] = useState(false);
+    
+  SplashScreen.preventAutoHideAsync();
+  useEffect(() => {
+      async function prepare() {
+      try {
+        await Font.loadAsync({
+          "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
+          "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
+        });
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setIsReady(true);
+      }
+    }
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (isReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [isReady]);
+
+  if (!isReady) {
+    return null;
+  }
+
   return (
     <Stack.Navigator 
       screenOptions={{ headerShown: false }}
-      onLayout={Fonts} 
+      onLayout={onLayoutRootView} 
     >
       <Stack.Screen name="Start" component={StartScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
@@ -47,6 +76,34 @@ function AuthStack() {
 
 function AuthenticatedBottomTab() {
   const { colors } = useTheme();
+  const [isReady, setIsReady] = useState(false);
+    
+  SplashScreen.preventAutoHideAsync();
+  useEffect(() => {
+      async function prepare() {
+      try {
+        await Font.loadAsync({
+          "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
+          "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
+        });
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setIsReady(true);
+      }
+    }
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (isReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [isReady]);
+
+  if (!isReady) {
+    return null;
+  }
 
   return (
     <BottomTabs.Navigator
@@ -58,7 +115,7 @@ function AuthenticatedBottomTab() {
         tabBarActiveTintColor: colors.icons100,
         tabBarShowLabel: true,
       }}
-      onLayout={Fonts}
+      onLayout={onLayoutRootView}
     >
       <BottomTabs.Screen
         name="Welcome"
@@ -118,6 +175,34 @@ function AuthenticatedBottomTab() {
 function AuthenticatedStack() {
 
   const { colors } = useTheme();
+  const [isReady, setIsReady] = useState(false);
+    
+  SplashScreen.preventAutoHideAsync();
+  useEffect(() => {
+      async function prepare() {
+      try {
+        await Font.loadAsync({
+          "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
+          "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
+        });
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setIsReady(true);
+      }
+    }
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (isReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [isReady]);
+
+  if (!isReady) {
+    return null;
+  }
 
   return (
     <Stack.Navigator
@@ -126,7 +211,7 @@ function AuthenticatedStack() {
         headerStyle: { backgroundColor: colors.background900 },
         headerTintColor: "white",
       }}
-      onLayout={Fonts}
+      onLayout={onLayoutRootView}
     >
       <Stack.Screen
         name="Teste"
