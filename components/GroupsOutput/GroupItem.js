@@ -32,8 +32,6 @@ function GroupItem({ id, title, tasks }) {
   const numberCompletedTasks = numberOfTasks === 0 ? 0 : (completedTasks / numberOfTasks) * 100;
   const progress = numberOfTasks === 0 ? 0 : completedTasks / numberOfTasks;
 
-  console.log(numberCompletedTasks)
-
   function groupPressHandler() {
     navigation.navigate("GroupScreen", {
       groupId: id,

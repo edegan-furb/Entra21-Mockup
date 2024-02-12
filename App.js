@@ -27,7 +27,6 @@ import ManageTasksScreen from "./screens/ManageTasksScreen";
 import TaskScreen from "./screens/TaskScreen";
 import { useTheme } from "./store/theme-context";
 
-
 const BottomTabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 

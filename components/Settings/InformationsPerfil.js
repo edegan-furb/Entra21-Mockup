@@ -71,7 +71,7 @@ export default function ModalInformationsPerfil() {
     return(
         <View style={styles.pictureContainer}>
             <View style={styles.content}>
-                <View style={[styles.pictureContent, {borderWidth: 3, borderColor: colors.border500}]}>
+                <Pressable style={[styles.pictureContent, {borderWidth: 3, borderColor: colors.border500}]} onLongPress={handleUploadPicture}>
                     <View style={styles.picture}>
                         {isLoading ? (
                             <ActivityIndicator size="small" color="#f4f5f7" />
@@ -81,7 +81,7 @@ export default function ModalInformationsPerfil() {
                                 <Ionicons name="person" color={colors.icons100} size={55} />
                         )}
                     </View>
-                </View>
+                </Pressable>
             </View>
             <Pressable style={styles.buttonContainer} onPress={handleUploadPicture}>
                 <Entypo 

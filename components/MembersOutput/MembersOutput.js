@@ -26,8 +26,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingTop: 24,
-    paddingBottom: 0,
+    paddingTop: 20,
+    paddingBottom: 30,
     backgroundColor: Colors.primary100,
   },
   infoText: {
