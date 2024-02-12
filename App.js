@@ -1,11 +1,11 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SplashScreen from "expo-splash-screen";
 import { useContext, useEffect, useState, useCallback } from "react";
 import { Ionicons } from "@expo/vector-icons";
+import * as Font from "expo-font";
 import StartScreen from "./screens/StartScreen";
 import LoginScreen from "./screens/LoginScreen";
 import SignupScreen from "./screens/SignupScreen";
@@ -18,7 +18,7 @@ import { ThemeProvider } from "./store/theme-context"
 import IconButton from "./components/ui/IconButton";
 import GroupsContextProvider from "./store/groups-context";
 import GroupScreen from "./screens/GroupScreen";
-import { View } from "react-native";
+import { View, StatusBar } from "react-native";
 import GroupMembersScreen from "./screens/GroupMembersScreen";
 import AddMemberScreen from "./screens/AddMemberScreen";
 import ManageTasksScreen from "./screens/ManageTasksScreen";
@@ -227,15 +227,41 @@ function Root() {
 }
 
 export default function App() {
+  const [isReady, setIsReady] = useState(false);
 
+  useEffect(() => {
+      async function prepare() {
+      try {
+        await Font.loadAsync({
+          "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
+          "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
+        });
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setIsReady(true);
+      }
+    }
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (isReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [isReady]);
+
+  if (!isReady) {
+    return null;
+  }
   const { theme } = useTheme();
 
   return (
     <>
-      <StatusBar style={theme == 'dark' ? 'light' : 'dark'} />
       <ThemeProvider>
-        <GroupsContextProvider>
+        <GroupsContextProvider onLayout={onLayoutRootView}>
           <AuthContextProvider>
+            <StatusBar barStyle={theme == 'dark' ? 'light' : 'dark'} />
             <Root />
           </AuthContextProvider>
         </GroupsContextProvider>
