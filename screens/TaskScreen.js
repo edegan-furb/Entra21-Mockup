@@ -238,7 +238,8 @@ const styles = StyleSheet.create({
   },
   imgBanner: {
     width: 120,
-    height: 130
+    height: 120,
+    resizeMode: "cover"
   },
   designatedUserText: {
     fontSize: 16,
@@ -291,11 +292,12 @@ const styles = StyleSheet.create({
     flex: 3,
     alignItems: "center",
     width: '100%',
+    marginBottom: 25
   },
   objectivesScrollContainer: {
     alignItems: "center",
     justifyContent: 'flex-start',
-    paddingBottom: 40,
+    paddingBottom: 20,
     gap: 10
   },
   objectivesInnerContainer: {

@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingTop: 20,
-    paddingBottom: 40
+    paddingBottom: 70
   },
   list: {
     width: '80%',
