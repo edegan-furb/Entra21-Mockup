@@ -8,7 +8,7 @@ export default function WelcomeComp({ onPress }) {
 
     return (
         <Pressable 
-            style={({ pressed }) => pressed ? [styles.pressed, styles.container] : [styles.container, {backgroundColor: colors.background100}]}
+            style={({ pressed }) => pressed ? [styles.pressed, styles.container, {backgroundColor: colors.background100}] : [styles.container, {backgroundColor: colors.background100}]}
             onPress={onPress}
         >
             <View style={styles.textContainer}>
