@@ -31,8 +31,8 @@ function SettingsScreen() {
           <SettingsItem
             nameIcon={"sunny-outline"}
             text={'Theme'}
-            activeText={<Ionicons name={'moon'} size={15} color={colors.swich200}/>}
-            inActiveText={<Ionicons name={'sunny'} size={15} color={colors.swich200}/>}
+            activeText={<Text><Ionicons name={'moon'} size={15} color={colors.swich200}/></Text>}
+            inActiveText={<Text><Ionicons name={'sunny'} size={15} color={colors.swich200}/></Text>}
             swichTheme={true}
             swich={true}
           />
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   },
   titleSettings: {
     fontSize: 14,
-    fontFamily: 'open-sans-bold'
+fontFamily: 'open-sans-bold'
   },
   modalContainer: {
     width: "100%",
