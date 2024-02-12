@@ -295,7 +295,7 @@ const styles = StyleSheet.create({
   objectivesScrollContainer: {
     alignItems: "center",
     justifyContent: 'flex-start',
-    paddingVertical: 20,
+    paddingBottom: 40,
     gap: 10
   },
   objectivesInnerContainer: {

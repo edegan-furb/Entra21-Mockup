@@ -24,9 +24,10 @@ const styles = StyleSheet.create({
     height: '100%',
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: 20
+    paddingTop: 20,
+    paddingBottom: 40
   },
   list: {
-    width: '80%',
+    width: '85%',
   }
 })
