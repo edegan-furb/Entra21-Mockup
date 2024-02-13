@@ -207,7 +207,6 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
           <Text style={styles.title}>{pageTitle}</Text>
         </View>
       </View>
-
       <View style={styles.form}>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -297,7 +296,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
         )} 
         {!inputs.designatedUser.isValid && (
           <Text style={styles.errorText}>
-          You cannot assign a task to yourself.
+            You cannot assign a task to yourself.
           </Text>
         )}
         <View style={isEditing ? styles.buttonsContainerEdit : styles.buttonsContainer}>

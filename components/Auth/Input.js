@@ -29,7 +29,7 @@ function Input({
           onChangeText={onUpdateValue}
           value={value}
           placeholder={placeHolder}
-          placeholderTextColor={isInvalid ? '#be0000' : '#999'}
+          placeholderTextColor={isInvalid ? Colors.error500 : '#999'}
           onFocus={onFocus}
           onBlur={onBlur}
         />        
@@ -37,10 +37,10 @@ function Input({
           {/* Icon check */}
           { hidePass ?
             // true
-            <Ionicons name="eye" color={isInvalid ? '#be0000' : Colors.primary800} size={20} height={height}/>
+            <Ionicons name="eye" color={isInvalid ? Colors.error500 : Colors.primary800} size={20} height={height}/>
             :
             // false
-            <Ionicons name="eye-off" color={isInvalid ? '#be0000' : Colors.primary800} size={20} height={height}/>
+            <Ionicons name="eye-off" color={isInvalid ? Colors.error500 : Colors.primary800} size={20} height={height}/>
           }
         </Pressable>
       </View>
@@ -71,9 +71,9 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   inputInvalid: {
-    borderColor: '#be0000',
+    borderColor: Colors.error500,
   },
   textInvalid: {
-    color: '#be0000',
+    color: Colors.error500,
   }
 });

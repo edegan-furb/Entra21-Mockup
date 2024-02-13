@@ -1,11 +1,8 @@
 import { TextInput, View, StyleSheet, Text } from "react-native";
 import { Colors } from "../../constants/styles";
-import { useTheme } from "../../store/theme-context";
 
 function Input({ label, style, textInputConfig, invalid }) {
   const inputStyles = [styles.input];
-
-  const { colors } = useTheme();
 
   if (textInputConfig && textInputConfig.multiline) {
     inputStyles.push(styles.inputMultine);
@@ -17,7 +14,7 @@ function Input({ label, style, textInputConfig, invalid }) {
 
   return (
     <View style={[styles.inputContainer, style]}>
-      <Text style={[styles.label, {color: colors.text900},invalid && styles.invalidLabel]}>
+      <Text style={[styles.label ,invalid && styles.invalidLabel]}>
         {label}
       </Text>
       <TextInput style={inputStyles} {...textInputConfig} />
@@ -35,6 +32,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 15,
     marginBottom: 5,
+    color: Colors.primary800,
     fontWeight: 600
   },
   input: {
@@ -43,8 +41,8 @@ const styles = StyleSheet.create({
     fontSize: 15,
     paddingLeft: 10,
     borderWidth: 2,
-    borderColor: "#4c1d95",
-    color: "#ddd6fe",
+    borderColor: Colors.primary900,
+    color: Colors.primary800,
   },
   inputMultine: {
     minHeight: 100,

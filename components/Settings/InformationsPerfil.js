@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
         width: "100%",
         height: "100%",
         borderRadius: 75,
-        resizeMode: "cover",
+        resizeMode: 'contain'
     },
     buttonContainer: {
         width: 30,
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
         bottom: "10%",
         left: '10%',
         borderWidth: 2,
-        borderColor: "#5b21b6",
+        borderColor: Colors.primary900,
     },
     infContainer: {
         width: '100%',

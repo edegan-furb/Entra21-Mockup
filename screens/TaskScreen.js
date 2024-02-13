@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
   imgBanner: {
     width: 120,
     height: 120,
-    resizeMode: "cover"
+    resizeMode: 'contain'
   },
   designatedUserText: {
     fontSize: 16,

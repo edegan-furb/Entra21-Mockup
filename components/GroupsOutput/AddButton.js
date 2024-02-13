@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from "../../store/theme-context";
+import { Colors } from "../../constants/styles";
 
 export default function AddButton({ title, onPress, button }) {
 
@@ -41,9 +42,9 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         borderWidth: 1,
-        borderColor: '#4c1d95',
+        borderColor: Colors.primary900,
         elevation: 4,
-        shadowColor: '#2e1065',
+        shadowColor: Colors.primary900,
         shadowRadius: 5,
         shadowOffset: { width: 1, height: 1 },
         shadowOpacity: .3,

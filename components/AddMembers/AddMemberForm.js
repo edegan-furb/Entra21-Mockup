@@ -3,6 +3,7 @@ import Input from "../AddMembers/Input";
 import Button from "../ui/Button";
 import { useState } from "react";
 import { Switch } from "react-native-switch";
+import { Colors } from "../../constants/styles";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -58,13 +59,13 @@ function AddMemberForm({ onCancel, onSubmit }) {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={[styles.form, { backgroundColor: colors.background900 }]}>
-        <View style={[styles.titleContainer, { backgroundColor: colors.background50 }]}>
-          <View style={[styles.titleContent, { backgroundColor: colors.background900 }]}> 
-            <Text style={[styles.title, { color: colors.text700 }]}>Add Members</Text>
+      <View style={styles.form}>
+        <View style={styles.titleContainer}>
+          <View style={styles.titleContent}> 
+            <Text style={styles.title}>Add Members</Text>
           </View>
         </View>
-        <View style={[styles.inputContainer, { backgroundColor: colors.background50 }]}>
+        <View style={styles.inputContainer}>
           <Input
             label={"User by Email"}
             textInputConfig={{
@@ -73,9 +74,9 @@ function AddMemberForm({ onCancel, onSubmit }) {
             }}
           />
         </View>
-        <View style={[styles.switch, { backgroundColor: colors.background50 }]}>
+        <View style={styles.switch}>
           <View style={styles.switchContent}> 
-            <Text style={[styles.text, { color: colors.text900 }]}>Set as Admin</Text>
+            <Text style={styles.text}>Set as Admin</Text>
             <Switch
               activeText={''}
               inActiveText={''}
@@ -91,12 +92,12 @@ function AddMemberForm({ onCancel, onSubmit }) {
             />
           </View>
           {formIsInvalid && (
-              <Text style={[styles.errorText, {color: colors.error500}]}>
+              <Text style={styles.errorText}>
                 Invalid email - please check your entered data
               </Text>
             )}
         </View>
-        <View style={[styles.buttonsContainer, { backgroundColor: colors.background50 }]}>
+        <View style={styles.buttonsContainer}>
           <View style={styles.buttonContent}>
             <Button mode={"flat"} onPress={onCancel}>
               Cancel
@@ -120,12 +121,14 @@ const styles = StyleSheet.create({
     width: wp('95%'),
     height: hp('40%'),
     borderRadius: 20,
+    backgroundColor: Colors.primary900
   },
   titleContainer: {
     height: '25%',
     width: '100%',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
+    backgroundColor: Colors.primary100
   },
   titleContent: {
     width: '100%',
@@ -135,21 +138,25 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 20,
     borderTopStartRadius: 20,
     borderBottomLeftRadius: 30,
+    backgroundColor: Colors.primary900
   },
   title: {
     fontSize: 26,
     fontWeight: "bold",
     textAlign: "center",
+    color: Colors.primary100
   },
   inputContainer: {
     borderTopEndRadius: 30,
     justifyContent: "flex-end",
     width: '100%',
     height: '35%',
+    backgroundColor: Colors.primary100
   },
   switch: {
     alignItems: "flex-start",
     height: '20%',
+    backgroundColor: Colors.primary100
   },
   switchContent: {
     flexDirection: "row",
@@ -158,13 +165,16 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: 12,
     gap: 10,
+    backgroundColor: Colors.primary100
   },
   text: {
     fontSize: 15,
+    color: Colors.primary800,
     fontWeight: "600"
   },
   errorText: {
-    paddingHorizontal: 30
+    paddingHorizontal: 30,
+    color: Colors.error500
   },
   buttonsContainer: {
     width: '100%',
@@ -173,6 +183,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     borderBottomEndRadius: 20,
     borderBottomStartRadius: 20,
+    backgroundColor: Colors.primary100
   },
   buttonContent: {
     width: '70%',
