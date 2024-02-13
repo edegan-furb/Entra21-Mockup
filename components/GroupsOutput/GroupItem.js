@@ -7,19 +7,16 @@ import { useTheme } from '../../store/theme-context'; // Adj
 import { Ionicons, Foundation } from '@expo/vector-icons';
 import { useEffect, useState } from "react";
 
-function GroupItem({ id, title, tasks }) {
+function GroupItem({ id, title, tasks, members }) {
 
   const { colors } = useTheme();
   const navigation = useNavigation();
-  
-  // const numberTasks = tasks.length;
-  // const CompletedTasks = tasks.filter(task => task.completed === true).length;
-  // const numberCompletedTasks = (CompletedTasks / numberTasks) * 100;
-  // const progress = CompletedTasks / numberTasks;
 
   const [numberOfTasks, setNumberOfTasks] = useState(0);
   const [completedTasks, setCompletedTasks] = useState(0);
-
+  const amountMembers = members || [];
+  const numberMembers = amountMembers.length;
+  
   // Atualiza o estado local sempre que as tarefas compartilhadas mudarem
   useEffect(() => {
       // Verifica se tasks está definido antes de chamar filter
@@ -53,7 +50,7 @@ function GroupItem({ id, title, tasks }) {
               <View style={styles.infGroups}>
                 <Ionicons name="people" color={colors.text700} size={17} />
                 <Text style={[styles.infTitleGroup, {color: colors.text700}]}>
-                 4
+                 {numberMembers}
                 </Text>
               </View>
               <View style={styles.infGroups}>

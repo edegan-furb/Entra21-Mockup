@@ -7,6 +7,10 @@ import IconButton from "../ui/IconButton";
 import { getFormattedDate } from "../../util/date";
 import { generateUniqueId } from "../../util/generateUniqueId";
 import { getEmailByUsername, fetchUsernameAndEmail } from "../../util/firestore";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp
+} from "react-native-responsive-screen";
 
 function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTitle, isEditing, onPressDelete }) {
   const [inputs, setInputs] = useState({
@@ -329,11 +333,11 @@ export default TaskForm;
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    height: '80%',
+    width: wp('90%'),
+    height: hp('75%'),
     backgroundColor: Colors.primary900,
     borderRadius: 20,
-    marginTop: '15%',
+    marginTop: '20%',
   },
   containerTest: {
     width: '100%',
@@ -429,21 +433,21 @@ const styles = StyleSheet.create({
     borderColor: Colors.primary900
   },
   buttonContent: {
-    height: '45%',
+    height: '50%',
     width: '85%',
     flexDirection: "row",
     gap: 10,
     alignItems: "center",
   },
   buttonContentEdit: {
-    height: '35%',
+    height: '40%',
     width: '85%',
     flexDirection: "row",
     gap: 10,
     alignItems: "center",
   },
   deleteContainer: {
-    height: '35%',
+    height: '40%',
     width: '50%',
     borderRadius: 10,
     flexDirection: "row",
