@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   },
   containerBody: {
     width: '100%',
-    height: '70%',
+    height: '65%',
     alignItems: "center",
     justifyContent: "flex-start",
     marginTop: 20
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   },
   titleSettings: {
     fontSize: 14,
-fontFamily: 'open-sans-bold'
+  fontFamily: 'open-sans-bold'
   },
   modalContainer: {
     width: "100%",
