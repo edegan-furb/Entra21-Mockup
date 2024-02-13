@@ -14,6 +14,23 @@ function TaskItem({ id, title, designatedUser, groupId, date, objectives }) {
     });
   }
 
+  const formatedDate = function () {
+    //inicializing variables
+    let dateOriginal = date.toString();
+    let formatDate = new Date(dateOriginal);
+
+    //Configuring format options
+    let options = { 
+        year: 'numeric', 
+        month: 'short', 
+        day: '2-digit',
+        timeZone: 'UTC'
+    };
+
+    return formatDate.toLocaleDateString('en-US', options);
+  }
+
+
   return (
     <Pressable
       onPress={taskPressHandler}
@@ -22,7 +39,7 @@ function TaskItem({ id, title, designatedUser, groupId, date, objectives }) {
       <View style={styles.taskItem}>
         <View style={styles.container}>
           <View style={styles.iconContent}>
-            <Ionicons name="paper-plane" color={Colors.primary400} size={40}/>
+            <Ionicons name="reader-outline" color={Colors.primary400} size={60}/>
           </View>
           <View style={styles.titleContent}>
             <Text style={styles.title}>{title}</Text>
@@ -30,7 +47,7 @@ function TaskItem({ id, title, designatedUser, groupId, date, objectives }) {
                 <Ionicons name="person" color={Colors.neutral100} size={15}/>   {designatedUser}
               </Text>
             <Text style={styles.textInf}>
-              <Ionicons name="calendar-outline" color={Colors.neutral100} size={15}/>   {getFormattedDate(date)} 
+              <Ionicons name="calendar-outline" color={Colors.neutral100} size={15}/>   {formatedDate()} 
             </Text>
             <Text style={styles.textInf}>
               <Feather name="target" color={Colors.neutral100} size={15}/>  {objectives.length}

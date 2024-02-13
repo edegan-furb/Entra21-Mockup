@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import {
     heightPercentageToDP as hp,
@@ -11,8 +11,9 @@ import * as Progress from 'react-native-progress';
 import { useTheme } from "../../store/theme-context";
 import { useNavigation } from "@react-navigation/native";
 import { GroupsContext } from "../../store/groups-context";
+import { AggregateQuerySnapshot } from "@firebase/firestore";
 
-export default function TaskHome({ date, title, objectives, objectivesLength, completed, id, groupId}) {
+export default function TaskHome({ date, title, objectives, completed, id, groupId}) {
 
     const navigation = useNavigation();
 
@@ -40,18 +41,21 @@ export default function TaskHome({ date, title, objectives, objectivesLength, co
         return formatDate.toLocaleDateString('en-US', options)
     }
 
+    let numCompletedObjectives = objectives.filter(objective => (objective.completed === true)).length;
+    let numObjectives = objectives.length || 0;
+    
+
     const progressCalc = function () {
 
         //  Getting the numebr of completed objectives 
-        const numCompletedObjectives = objectives.filter(objective => (objective.completed === true)).length;
 
         if (completed){//if the task has been completed the progress bar going to be 100%
           return 1;
         }
-        if (typeof(objectivesLength) != "number" || typeof(objectivesLength) != "number"){
+        if (typeof(numObjectives) != "number" || typeof(numCompletedObjectives) != "number" || numObjectives === 0){
           return 0;
         }
-        const progress = (numCompletedObjectives / objectivesLength);
+        const progress = (numCompletedObjectives / numObjectives);
         return parseFloat(progress.toFixed(2));
       }
 
@@ -88,7 +92,7 @@ export default function TaskHome({ date, title, objectives, objectivesLength, co
             </View>
 
             <View style={styles.progressContainer}>
-                <Text style={[styles.ProgressText, {color: colors.text200}]}>Progress:</Text>
+                <Text style={[styles.ProgressText, {color: colors.text200}]}>Progress: {numCompletedObjectives}/{numObjectives}</Text>
                 <View style={styles.barContainer}>
                     <Progress.Bar 
                         progress={progressCalc()}
