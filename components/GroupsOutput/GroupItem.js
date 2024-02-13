@@ -59,7 +59,7 @@ function GroupItem({ id, title, tasks }) {
               <View style={styles.infGroups}>
                 <Foundation name="clipboard-pencil" color={colors.text700} size={17}/>
                 <Text style={[styles.infTitleGroup, {color: colors.text700}]}>
-                  {numberOfTasks}
+                  {`${completedTasks}/${numberOfTasks}`}
                </Text>
               </View>  
             </View>
