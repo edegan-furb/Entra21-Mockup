@@ -228,6 +228,7 @@ function Root() {
 
 export default function App() {
   const [isReady, setIsReady] = useState(false);
+  const { theme } = useTheme();
 
   useEffect(() => {
       async function prepare() {
@@ -254,7 +255,6 @@ export default function App() {
   if (!isReady) {
     return null;
   }
-  const { theme } = useTheme();
 
   return (
     <>
