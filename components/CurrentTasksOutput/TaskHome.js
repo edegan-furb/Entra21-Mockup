@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import {
     heightPercentageToDP as hp,
@@ -10,8 +10,9 @@ import { Colors } from "../../constants/styles";
 import * as Progress from 'react-native-progress';
 import { useTheme } from "../../store/theme-context";
 import { useNavigation } from "@react-navigation/native";
+import { GroupsContext } from "../../store/groups-context";
 
-export default function TaskHome({ deadline, taskName, groupName, taskProgress, id, groupId}) {
+export default function TaskHome({ date, title, objectives, objectivesLength, completed, id, groupId}) {
 
     const navigation = useNavigation();
 
@@ -22,8 +23,43 @@ export default function TaskHome({ deadline, taskName, groupName, taskProgress, 
         });
     }
 
+    //Formaiting date 
+    const formatedDate = function () {
+        //inicializing variables
+        let dateOriginal = date.toString();
+        let formatDate = new Date(dateOriginal)
+
+        //Configuring format options
+        let options = { 
+            year: 'numeric', 
+            month: 'short', 
+            day: '2-digit',
+            timeZone: 'UTC'
+        };
+
+        return formatDate.toLocaleDateString('en-US', options)
+    }
+
+    const progressCalc = function () {
+
+        //  Getting the numebr of completed objectives 
+        const numCompletedObjectives = objectives.filter(objective => (objective.completed === true)).length;
+
+        if (completed){//if the task has been completed the progress bar going to be 100%
+          return 1;
+        }
+        if (typeof(objectivesLength) != "number" || typeof(objectivesLength) != "number"){
+          return 0;
+        }
+        const progress = (numCompletedObjectives / objectivesLength);
+        return parseFloat(progress.toFixed(2));
+      }
+
     const { colors } = useTheme();
     
+    //Getting the group name
+    const groupName = useContext(GroupsContext).groups[0].title;
+
     return(
         <Pressable 
             style={({ pressed }) => 
@@ -34,7 +70,7 @@ export default function TaskHome({ deadline, taskName, groupName, taskProgress, 
             onPress={taskPressHandler}
         >
             <View>
-                <Text style={[styles.date, {color: colors.text200}]}>{deadline}</Text>
+                <Text style={[styles.date, {color: colors.text200}]}>{formatedDate()}</Text>
             </View>
 
             <View style={styles.taskContainer}>
@@ -45,7 +81,7 @@ export default function TaskHome({ deadline, taskName, groupName, taskProgress, 
                 />
                 <View style={styles.taskInfoContainer}>
                     <Text style={[styles.taskName, {color: colors.text200}]} numberOfLines={3}>
-                        {taskName}
+                        {title}
                     </Text>
                     <Text style={[styles.groupName, {color: colors.text200}]}>{groupName}</Text>
                 </View>
@@ -55,11 +91,11 @@ export default function TaskHome({ deadline, taskName, groupName, taskProgress, 
                 <Text style={[styles.ProgressText, {color: colors.text200}]}>Progress:</Text>
                 <View style={styles.barContainer}>
                     <Progress.Bar 
-                        progress={taskProgress}
+                        progress={progressCalc()}
                         color={colors.text200} 
                         width={wp('25%')} 
                     />
-                    <Text style={{color: colors.text200}}> { (taskProgress) * 100 }%</Text>
+                    <Text style={{color: colors.text200}}> { (progressCalc()) * 100 }%</Text>
                 </View>
             </View>
         </Pressable>
@@ -102,6 +138,7 @@ const styles = StyleSheet.create({
     },
     groupName: {
         fontSize: 12,
+        textDecorationLine: "underline",
         color: Colors.neutral1100
     },
     barContainer:{
