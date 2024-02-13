@@ -132,6 +132,11 @@ function GroupScreen({ route, navigation }) {
       secondText={'Press the button below to create your first task now!'}
       title={'Add Tasks'}
       groupId={groupId}
+      onPress={() => {
+        navigation.navigate("ManageTasksScreen", {
+          groupId: groupId,
+        });
+      }}
     />
   );
 }

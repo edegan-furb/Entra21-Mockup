@@ -5,17 +5,9 @@ import { useNavigation } from "@react-navigation/native";
 import AddButton from '../GroupsOutput/AddButton';
 import { useTheme } from "../../store/theme-context";
 
-function TasksOutput({ tasks, firstText, secondText, title, groupId }) {
+function TasksOutput({ tasks, firstText, secondText, title, groupId, onPress }) {
 
   const { colors } = useTheme();
-
-  // Create the navigation component
-  const navigation = useNavigation();
-    
-  // Function to open the team creation modal
-  function modalPress() {
-    navigation.navigate("ManageTasksScreen");
-  }
 
   let content = 
     <View style={styles.textContainer}>
@@ -28,7 +20,7 @@ function TasksOutput({ tasks, firstText, secondText, title, groupId }) {
       <View style={styles.addButtonContainer}>
         <AddButton 
           title={title} 
-          onPress={modalPress} 
+          onPress={onPress} 
           button={tasks.length > 0 ? styles.btnNone : styles.button} 
         />
       </View>

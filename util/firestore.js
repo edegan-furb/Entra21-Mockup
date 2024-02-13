@@ -277,7 +277,6 @@ export async function removeMember(memberId) {
   }
 }
 
-
 export async function fetchGroups(callback) {
   // Get the UID of the current authenticated user
   const userRef = auth.currentUser.uid;
@@ -302,7 +301,7 @@ export async function fetchGroups(callback) {
             where("group", "==", groupRef)
           );
           const tasksSnapshot = await getDocs(tasksQuery);
-          const tasks = (await Promise.all(
+          const tasks = await Promise.all(
             tasksSnapshot.docs.map(async (taskDoc) => {
               const taskData = taskDoc.data();
 
@@ -318,17 +317,13 @@ export async function fetchGroups(callback) {
                 })
               );
 
-              // Calculate the length of the objectives array
-              const objectivesLength = objectives.length;
-
-
               // Fetch the designated user's username
               let designatedUserUsername = "";
               if (taskData.designatedUser) {
                 const userDocSnapshot = await getDoc(taskData.designatedUser);
                 if (userDocSnapshot.exists()) {
                   const userData = userDocSnapshot.data();
-                  designatedUserUsername = userData.username; // Assuming the field is named 'username'
+                  designatedUserUsername = userData.username;
                 }
               }
 
@@ -336,32 +331,36 @@ export async function fetchGroups(callback) {
                 id: taskDoc.id,
                 title: taskData.title,
                 description: taskData.description,
-                date: taskData.date.toDate(), // Convert Firestore Timestamp to JavaScript Date
+                date: taskData.date.toDate(),
                 completed: taskData.completed,
                 owner: taskData.owner,
                 designatedUser: designatedUserUsername,
                 group: taskData.group,
-                objectives: objectives, // Array of objectives
-                objectivesLength: objectivesLength,
+                objectives: objectives,
               };
             })
-          )).sort((a, b) => a.title.localeCompare(b.title)); // Sort tasks by title alphabetically
+          );
 
-          return { ...groupData, tasks: tasks };
+          // Fetch the count of members for each group
+          const membersQuery = query(
+            collection(db, "members"),
+            where("group", "==", groupRef)
+          );
+          const membersSnapshot = await getDocs(membersQuery);
+          const memberCount = membersSnapshot.docs.length; // Count of members in the group
+
+          return { ...groupData, tasks: tasks, memberCount: memberCount };
         })
       );
 
-      // Invoke the callback with groups and their associated tasks
+      // Invoke the callback with groups, their associated tasks, and member counts
       callback(groupsData);
     }
   );
 
   // Return a function that stops listening to user memberships
-  return () => {
-    stopListeningUserMemberships();
-  };
+  return () => stopListeningUserMemberships();
 }
-
 
 // // Function to fetch all groups a user is a member of
 // export async function fetchGroups(callback) {
@@ -584,7 +583,6 @@ export async function fetchGroupTasks(groupId, callback) {
       }
     });
 
-
     // Process each task document
     await Promise.all(
       tasksSnapshot.docs.map(async (docSnapshot) => {
@@ -627,7 +625,6 @@ export async function fetchGroupTasks(groupId, callback) {
                 value: doc.data().value,
                 completed: doc.data().completed,
               }));
-
 
               // Calculate the length of the objectives array
               const objectivesLength = objectives.length;
@@ -804,13 +801,26 @@ export async function updateTaskStatus(taskId) {
 
 export async function deleteTask(taskId) {
   try {
-    // Create a reference to the task document
+    // Reference to the task document
     const taskDocRef = doc(db, "tasks", taskId);
 
-    // Delete the document
-    await deleteDoc(taskDocRef);
+    // Reference to a subcollection within the task
+    const subCollectionRef = collection(taskDocRef, "objectives");
+    const q = query(subCollectionRef);
 
-    console.log(`Task with ID ${taskId} has been successfully deleted.`);
+    // Query all documents in the subcollection
+    const querySnapshot = await getDocs(q);
+
+    // Delete all documents in the subcollection
+    const deleteSubDocsPromises = querySnapshot.docs.map((subDoc) =>
+      deleteDoc(doc(db, "tasks", taskId, "objectives", subDoc.id))
+    );
+
+    // Wait for all subcollection documents to be deleted
+    await Promise.all(deleteSubDocsPromises);
+
+    // After deleting the subcollection documents, delete the task document
+    await deleteDoc(taskDocRef);
   } catch (error) {
     console.error("Error deleting task:", error);
     throw new Error("Failed to delete task.");
@@ -883,4 +893,89 @@ export async function getEmailByUsername(username) {
     console.error("Error retrieving email by username:", error.message);
     throw error;
   }
+}
+
+export async function fetchDesignetedTasks(callback) {
+  // Get the UID of the current authenticated user
+  const userRef = auth.currentUser.uid;
+  // Create a Firestore document reference for the user
+  const userDocRef = doc(db, "users", userRef);
+
+  // Set up a listener for changes in the user's memberships
+  const stopListeningUserMemberships = onSnapshot(
+    query(collection(db, "members"), where("user", "==", userDocRef)),
+    async (userMembersSnapshot) => {
+      const groupsData = await Promise.all(
+        userMembersSnapshot.docs.map(async (memberDoc) => {
+          const groupRef = memberDoc.data().group;
+
+          // Fetch group data
+          const groupSnapshot = await getDoc(groupRef);
+          const groupData = { id: groupRef.id, ...groupSnapshot.data() };
+
+          // Fetch tasks associated with this group where the current user is the designatedUser
+          const tasksQuery = query(
+            collection(db, "tasks"),
+            where("group", "==", groupRef),
+            where("designatedUser", "==", userDocRef) // Filter tasks by designatedUser
+          );
+          const tasksSnapshot = await getDocs(tasksQuery);
+          const tasks = (
+            await Promise.all(
+              tasksSnapshot.docs.map(async (taskDoc) => {
+                const taskData = taskDoc.data();
+
+                // Fetch objectives for each task
+                const objectivesQuery = query(
+                  collection(db, `tasks/${taskDoc.id}/objectives`)
+                );
+                const objectivesSnapshot = await getDocs(objectivesQuery);
+                const objectives = objectivesSnapshot.docs.map(
+                  (objectiveDoc) => ({
+                    id: objectiveDoc.id,
+                    ...objectiveDoc.data(),
+                  })
+                );
+
+                const objectivesLength = objectives.length;
+
+                // Fetch the designated user's username
+                let designatedUserUsername = "";
+                if (taskData.designatedUser) {
+                  const userDocSnapshot = await getDoc(taskData.designatedUser);
+                  if (userDocSnapshot.exists()) {
+                    const userData = userDocSnapshot.data();
+                    designatedUserUsername = userData.username; // Assuming the field is named 'username'
+                  }
+                }
+
+                return {
+                  id: taskDoc.id,
+                  title: taskData.title,
+                  description: taskData.description,
+                  date: taskData.date.toDate(), // Convert Firestore Timestamp to JavaScript Date
+                  completed: taskData.completed,
+                  owner: taskData.owner,
+                  designatedUser: designatedUserUsername, // This will always be the current user
+                  group: taskData.group,
+                  objectives: objectives, // Array of objectives
+                  objectivesLength: objectivesLength,
+                };
+              })
+            )
+          ).sort((a, b) => a.title.localeCompare(b.title)); // Sort tasks by title alphabetically
+
+          return { ...groupData, tasks: tasks };
+        })
+      );
+
+      // Invoke the callback with groups and their associated tasks
+      callback(groupsData);
+    }
+  );
+
+  // Return a function that stops listening to user memberships and tasks changes
+  return () => {
+    stopListeningUserMemberships();
+  };
 }

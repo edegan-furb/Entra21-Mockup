@@ -24,12 +24,14 @@ function groupsReducer(state, action) {
       return [...state, { ...action.payload }].sort((a, b) =>
         a.title.localeCompare(b.title)
       );
-    case "SET":
-      // Sort groups by name in ascending order
-      const sortedGroups = [...action.payload].sort((a, b) =>
-        a.title.localeCompare(b.title)
-      );
-      return sortedGroups;
+      case "SET":
+        // Sort groups by name in ascending order
+        const sortedGroups = [...action.payload].sort((a, b) => {
+          const titleA = a.title || "";
+          const titleB = b.title || ""; 
+          return titleA.localeCompare(titleB);
+        });
+        return sortedGroups;
     case "UPDATE":
       const updatableGroupIndex = state.findIndex(
         (group) => group.id === action.payload.id
