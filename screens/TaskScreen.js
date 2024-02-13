@@ -111,7 +111,7 @@ function TaskScreen({ route, navigation, user }) {
       const email = await getEmailByUsername(selectTask.designatedUser)
       const designatedUser = await getUserIdByEmail(email);
       if (designatedUser === currentUser) {
-        groupsCtx.updateObjectiveStatus(selectTask.group, taskId, objectiveId);
+        groupsCtx.updateObjectiveStatus(selectTask.group.id, taskId, objectiveId);
         await updateObjectiveStatus(taskId, objectiveId);
       } else {
         Alert.alert(
