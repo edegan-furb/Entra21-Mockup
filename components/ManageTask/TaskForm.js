@@ -137,7 +137,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
       title: inputs.title.value,
       date: new Date(inputs.date.value),
       description: inputs.description.value,
-      designatedUser: inputs.designatedUser.value,
+      designatedUser: inputs.designatedUser.value.toLowerCase(),
       objectives: objectivesData,
     };
 
