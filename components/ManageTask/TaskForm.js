@@ -9,7 +9,7 @@ import { generateUniqueId } from "../../util/generateUniqueId";
 import {
   getEmailByUsername,
   fetchUsernameAndEmail,
-} from "../../util/firestore";
+} from "../../util/firebase/firestore/user";
 
 function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
   const [inputs, setInputs] = useState({

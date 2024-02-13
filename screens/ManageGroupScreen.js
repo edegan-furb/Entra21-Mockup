@@ -4,7 +4,7 @@ import GroupForm from "../components/ManageGroup/GroupForm";
 import { Colors } from "../constants/styles";
 import { GroupsContext } from "../store/groups-context";
 import IconButton from "../components/ui/IconButton";
-import { deleteGroup, createGroup, updateGroup } from "../util/firestore";
+import { deleteGroup, createGroup, updateGroup } from "../util/firebase/firestore/groups";
 import Error from "../components/ui/Error";
 import Loading from "../components/ui/LoadingOverlay";
 

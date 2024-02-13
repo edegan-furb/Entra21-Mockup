@@ -9,14 +9,16 @@ import { View, Text, StyleSheet, ScrollView, Alert } from "react-native";
 import { Colors } from "../constants/styles";
 import { GroupsContext } from "../store/groups-context";
 import IconButton from "../components/ui/IconButton";
-import { auth } from "../util/auth";
+import { auth } from "../util/firebase/auth";
 import { getFormattedDate } from "../util/date";
+import {
+  updateObjectiveStatus,
+  updateTaskStatus,
+} from "../util/firebase/firestore/tasks";
 import {
   getEmailByUsername,
   getUserIdByEmail,
-  updateObjectiveStatus,
-  updateTaskStatus,
-} from "../util/firestore";
+} from "../util/firebase/firestore/user";
 import Error from "../components/ui/Error";
 
 function TaskScreen({ route, navigation }) {

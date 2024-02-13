@@ -7,11 +7,12 @@ import Error from "../components/ui/Error";
 import Loading from "../components/ui/LoadingOverlay";
 import {
   createtask,
-  getUserIdByEmail,
-  isMember,
   updateTask,
   deleteTask,
-} from "../util/firestore";
+} from "../util/firebase/firestore/tasks";
+import { getUserIdByEmail } from "../util/firebase/firestore/user";
+import { isMember } from "../util/firebase/firestore/groups";
+
 import IconButton from "../components/ui/IconButton";
 import { generateUniqueId } from "../util/generateUniqueId";
 

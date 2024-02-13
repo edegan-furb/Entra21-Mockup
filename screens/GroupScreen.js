@@ -8,8 +8,9 @@ import React, {
 import { View, Alert } from "react-native";
 import { Colors } from "../constants/styles";
 import { GroupsContext } from "../store/groups-context";
-import { auth } from "../util/auth";
-import { fetchGroupTasks, isAdmin } from "../util/firestore";
+import { auth } from "../util/firebase/auth";
+import { isAdmin } from "../util/firebase/firestore/groups";
+import { fetchGroupTasks } from "../util/firebase/firestore/tasks";
 import IconButton from "../components/ui/IconButton";
 import TasksOutput from "../components/TasksOutput/TaskOuput";
 import Error from "../components/ui/Error";
@@ -123,7 +124,13 @@ function GroupScreen({ route, navigation }) {
     return <LoadingOverlay />;
   }
 
-  return <TasksOutput tasks={groupTasks} fallbackText={"No Tasks"} groupId={groupId}/>;
+  return (
+    <TasksOutput
+      tasks={groupTasks}
+      fallbackText={"No Tasks"}
+      groupId={groupId}
+    />
+  );
 }
 
 export default GroupScreen;

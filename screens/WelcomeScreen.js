@@ -3,8 +3,9 @@ import { View, ActivityIndicator, Text, StyleSheet } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import TasksOutput from "../components/TasksOutput/TaskOuput";
 import { GroupsContext } from "../store/groups-context";
-import { fetchGroups, fetchUsernameAndEmail } from "../util/firestore";
-import { auth } from "../util/firebaseConfig";
+import { fetchGroups } from "../util/firebase/firestore/groups";
+import { fetchUsernameAndEmail } from "../util/firebase/firestore/user";
+import { auth } from "../util/firebase/firebaseConfig";
 import { Colors } from "../constants/styles";
 
 function WelcomeScreen() {
@@ -108,10 +109,11 @@ export default WelcomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: 24,
+    paddingVertical: 24,
   },
   usernameContainer: {
-    flex: 1,
-    padding: 24,
+    flex: 0.2,
   },
   text: {
     textAlign: "left",
@@ -120,6 +122,5 @@ const styles = StyleSheet.create({
   },
   ongoingTasks: {
     flex: 1,
-    paddingHorizontal: 24,
   },
 });

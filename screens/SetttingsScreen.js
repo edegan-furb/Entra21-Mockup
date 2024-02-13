@@ -12,8 +12,8 @@ import {
   uploadPicture,
   getImageUrlByName,
   getCurrrentUserImageName,
-} from "../util/storage";
-import { fetchUsernameAndEmail, updateUsername } from "../util/firestore";
+} from "../util/firebase/storage";
+import { fetchUsernameAndEmail, updateUsername } from "../util/firebase/firestore/user";
 import { Ionicons } from "@expo/vector-icons";
 
 function SettingsScreen() {
