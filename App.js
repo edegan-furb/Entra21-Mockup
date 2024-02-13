@@ -51,10 +51,9 @@ function AuthenticatedBottomTab() {
       sceneContainerStyle={{ backgroundColor: colors.background50 }}
       screenOptions={{
         headerStyle: { backgroundColor: colors.background500 },
-        headerTintColor: "red",
         tabBarStyle: { backgroundColor: colors.bgTabBar900},
         tabBarActiveTintColor: colors.icons100,
-        tabBarShowLabel: true,
+        tabBarShowLabel: true
       }}
     >
       <BottomTabs.Screen

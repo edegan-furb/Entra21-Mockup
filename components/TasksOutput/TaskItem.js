@@ -4,7 +4,7 @@ import { Colors } from "../../constants/styles";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { getFormattedDate } from "../../util/date";
 
-function TaskItem({ id, title, designatedUser, groupId, date, objectives }) {
+function TaskItem({ id, title, designatedUser, groupId, date, objectives, completed }) {
   const navigation = useNavigation();
 
   function taskPressHandler() {
@@ -21,7 +21,7 @@ function TaskItem({ id, title, designatedUser, groupId, date, objectives }) {
     >
       <View style={styles.taskItem}>
         <View style={styles.container}>
-          <View style={styles.iconContent}>
+          <View>
             <Ionicons name="paper-plane" color={Colors.primary400} size={40}/>
           </View>
           <View style={styles.titleContent}>
@@ -33,10 +33,17 @@ function TaskItem({ id, title, designatedUser, groupId, date, objectives }) {
               <Ionicons name="calendar-outline" color={Colors.neutral100} size={15}/>   {getFormattedDate(date)} 
             </Text>
             <Text style={styles.textInf}>
-              <Feather name="target" color={Colors.neutral100} size={15}/>  {objectives.length}
+              <Feather name="target" color={Colors.neutral100} size={15}/>  {`${objectives?.completed} / ${objectives.length}`}
             </Text>
           </View>
           <View style={styles.iconContent}>
+            <View style={styles.iconCompletedContent}>
+              <Ionicons
+                name= {completed ? "checkmark-circle-outline" :"ellipse-outline" }
+                color={Colors.primary100}
+                size={21}
+              />
+            </View>
             <Ionicons name="arrow-redo" color={Colors.primary400} size={25}/>
           </View>
         </View>
@@ -88,5 +95,12 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     paddingLeft: 15,
     color: Colors.neutral100,
+  },
+  iconContent: {
+    height: '80%'
+  },
+  iconCompletedContent: {
+    flex: 1,
+    alignItems: "flex-start"
   }
 });
