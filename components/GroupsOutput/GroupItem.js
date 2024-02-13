@@ -5,7 +5,7 @@ import { Colors } from "../../constants/styles";
 import { useTheme } from "../../store/theme-context";
 import { Ionicons } from "@expo/vector-icons";
 
-function GroupItem({ id, title, tasks, memberCount }) {
+function GroupItem({ id, title, tasks, members }) {
   const { colors } = useTheme();
   const navigation = useNavigation();
 
@@ -16,11 +16,12 @@ function GroupItem({ id, title, tasks, memberCount }) {
   }
 
   const safeTasks = tasks || [];
+  const safeMembers = members || [];
   const numberCompletedTasks = safeTasks.filter(
     (task) => task.completed === true
   ).length;
   const numberTasks = safeTasks.length;
-  const numberMembers = memberCount || 0;
+  const numberMembers = safeMembers.length;
 
   return (
     <Pressable

@@ -341,15 +341,38 @@ export async function fetchGroups(callback) {
             })
           );
 
-          // Fetch the count of members for each group
+          tasks.sort((a, b) => a.title.localeCompare(b.title));
+
           const membersQuery = query(
             collection(db, "members"),
             where("group", "==", groupRef)
           );
-          const membersSnapshot = await getDocs(membersQuery);
-          const memberCount = membersSnapshot.docs.length; // Count of members in the group
 
-          return { ...groupData, tasks: tasks, memberCount: memberCount };
+          const membersSnapshot = await getDocs(membersQuery);
+          const members = await Promise.all(
+            membersSnapshot.docs.map(async (docSnapshot) => {
+              const memberData = docSnapshot.data();
+              const userDocRef = memberData.user;
+
+              // Fetch user data for each member
+              const userSnapshot = await getDoc(userDocRef);
+              const userData = userSnapshot.data();
+
+              // Combine member and user data
+              return {
+                id: docSnapshot.id,
+                admin: memberData.admin,
+                group: memberData.group,
+                user: memberData.user.id,
+                email: userData.email,
+                username: userData.username,
+              };
+            })
+          );
+
+          members.sort((a, b) => a.username.localeCompare(b.username));
+
+          return { ...groupData, tasks: tasks, members: members };
         })
       );
 
