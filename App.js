@@ -261,7 +261,7 @@ export default function App() {
       <ThemeProvider>
         <GroupsContextProvider onLayout={onLayoutRootView}>
           <AuthContextProvider>
-            <StatusBar barStyle={theme == 'dark' ? 'light' : 'dark'} />
+            
             <Root />
           </AuthContextProvider>
         </GroupsContextProvider>
