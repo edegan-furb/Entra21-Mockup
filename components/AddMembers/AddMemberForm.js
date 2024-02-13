@@ -26,7 +26,7 @@ function AddMemberForm({ onCancel, onSubmit }) {
 
   function submitHandler() {
     const memberData = {
-      email: inputs.email.value,
+      email: inputs.email.value.toLowerCase(),
       isAdmin: isChecked,
     };
 
