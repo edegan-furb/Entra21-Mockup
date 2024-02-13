@@ -31,16 +31,16 @@ function SettingsScreen() {
           <SettingsItem
             nameIcon={"sunny-outline"}
             text={'Theme'}
-            activeText={<Text><Ionicons name={'moon'} size={15} color={colors.swich200}/></Text>}
-            inActiveText={<Text><Ionicons name={'sunny'} size={15} color={colors.swich200}/></Text>}
+            activeText={"🌙 "}
+            inActiveText={"☀"}
             swichTheme={true}
             swich={true}
           />
           <SettingsItem
             nameIcon={"language-outline"}
             text={'Language'}
-            activeText={'Br'}
-            inActiveText={'En'}
+            activeText={'🇺🇸'}
+            inActiveText={'🇧🇷'}
             swichLanguage={true}
             swich={true}
           />

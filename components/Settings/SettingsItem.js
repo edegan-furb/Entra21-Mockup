@@ -52,7 +52,7 @@ export default function SettingsItem({ text, nameIcon, swich, swichLanguage, act
                     circleInActiveColor={colors.swich200}
                     circleSize={25}
                     barHeight={30}
-                    switchWidthMultiplier={3} 
+                    switchWidthMultiplier={3}
                 />
             )}
             {swichLanguage && ( 
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     },
     nameItem: {
         width: '60%',
-        fontSize: 17
+        fontSize: 17,
     },
     pressed: {
         opacity: 0.6
