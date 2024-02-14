@@ -42,22 +42,6 @@ function TaskScreen({ route, navigation, user }) {
       });
     });
   }
-  //formating date
-  const formatedDate = function () {
-    //inicializing variables
-    let dateOriginal = getFormattedDate(selectTask?.date).toString();
-    let formatDate = new Date(dateOriginal);
-
-    //Configuring format options
-    let options = { 
-        year: 'numeric', 
-        month: 'short', 
-        day: '2-digit',
-        timeZone: 'UTC'
-    };
-
-    return formatDate.toLocaleDateString('en-US', options);
-  }
 
   useEffect(() => {
     if (!selectTask) {
@@ -147,7 +131,7 @@ function TaskScreen({ route, navigation, user }) {
             <View style={styles.dateContent}>
               <Ionicons name='calendar-outline' size={13} color={Colors.primary100} />
               <Text style={styles.dateText}>  Deadline: </Text>
-              <Text style={styles.date}> {formatedDate()}</Text>
+              <Text style={styles.date}> {getFormattedDate(selectTask?.date)}</Text>
             </View>
             <View style={styles.dateContent}>
               <Ionicons name='person-outline' size={13} color={Colors.primary100} />
