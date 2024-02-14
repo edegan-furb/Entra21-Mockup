@@ -4,7 +4,10 @@ import { Colors } from "../../constants/styles";
 import IconButton from "../ui/IconButton";
 import { auth } from "../../util/firebase/auth";
 import { GroupsContext } from "../../store/groups-context";
-import { getImageUrlByName, getUserImageName } from "../../util/firebase/storage";
+import {
+  getImageUrlByName,
+  getUserImageName,
+} from "../../util/firebase/storage";
 import { Ionicons } from "@expo/vector-icons";
 
 function MemberItem({
@@ -33,7 +36,7 @@ function MemberItem({
   }
 
   const isAdmin = foundMember && foundMember.admin === true;
-  const userId = user?._key?.path?.segments[user._key.path.segments.length - 1];
+  const userId = user;
   const isCurrentUser = currentUser === userId;
 
   const removeMemberHandler = () => {
@@ -71,11 +74,7 @@ function MemberItem({
         {imageSource ? (
           <Image source={imageSource} style={styles.image} />
         ) : (
-          <Ionicons
-            name="person-circle-outline"
-            color="#6366f1"
-            size={50}
-          />
+          <Ionicons name="person-circle-outline" color="#6366f1" size={50} />
         )}
       </View>
       <View style={{ flex: 1, marginLeft: 12 }}>
@@ -84,7 +83,12 @@ function MemberItem({
       </View>
       <View style={{ flexDirection: "row" }}>
         {isCurrentUser ? (
-          <Text style={styles.currentUserText}>You</Text>
+          <IconButton
+            icon={"exit-outline"}
+            color={"white"}
+            size={24}
+            onPress={removeMemberHandler}
+          />
         ) : isAdmin === true ? (
           <IconButton
             icon={"person-remove-outline"}
