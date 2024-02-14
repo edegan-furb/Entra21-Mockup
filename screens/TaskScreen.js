@@ -3,7 +3,7 @@ import React, {
   useContext,
   useCallback,
   useState,
-  useEffect
+  useEffect,
 } from "react";
 import { View, Text, StyleSheet, ScrollView, Alert } from "react-native";
 import { Colors } from "../constants/styles";
@@ -29,6 +29,7 @@ function TaskScreen({ route, navigation }) {
   const groupId = route.params?.groupId;
 
   let selectTask = null;
+  let foundMember = null;
 
   if (groupsCtx.groups) {
     groupsCtx.groups?.forEach((group) => {
@@ -39,6 +40,18 @@ function TaskScreen({ route, navigation }) {
       });
     });
   }
+
+  if (groupsCtx.groups) {
+    groupsCtx.groups?.forEach((group) => {
+      group.members?.forEach((member) => {
+        if (member.user === currentUser) {
+          foundMember = member;
+        }
+      });
+    });
+  }
+
+  const isAdmin = foundMember && foundMember.admin === true;
 
   useEffect(() => {
     if (!selectTask) {
@@ -52,7 +65,7 @@ function TaskScreen({ route, navigation }) {
   const renderHeaderButtons = useCallback(() => {
     return (
       <View style={{ flexDirection: "row" }}>
-        {selectTask.owner.id === currentUser && (
+        {(isAdmin || selectTask.owner.id === currentUser) && (
           <>
             <IconButton
               icon={"create-outline"}
@@ -61,7 +74,7 @@ function TaskScreen({ route, navigation }) {
               onPress={() => {
                 navigation.navigate("ManageTasksScreen", {
                   editedTaskId: taskId,
-                  groupId: selectTask.group,
+                  groupId: groupId,
                 });
               }}
             />
@@ -81,18 +94,22 @@ function TaskScreen({ route, navigation }) {
     navigation.setOptions({
       title:
         selectTask?.title +
-        " - " +
-        (selectTask?.completed ? "completed" : "ongoing") || "Task",
+          " - " +
+          (selectTask?.completed ? "completed" : "ongoing") || "Task",
       headerRight: renderHeaderButtons,
     });
   }, [navigation, selectTask, renderHeaderButtons]);
 
   async function onChangeCompletedStatusHandler(objectiveId) {
     try {
-      const email = await getEmailByUsername(selectTask.designatedUser)
+      const email = await getEmailByUsername(selectTask.designatedUser);
       const designatedUser = await getUserIdByEmail(email);
       if (designatedUser === currentUser) {
-        groupsCtx.updateObjectiveStatus(selectTask.group.id, taskId, objectiveId);
+        groupsCtx.updateObjectiveStatus(
+          selectTask.group.id,
+          taskId,
+          objectiveId
+        );
         await updateObjectiveStatus(taskId, objectiveId);
       } else {
         Alert.alert(
@@ -109,6 +126,7 @@ function TaskScreen({ route, navigation }) {
 
   async function onChangeTaskCompletedStatusHandler() {
     try {
+      console.log(selectTask.designatedUser)
       groupsCtx.updateTaskStatus(selectTask.group, taskId);
       await updateTaskStatus(taskId);
     } catch {
@@ -124,7 +142,10 @@ function TaskScreen({ route, navigation }) {
     <ScrollView style={styles.rootContainer}>
       <View style={styles.infoContainer}>
         <View style={styles.dateContainer}>
-          <Text style={styles.date}> {selectTask?.date ? getFormattedDate(selectTask.date) : "No Date"}</Text>
+          <Text style={styles.date}>
+            {" "}
+            {selectTask?.date ? getFormattedDate(selectTask.date) : "No Date"}
+          </Text>
         </View>
         <View style={styles.designatedUserContainer}>
           <Text style={styles.designatedUser}>
