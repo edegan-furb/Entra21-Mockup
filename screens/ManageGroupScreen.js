@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   },
   formEditing: {
     marginTop: '25%',
-    height: hp('40%'),
+    height: hp('35%'),
     width: wp('90%'),
     borderRadius: 20,
     backgroundColor: Colors.primary900,
@@ -160,14 +160,14 @@ const styles = StyleSheet.create({
   },
   inputEdit: {
     width: '100%',
-    height: '50%',
+    height: '45%',
     alignItems: "center",
     justifyContent: "center",
     gap: 10,
   },
   styleButtonsEdit: {
     width: '100%',
-    height: '50%',
+    height: '55%',
     alignItems: "center",
   },
   buttonEdit: {

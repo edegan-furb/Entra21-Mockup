@@ -337,10 +337,10 @@ export default TaskForm;
 const styles = StyleSheet.create({
   container: {
     width: wp('90%'),
-    height: hp('75%'),
+    height: hp('70%'),
     backgroundColor: Colors.primary900,
     borderRadius: 20,
-    marginTop: '20%',
+    marginTop: '15%',
   },
   containerTest: {
     width: '100%',
@@ -443,14 +443,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonContentEdit: {
-    height: '40%',
+    height: '35%',
     width: '85%',
     flexDirection: "row",
     gap: 10,
     alignItems: "center",
   },
   deleteContainer: {
-    height: '40%',
+    height: '35%',
     width: '50%',
     borderRadius: 10,
     flexDirection: "row",
