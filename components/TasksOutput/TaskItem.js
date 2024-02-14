@@ -2,6 +2,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Colors } from "../../constants/styles";
 import { Feather, Ionicons } from "@expo/vector-icons";
+import { getFormattedDate } from "../../util/date";
 
 function TaskItem({ id, title, designatedUser, groupId, date, objectives, completed }) {
   const navigation = useNavigation();
@@ -13,21 +14,6 @@ function TaskItem({ id, title, designatedUser, groupId, date, objectives, comple
     });
   }
 
-  const formatedDate = function () {
-    //inicializing variables
-    let dateOriginal = date.toString();
-    let formatDate = new Date(dateOriginal);
-
-    //Configuring format options
-    let options = { 
-        year: 'numeric', 
-        month: 'short', 
-        day: '2-digit',
-        timeZone: 'UTC'
-    };
-
-    return formatDate.toLocaleDateString('en-US', options);
-  }
   let numCompletedObjectives = objectives.filter(objective => (objective.completed === true)).length;
   console.log(numCompletedObjectives)
 
@@ -47,7 +33,7 @@ function TaskItem({ id, title, designatedUser, groupId, date, objectives, comple
                 <Ionicons name="person" color={Colors.neutral100} size={15}/>   {designatedUser}
               </Text>
             <Text style={styles.textInf}>
-              <Ionicons name="calendar-outline" color={Colors.neutral100} size={15}/>   {formatedDate()} 
+              <Ionicons name="calendar-outline" color={Colors.neutral100} size={15}/>   {getFormattedDate(date)} 
             </Text>
             <Text style={styles.textInf}>
               <Feather name="target" color={Colors.neutral100} size={15}/>  {`${numCompletedObjectives}/${objectives.length}`}

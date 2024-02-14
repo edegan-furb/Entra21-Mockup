@@ -5,12 +5,15 @@ import {
     widthPercentageToDP as wp
 } from "react-native-responsive-screen";
 
-import { Ionicons } from "@expo/vector-icons";
+
+import { Feather, Ionicons } from "@expo/vector-icons";
 import { Colors } from "../../constants/styles";
 import * as Progress from 'react-native-progress';
 import { useTheme } from "../../store/theme-context";
 import { useNavigation } from "@react-navigation/native";
 import { GroupsContext } from "../../store/groups-context";
+import { getFormattedDate } from "../../util/date";
+
 
 export default function TaskHome({ date, title, objectives, completed, id, groupId}) {
 
@@ -21,23 +24,6 @@ export default function TaskHome({ date, title, objectives, completed, id, group
             taskId: id,
             groupId: groupId,
         });
-    }
-
-    //Formaiting date 
-    const formatedDate = function () {
-        //inicializing variables
-        let dateOriginal = date.toString();
-        let formatDate = new Date(dateOriginal)
-
-        //Configuring format options
-        let options = { 
-            year: 'numeric', 
-            month: 'short', 
-            day: '2-digit',
-            timeZone: 'UTC'
-        };
-
-        return formatDate.toLocaleDateString('en-US', options)
     }
 
     let numCompletedObjectives = objectives.filter(objective => (objective.completed === true)).length;
@@ -73,7 +59,7 @@ export default function TaskHome({ date, title, objectives, completed, id, group
             onPress={taskPressHandler}
         >
             <View>
-                <Text style={[styles.date, {color: colors.text200}]}>{formatedDate()}</Text>
+                <Text style={[styles.date, {color: colors.text200}]}>{getFormattedDate(date)}</Text>
             </View>
 
             <View style={styles.taskContainer}>
@@ -83,15 +69,17 @@ export default function TaskHome({ date, title, objectives, completed, id, group
                     color={colors.text200}
                 />
                 <View style={styles.taskInfoContainer}>
-                    <Text style={[styles.taskName, {color: colors.text200}]} numberOfLines={3}>
-                        {title}
+                    <Text style={[styles.taskName, {color: colors.text200}]} numberOfLines={3}>{title}</Text>
+                    <Text style={[styles.groupName, {color: colors.text200}]}>
+                        <Ionicons name="people-outline" size={16}/> {groupName}
                     </Text>
-                    <Text style={[styles.groupName, {color: colors.text200}]}>{groupName}</Text>
                 </View>
             </View>
 
             <View style={styles.progressContainer}>
-                <Text style={[styles.ProgressText, {color: colors.text200}]}>Progress: {numCompletedObjectives}/{numObjectives}</Text>
+                <Text style={[styles.ProgressText, {color: colors.text200}]}>
+                    <Feather name="target" color={Colors.text200} size={16}/> {numCompletedObjectives}/{numObjectives}
+                </Text>
                 <View style={styles.barContainer}>
                     <Progress.Bar 
                         progress={progressCalc()}
@@ -141,7 +129,6 @@ const styles = StyleSheet.create({
     },
     groupName: {
         fontSize: 12,
-        textDecorationLine: "underline",
         color: Colors.neutral1100
     },
     barContainer:{
