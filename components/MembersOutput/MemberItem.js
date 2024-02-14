@@ -16,7 +16,6 @@ function MemberItem({
   admin,
   onChangeAdminStatus,
 }) {
-
   const [imageSource, setImageSource] = useState(null);
 
   const currentUser = auth.currentUser.uid;
@@ -54,22 +53,17 @@ function MemberItem({
     }
   };
 
-  //console.log(isAdmin);
-
   useEffect(() => {
-    //setIsLoading(true); // Start loading
     const fetchUserImage = async () => {
       const imageName = await getUserImageName(user);
       if (imageName) {
         const url = await getImageUrlByName(imageName);
         setImageSource({ uri: url });
       }
-      //setIsLoading(false); // End loading
     };
 
     fetchUserImage();
   }, []);
-
 
   return (
     <View style={styles.memberItem}>

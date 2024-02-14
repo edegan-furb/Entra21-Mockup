@@ -15,7 +15,6 @@ function TaskItem({ id, title, designatedUser, groupId, date, objectives, comple
   }
 
   let numCompletedObjectives = objectives.filter(objective => (objective.completed === true)).length;
-  console.log(numCompletedObjectives)
 
   return (
     <Pressable
