@@ -10,15 +10,15 @@ import MembersOutput from "../components/MembersOutput/MembersOutput";
 import {
   fetchGroupMembers,
   removeMember,
-  isAdmin,
   updateAdminStatus,
-} from "../util/firestore";
+} from "../util/firebase/firestore/members";
+import { isAdmin } from "../util/firebase/firestore/groups";
 import Error from "../components/ui/Error";
 import LoadingOverlay from "../components/ui/LoadingOverlay";
 import { View } from "react-native";
 import IconButton from "../components/ui/IconButton";
 import { Colors } from "../constants/styles";
-import { auth } from "../util/auth";
+import { auth } from "../util/firebase/auth";
 
 function GroupMembersScreen({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(true);

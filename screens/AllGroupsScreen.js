@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { useState, useEffect } from "react";
 import GroupsOuput from "../components/GroupsOutput/GroupsOuput";
 import { GroupsContext } from "../store/groups-context";
-import { fetchGroups } from "../util/firestore";
+import { fetchGroups } from "../util/firebase/firestore/groups";
 import Error from "../components/ui/Error";
 import LoadingOverlay from "../components/ui/LoadingOverlay";
 

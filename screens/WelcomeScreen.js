@@ -2,9 +2,10 @@ import { useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, View, SafeAreaView, ActivityIndicator } from "react-native";
 import { GroupsContext } from "../store/groups-context";
 import { Colors } from "../constants/styles";
-import { fetchGroups, fetchUsernameAndEmail } from "../util/firestore";
+import { fetchGroups } from "../util/firebase/firestore/groups";
+import { fetchUsernameAndEmail } from "../util/firebase/firestore/user";
 import { useTheme } from "../store/theme-context"; 
-import { auth } from "../util/firebaseConfig";
+import { auth } from "../util/firebase/firebaseConfig";
 import CurrentTasksOutput from '../components/CurrentTasksOutput/CurrentTaskOuput'
 import { useNavigation } from "@react-navigation/core";
 import WelcomeComp from "../components/Home/WelcomeBanner";

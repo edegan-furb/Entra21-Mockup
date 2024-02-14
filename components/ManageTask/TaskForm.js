@@ -6,7 +6,10 @@ import { Colors } from "../../constants/styles";
 import IconButton from "../ui/IconButton";
 import { getFormattedDate } from "../../util/date";
 import { generateUniqueId } from "../../util/generateUniqueId";
-import { getEmailByUsername, fetchUsernameAndEmail } from "../../util/firestore";
+import {
+  getEmailByUsername,
+  fetchUsernameAndEmail,
+} from "../../util/firebase/firestore/user";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp

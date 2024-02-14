@@ -10,14 +10,16 @@ import { Colors } from "../constants/styles";
 import { GroupsContext } from "../store/groups-context";
 import IconButton from "../components/ui/IconButton";
 import { Feather, Ionicons } from "@expo/vector-icons";
-import { auth } from "../util/auth";
+import { auth } from "../util/firebase/auth";
 import { getFormattedDate } from "../util/date";
 import {
-  getUserIdByEmail,
   updateObjectiveStatus,
   updateTaskStatus,
-  getEmailByUsername
-} from "../util/firestore";
+} from "../util/firebase/firestore/tasks";
+import {
+  getEmailByUsername,
+  getUserIdByEmail,
+} from "../util/firebase/firestore/user";
 import Error from "../components/ui/Error";
 import { useTheme } from "../store/theme-context";
 

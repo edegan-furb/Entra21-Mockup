@@ -1,10 +1,10 @@
 import { Alert, Image, StyleSheet, Text, View } from "react-native";
 import { Colors } from "../../constants/styles";
 import IconButton from "../ui/IconButton";
-import { auth } from "../../util/auth";
+import { auth } from "../../util/firebase/auth";
 import { GroupsContext } from "../../store/groups-context";
 import { useContext, useEffect, useState } from "react";
-import { getImageUrlByName, getUserImageName } from '../../util/storage';
+import { getImageUrlByName, getUserImageName } from "../../util/firebase/storage";
 import { Ionicons } from '@expo/vector-icons';
 
 function MemberItem({

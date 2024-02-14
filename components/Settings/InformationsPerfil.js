@@ -6,8 +6,8 @@ import {
     uploadPicture,
     getImageUrlByName,
     getCurrrentUserImageName,
-} from "../../util/storage";
-import { fetchUsernameAndEmail, updateUsername } from "../../util/firestore";
+} from "../../util/firebase/storage";
+import { fetchUsernameAndEmail, updateUsername } from "../util/firebase/firestore/user";
 import { useTheme } from "../../store/theme-context";
 
 export default function ModalInformationsPerfil() {

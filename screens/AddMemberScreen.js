@@ -1,7 +1,7 @@
 import { View, StyleSheet, Alert } from "react-native";
-import { Colors } from "../constants/styles";
 import AddMemberForm from "../components/AddMembers/AddMemberForm";
-import { setAdminStatus, addMember, getUserIdByEmail } from "../util/firestore";
+import { getUserIdByEmail } from "../util/firebase/firestore/user";
+import { setAdminStatus, addMember } from "../util/firebase/firestore/members";
 import Error from "../components/ui/Error";
 import Loading from "../components/ui/LoadingOverlay";
 import { useContext, useState } from "react";

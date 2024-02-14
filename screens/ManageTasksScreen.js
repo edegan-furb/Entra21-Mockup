@@ -7,11 +7,11 @@ import Error from "../components/ui/Error";
 import Loading from "../components/ui/LoadingOverlay";
 import {
   createtask,
-  getUserIdByEmail,
-  isMember,
   updateTask,
-  deleteTask
-} from "../util/firestore";
+  deleteTask,
+} from "../util/firebase/firestore/tasks";
+import { getUserIdByEmail } from "../util/firebase/firestore/user";
+import { isMember } from "../util/firebase/firestore/groups";
 import { generateUniqueId } from "../util/generateUniqueId";
 
 function ManageTasksScreen({ navigation, route }) {
