@@ -1,6 +1,8 @@
 import { View, Text, StyleSheet, SafeAreaView, Modal} from "react-native";
 import { AuthContext } from "../store/auth-context";
 import React, { useState, useContext } from "react";
+import { Colors } from "../constants/styles";
+import { Ionicons } from '@expo/vector-icons';
 import SettingsItem from "../components/Settings/SettingsItem";
 import InfPerfil from "../components/Settings/InformationsPerfil";
 import ModalInformationsPerfil from "../components/Settings/AboutModal";
@@ -9,7 +11,6 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { useTheme } from "../store/theme-context";
-import TranslatedText from "../store/language-context";
 
 function SettingsScreen() {
 
@@ -29,12 +30,7 @@ function SettingsScreen() {
           <Text style={[styles.titleSettings, {color: colors.text900}]}>Settings</Text>
           <SettingsItem
             nameIcon={"sunny-outline"}
-            text={
-              <TranslatedText
-                enText="Theme"
-                ptText="Tema"
-              />
-            }
+            text={'Theme'}
             activeText={"🌙 "}
             inActiveText={"☀"}
             swichTheme={true}
@@ -42,44 +38,24 @@ function SettingsScreen() {
           />
           <SettingsItem
             nameIcon={"language-outline"}
-            text={
-              <TranslatedText
-                enText="Language"
-                ptText="Idioma"
-              />
-            }
-            activeText={'🇧🇷'}
-            inActiveText={'🇺🇸'}
+            text={'Language'}
+            activeText={'🇺🇸'}
+            inActiveText={'🇧🇷'}
             swichLanguage={true}
             swich={true}
           />
           <SettingsItem
             nameIcon={"help-circle-outline"}
-            text={
-              <TranslatedText
-                enText="About"
-                ptText="Sobre"
-              />
-            }
+            text={'About'}
             onPress={() => setModalVisible(true)}
           />
           <SettingsItem
             nameIcon={"close-circle-outline"}
-            text={
-              <TranslatedText
-                enText="Delete account"
-                ptText="Deletar conta"
-              />
-            }
+            text={'Delete account'}
           />
           <SettingsItem
             nameIcon={"log-out-outline"}
-            text={
-              <TranslatedText
-                enText="Logout"
-                ptText="Sair"
-              />
-            }
+            text={'Logout'}
             onPress={authCtx.logout}
           />
         </View>

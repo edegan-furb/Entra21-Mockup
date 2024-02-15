@@ -15,7 +15,6 @@ import IconButton from "../components/ui/IconButton";
 import TasksOutput from "../components/TasksOutput/TaskOuput";
 import Error from "../components/ui/Error";
 import LoadingOverlay from "../components/ui/LoadingOverlay";
-import TranslatedText from "../store/language-context";
 
 function GroupScreen({ route, navigation }) {
   const currentUser = auth.currentUser.uid;
@@ -126,23 +125,13 @@ function GroupScreen({ route, navigation }) {
   if (isLoading) {
     return <LoadingOverlay />;
   }
-  
+
   return (
     <TasksOutput 
       tasks={groupTasks} 
-      firstText={
-        <TranslatedText 
-          enText={"Oops! It looks like you don't have any tasks registered yet."} 
-          ptText={'Ops! Parece que você ainda não tem nenhuma tarefa registrada.'}
-        />
-      }
-      secondText={
-        <TranslatedText 
-          enText={"Press the button below to create your first task now!"} 
-          ptText={'Pressione o botão abaixo para criar sua primeira tarefa agora!'}
-        />
-      }
-      title={<TranslatedText enText={'Add Tasks'} ptText={'Add Tarefas'}/>}
+      firstText={"Oops! It looks like you don't have any tasks registered yet."}
+      secondText={'Press the button below to create your first task now!'}
+      title={'Add Tasks'}
       groupId={groupId}
       onPress={() => {
         navigation.navigate("ManageTasksScreen", {

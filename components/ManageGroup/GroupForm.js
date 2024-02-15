@@ -5,7 +5,6 @@ import { Ionicons } from '@expo/vector-icons';
 import Input from "./Input";
 import { Colors } from "../../constants/styles";
 import Button from "../ui/Button";
-import TranslatedText from "../../store/language-context";
 
 function GroupForm({ 
   onCancel, 
@@ -83,11 +82,9 @@ function GroupForm({
               }}
             />
             {formIsInvalid && (
-              <TranslatedText 
-                enText={'Invalid input values - please check your entered data'} 
-                ptText={'Valores de entrada inválidos - verifique os dados inseridos'} 
-                style={styles.errorText}
-              />                
+              <Text style={styles.errorText}>
+                Invalid input values - please check your entered data
+              </Text>
             )}
           </View>
           <View style={styleButtons}>
@@ -96,7 +93,7 @@ function GroupForm({
                 {submitButtonLabel}
               </Button>
               <Button mode="flat" onPress={onCancel}>
-                <TranslatedText enText={'Cancel'} ptText={'Cancelar'}/>
+                Cancel
               </Button>
             </View>
             <View style={styleDeleteContainer}>
@@ -107,7 +104,7 @@ function GroupForm({
                   color={'#fff'}
                   size={20}
                 />
-                <TranslatedText enText={'Delete group'} ptText={'Deletar grupo'} style={styles.textbutton}/>                
+                <Text style={styles.textbutton}>Delete group</Text>                
               </Pressable>
             </View>
           </View>

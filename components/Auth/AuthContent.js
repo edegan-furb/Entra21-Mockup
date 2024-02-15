@@ -14,7 +14,6 @@ import AuthForm from "./AuthForm";
 
 import { Colors } from "../../constants/styles";
 import PagesTitle from "../SignUp-Login/PagesTitle";
-import TranslatedText from "../../store/language-context";
 
 function AuthContent({ isLogin, onAuthenticate }) {
 
@@ -62,19 +61,8 @@ function AuthContent({ isLogin, onAuthenticate }) {
         <SafeAreaView style={styles.rootContainer}>
           <PagesTitle 
             style={styles.containerPageTitle}
-            title={
-              isLogin ?
-              <TranslatedText enText={'Wellcome back!'} ptText={'Bem vindo de volta!'}/>
-              : 
-              <TranslatedText enText={'Hello!'} ptText={'Olá'}/>
-            } 
-            subTitle={
-              isLogin ? 
-              <TranslatedText enText={'Hello there, login to continue'} ptText={'Olá, faça login para continuar'}/>
-              : 
-              <TranslatedText enText={'Create a new account to continue'} ptText={'Crie uma nova conta para continuar'}/>
-              
-            }
+            title={isLogin ? 'Wellcome back!' : 'Hello!'} 
+            subTitle={isLogin ? 'Hello there, login to continue' : 'Create a new account to continue'}
           />
           <View style={styles.inputsContainer}>
             <AuthForm

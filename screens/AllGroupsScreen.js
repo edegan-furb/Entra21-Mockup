@@ -5,7 +5,6 @@ import { GroupsContext } from "../store/groups-context";
 import { fetchGroups } from "../util/firebase/firestore/groups";
 import Error from "../components/ui/Error";
 import LoadingOverlay from "../components/ui/LoadingOverlay";
-import TranslatedText from "../store/language-context";
 
 function AllGroups() {
   //  State variables for loading, error, and initial load
@@ -54,19 +53,9 @@ function AllGroups() {
   return (
     <GroupsOuput 
       groups={groupsCtx.groups} 
-      firstText={
-        <TranslatedText 
-          enText={"Oops! It looks like you don't have any teams registered yet."} 
-          ptText={'Ops! Parece que você ainda não tem nenhuma equipe cadastrada.'}
-        />
-      }
-      secondText={
-        <TranslatedText 
-          enText={"Press the button below to create your first team now!"} 
-          ptText={'Pressione o botão abaixo para criar sua primeira equipe agora!'}
-        />
-      }
-      title={<TranslatedText enText={'Add Teams'} ptText={'Add Times'}/>}
+      firstText={"Oops! It looks like you don't have any teams registered yet."}
+      secondText={'Press the button below to create your first team now!'}
+      title={'Add Teams'}
     />
   );
 }

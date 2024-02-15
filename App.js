@@ -24,7 +24,6 @@ import AddMemberScreen from "./screens/AddMemberScreen";
 import ManageTasksScreen from "./screens/ManageTasksScreen";
 import TaskScreen from "./screens/TaskScreen";
 import { useTheme } from "./store/theme-context";
-import TranslatedText from "./store/language-context";
 
 const BottomTabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -47,8 +46,6 @@ function AuthStack() {
 function AuthenticatedBottomTab() {
   const { colors } = useTheme();
 
-  const name = <TranslatedText enText={'Groups'} ptText={'Grupos'}/>
-
   return (
     <BottomTabs.Navigator
       sceneContainerStyle={{ backgroundColor: colors.background50 }}
@@ -60,7 +57,7 @@ function AuthenticatedBottomTab() {
       }}
     >
       <BottomTabs.Screen
-        name="Home"
+        name="Welcome"
         component={WelcomeScreen}
         options={{
           headerShown: false,
@@ -80,13 +77,6 @@ function AuthenticatedBottomTab() {
         name="Groups"
         component={AllGroupsScreen}
         options={{
-          tabBarLabel: ({ focused, color }) => (
-            <TranslatedText
-              enText="Groups"
-              ptText="Grupos"
-              style={{ color: focused ? color : colors.iconFocused400, fontSize: 10 }}
-            />
-          ),
           headerShown: false,
           tabBarIcon: ({focused}) => {
             if(focused) {
@@ -104,13 +94,6 @@ function AuthenticatedBottomTab() {
         name="Settings"
         component={SettingsScreen}
         options={{
-          tabBarLabel: ({ focused, color }) => (
-            <TranslatedText
-              enText="Settings"
-              ptText="Configurações"
-              style={{ color: focused ? color : colors.iconFocused400, fontSize: 10 }}
-            />
-          ),
           headerShown: false,
           tabBarIcon: ({focused}) => {
             if(focused) {

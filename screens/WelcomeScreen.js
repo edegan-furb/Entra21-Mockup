@@ -9,7 +9,6 @@ import { auth } from "../util/firebase/firebaseConfig";
 import CurrentTasksOutput from '../components/CurrentTasksOutput/CurrentTaskOuput'
 import { useNavigation } from "@react-navigation/core";
 import WelcomeComp from "../components/Home/WelcomeBanner";
-import TranslatedText from "../store/language-context";
 
 function WelcomeScreen() {
   const [loading, setLoading] = useState(true);
@@ -93,37 +92,20 @@ function WelcomeScreen() {
   return (
     <SafeAreaView style={[styles.rootContainer, {backgroundColor: colors.background50}]}>
       <View style={styles.hiContainer}>
-        <TranslatedText
-          enText={username ? ("Hi, " + username) : ("Welcome back!")}
-          ptText={username ? ("Olá, " + username) : ("Bem vindo de volta!")}
-          style={[styles.hi, {color: colors.text900}]}
-          numberOfLines={1}
-        />
+        <Text style={[styles.hi, {color: colors.text900}]} numberOfLines={1}>{username ? ("Hi, " + username) : ("Welcome back!")}</Text>
       </View>
       <View style={styles.container}>
         <View style={styles.welcomeContainer}>
           <WelcomeComp  onPress={goToGroups}/>
         </View>
         <View style={styles.ongoingTasksContainer}>
-          <TranslatedText
-            enText={'Ongoing tasks'}
-            ptText={'Tarefas em andamento'}
-            style={[styles.ongoingTasks, {color: colors.text900}]}
-          />
+          <Text style={[styles.ongoingTasks, {color: colors.text900}]}>Ongoing task</Text>
         </View>
         <View style={styles.tasksContainer}>
           {loading ? (
             <ActivityIndicator size="small" color={Colors.primary800} />
           ) : (
-            <CurrentTasksOutput 
-                tasks={userTasks} 
-                firstText={
-                <TranslatedText
-                  enText={"You don't have tasks yet"}
-                  ptText={'Você ainda não possui tarefas'}
-                />
-              } 
-            />
+            <CurrentTasksOutput tasks={userTasks} firstText="No tasks found" />
           )}
         </View>
       </View>

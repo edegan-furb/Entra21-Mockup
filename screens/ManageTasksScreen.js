@@ -13,7 +13,6 @@ import {
 import { getUserIdByEmail } from "../util/firebase/firestore/user";
 import { isMember } from "../util/firebase/firestore/groups";
 import { generateUniqueId } from "../util/generateUniqueId";
-import TranslatedText from "../store/language-context";
 
 function ManageTasksScreen({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -127,10 +126,10 @@ function ManageTasksScreen({ navigation, route }) {
         <View style={styles.container}>
           <TaskForm
             onCancel={cancelHandler}
-            submitButtonLabel={isEditing ? <TranslatedText enText={'Update task'} ptText={'Atualizar tarefa'}/> : <TranslatedText enText={'Add task'} ptText={'Add tarefa'}/>}
+            submitButtonLabel={isEditing ? "Update" : "Add"}
             onSubmit={confirmHandler}
             defaultValues={selectTask}
-            pageTitle={editedTaskId ? <TranslatedText enText={'Update task'} ptText={'Atualizar tarefa'}/> : <TranslatedText enText={'Add task'} ptText={'Adicionar tarefa'}/>}
+            pageTitle={!editedTaskId ? "Add Task " : "Update Task"}
             isEditing={isEditing}
             onPressDelete={deleteGroupHandler}
           />
