@@ -18,20 +18,20 @@ function MemberItem({
   user,
   admin,
   onChangeAdminStatus,
+  groupId
 }) {
   const [imageSource, setImageSource] = useState(null);
 
   const currentUser = auth.currentUser.uid;
   const groupsCtx = useContext(GroupsContext);
+  const currentGroup = groupsCtx.groups?.find(g => g.id === groupId);
   let foundMember = null;
 
   if (groupsCtx.groups) {
-    groupsCtx.groups?.forEach((group) => {
-      group.members?.forEach((member) => {
-        if (member.user === currentUser) {
-          foundMember = member;
-        }
-      });
+    currentGroup.members?.forEach((member) => {
+      if (member.user === currentUser) {
+        foundMember = member;
+      }
     });
   }
 

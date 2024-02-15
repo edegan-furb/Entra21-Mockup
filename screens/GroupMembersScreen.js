@@ -181,6 +181,7 @@ function GroupMembersScreen({ navigation, route }) {
       members={groupMembers}
       onRemoveMember={deleteMemberHandler}
       onChangeAdminStatus={onChangeAdminStatusHandler}
+      groupId={groupId}
     />
   );
 }

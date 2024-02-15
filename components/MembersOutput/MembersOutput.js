@@ -2,13 +2,14 @@ import { StyleSheet, Text, View } from "react-native";
 import { Colors } from "../../constants/styles";
 import MembersList from "./MembersList";
 
-function MembersOutput({ members, onRemoveMember, onChangeAdminStatus }) {
+function MembersOutput({ members, onRemoveMember, onChangeAdminStatus, groupId }) {
   if (Array.isArray(members) && members.length > 0) {
     content = (
       <MembersList
         members={members}
         onRemoveMember={onRemoveMember}
         onChangeAdminStatus={onChangeAdminStatus}
+        groupId={groupId}
       />
     );
   }
