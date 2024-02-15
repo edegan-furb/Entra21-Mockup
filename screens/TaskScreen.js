@@ -33,6 +33,7 @@ function TaskScreen({ route, navigation, user }) {
   const groupsCtx = useContext(GroupsContext);
   const taskId = route.params?.taskId;
   const groupId = route.params?.groupId;
+  const previous = route.params?.previous;
 
   const statusConclutedTasks = language === 'en' ? 'Completed' : 'Concluída';
   const statusOngoingTasks = language === 'en' ? 'Ongoing' : 'Em andamento';
@@ -64,7 +65,7 @@ function TaskScreen({ route, navigation, user }) {
 
   useEffect(() => {
     if (!selectTask) {
-      navigation.navigate("GroupScreen", {
+      navigation.navigate(previous, {
         groupId: groupId,
       });
       Alert.alert("Task Deleted", "This task no longer exists");
@@ -82,6 +83,7 @@ function TaskScreen({ route, navigation, user }) {
               size={24}
               onPress={() => {
                 navigation.navigate("ManageTasksScreen", {
+                  previous: previous,
                   editedTaskId: taskId,
                   groupId: groupId || selectTask.group,
                 });
@@ -103,8 +105,8 @@ function TaskScreen({ route, navigation, user }) {
     navigation.setOptions({
       title:
         selectTask?.title +
-          " - " +
-          (selectTask?.completed ? statusConclutedTasks : statusOngoingTasks) || "Task",
+        " - " +
+        (selectTask?.completed ? statusConclutedTasks : statusOngoingTasks) || "Task",
       headerRight: renderHeaderButtons,
     });
   }, [navigation, selectTask, renderHeaderButtons]);
@@ -148,32 +150,32 @@ function TaskScreen({ route, navigation, user }) {
   }
 
   return (
-    <View style={[styles.rootContainer, {backgroundColor: colors.background50}]}>
-      <View style={[styles.infoContainer, {backgroundColor: colors.background50}]}>
+    <View style={[styles.rootContainer, { backgroundColor: colors.background50 }]}>
+      <View style={[styles.infoContainer, { backgroundColor: colors.background50 }]}>
         <View style={styles.dateContainer}>
           <View style={styles.designatedUserContainer}>
             <View style={styles.dateContent}>
               <Ionicons name='calendar-outline' size={13} color={Colors.primary100} />
-              <TranslatedText enText={'Deadline:'} ptText={'Prazo final:'} style={styles.designatedUserText}/>
+              <TranslatedText enText={'Deadline:'} ptText={'Prazo final:'} style={styles.designatedUserText} />
               <Text style={styles.date}>{selectTask?.date ? getFormattedDate(selectTask?.date) : "No Date"}</Text>
             </View>
             <View style={styles.dateContent}>
               <Ionicons name='person-outline' size={13} color={Colors.primary100} />
-              <TranslatedText enText={'Desinated:'} ptText={'Designado:'} style={styles.designatedUserText}/>
+              <TranslatedText enText={'Desinated:'} ptText={'Designado:'} style={styles.designatedUserText} />
               <Text style={styles.designatedUser} numberOfLines={1} ellipsizeMode="tail">{selectTask?.designatedUser}</Text>
             </View>
           </View>
           <View style={styles.buttonContainer}>
-            <Image source={require('../assets/images/team.png')} style={styles.imgBanner}/>
+            <Image source={require('../assets/images/team.png')} style={styles.imgBanner} />
           </View>
         </View>
       </View>
       <View style={styles.descriptionContainer}>
         <View style={styles.titleContent}>
           <Ionicons name="document-text-outline" color={colors.text900} size={16} />
-          <TranslatedText enText={'Description'} ptText={'Descrição'} style={[styles.title, {color: colors.text900}]}/>
+          <TranslatedText enText={'Description'} ptText={'Descrição'} style={[styles.title, { color: colors.text900 }]} />
         </View>
-        <View style={[styles.descriptionContent, {backgroundColor: colors.background900}]}>
+        <View style={[styles.descriptionContent, { backgroundColor: colors.background900 }]}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <Text style={styles.description}>{selectTask?.description}</Text>
           </ScrollView>
@@ -181,12 +183,12 @@ function TaskScreen({ route, navigation, user }) {
       </View>
       <View style={styles.objectivesContainer}>
         <View style={styles.titleContent}>
-          <Feather name="target" color={colors.text900} size={15}/>
-          <TranslatedText enText={'Objectives'} ptText={'Objetivos'} style={[styles.title, {color: colors.text900}]}/>
+          <Feather name="target" color={colors.text900} size={15} />
+          <TranslatedText enText={'Objectives'} ptText={'Objetivos'} style={[styles.title, { color: colors.text900 }]} />
         </View>
         <ScrollView contentContainerStyle={styles.objectivesScrollContainer} showsVerticalScrollIndicator={false}>
           {selectTask?.objectives.map((objective, index) => (
-            <View key={index} style={[styles.objectivesInnerContainer, {backgroundColor: colors.background900}]}>
+            <View key={index} style={[styles.objectivesInnerContainer, { backgroundColor: colors.background900 }]}>
               {objective?.completed ? (
                 <IconButton
                   onPress={() => onChangeCompletedStatusHandler(objective?.id)}
@@ -202,7 +204,7 @@ function TaskScreen({ route, navigation, user }) {
                   size={32}
                 />
               )}
-              <Text style={[styles.objectives, {color: colors.text700}]}> {objective.value}</Text>
+              <Text style={[styles.objectives, { color: colors.text700 }]}> {objective.value}</Text>
             </View>
           ))}
         </ScrollView>
@@ -230,7 +232,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: Colors.primary900,
-    borderBottomLeftRadius: 30, 
+    borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30
   },
   designatedUserContainer: {

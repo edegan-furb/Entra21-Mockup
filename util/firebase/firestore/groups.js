@@ -240,7 +240,7 @@ export async function fetchGroups(callback) {
                 completed: taskData.completed,
                 owner: taskData.owner,
                 designatedUser: designatedUserUsername,
-                group: taskData.group,
+                group: taskData.group.id,
                 objectives: objectives,
               };
             })
