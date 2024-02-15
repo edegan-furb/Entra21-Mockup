@@ -27,6 +27,7 @@ function TaskScreen({ route, navigation }) {
   const groupsCtx = useContext(GroupsContext);
   const taskId = route.params?.taskId;
   const groupId = route.params?.groupId;
+  const currentGroup = groupsCtx.groups?.find(group => group.id === groupId);
   const previous = route.params?.previous;
 
   let selectTask = null;
@@ -42,14 +43,13 @@ function TaskScreen({ route, navigation }) {
     });
   }
 
-  if (groupsCtx.groups) {
-    groupsCtx.groups?.forEach((group) => {
-      group.members?.forEach((member) => {
-        console.log(member.group.id)
-        if (member.user === currentUser && member.group.id === groupId) {
-          foundMember = member;
-        }
-      });
+  console.log(groupId)
+  if (currentGroup) {
+    currentGroup.members?.forEach((member) => { 
+      if (member.user === currentUser) {
+        console.log(member)
+        foundMember = member;
+      }
     });
   }
 
@@ -146,7 +146,6 @@ function TaskScreen({ route, navigation }) {
       <View style={styles.infoContainer}>
         <View style={styles.dateContainer}>
           <Text style={styles.date}>
-            {" "}
             {selectTask?.date ? getFormattedDate(selectTask.date) : "No Date"}
           </Text>
         </View>

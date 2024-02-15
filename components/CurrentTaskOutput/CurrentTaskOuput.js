@@ -3,11 +3,11 @@ import { StyleSheet, Text, View } from "react-native";
 import { Colors } from "../../constants/styles";
 import CurrentTasksList from "./CurrentTasksList";
 
-function CurrentTasksOutput({ tasks, fallbackText, groupId }) {
+function CurrentTasksOutput({ tasks, fallbackText }) {
   let content = <Text style={styles.infoText}>{fallbackText}</Text>;
 
   if (Array.isArray(tasks) && tasks.length > 0) {
-    content = <CurrentTasksList tasks={tasks} groupId={groupId} />;
+    content = <CurrentTasksList tasks={tasks} />;
   }
 
   return <View style={styles.container}>{content}</View>;

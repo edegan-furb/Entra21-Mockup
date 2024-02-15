@@ -5,14 +5,14 @@ import { Colors } from "../../constants/styles";
 import { getFormattedDate } from "../../util/date";
 import { Ionicons } from "@expo/vector-icons";
 
-function CurrentTaskItem({ id, title, designatedUser, groupId, date, completed }) {
+function CurrentTaskItem({ id, title, designatedUser, group, date, completed }) {
   const navigation = useNavigation();
 
   function taskPressHandler() {
     navigation.navigate("TaskScreen", {
       previous: "Welcome",
       taskId: id,
-      groupId: groupId,
+      groupId: group,
     });
   }
 

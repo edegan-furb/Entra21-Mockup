@@ -9,6 +9,7 @@ function TaskItem({ id, title, designatedUser, groupId, date, completed }) {
   const navigation = useNavigation();
 
   function taskPressHandler() {
+    console.log(groupId)
     navigation.navigate("TaskScreen", {
       previous: "GroupScreen",
       taskId: id,
