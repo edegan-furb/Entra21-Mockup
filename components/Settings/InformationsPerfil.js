@@ -9,6 +9,7 @@ import {
 } from "../../util/firebase/storage";
 import { fetchUsernameAndEmail, updateUsername } from "../../util/firebase/firestore/user";
 import { useTheme } from "../../store/theme-context";
+import TranslatedText from "../../store/language-context";
 
 export default function ModalInformationsPerfil() {
 
@@ -123,7 +124,11 @@ export default function ModalInformationsPerfil() {
                     )}
                 </View>
                 <Text style={[styles.textInf, {color: colors.text900}]}>{email}</Text>
-                <Text style={[styles.textInf, {color: colors.text900}]}>Registered groups: {}</Text>
+                <TranslatedText
+                    enText="Registered groups:"
+                    ptText="Grupos registrados:"
+                    style={[styles.textInf, {color: colors.text900}]}
+                />
             </View>         
         </View>
         

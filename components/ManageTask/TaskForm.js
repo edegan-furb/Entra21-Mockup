@@ -14,6 +14,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp
 } from "react-native-responsive-screen";
+import TranslatedText from "../../store/language-context";
 
 function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTitle, isEditing, onPressDelete }) {
   const [inputs, setInputs] = useState({
@@ -221,7 +222,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
           <View style={styles.contentInput}>
             <Input
               style={styles.rowTitle}
-              label={"Title"}
+              label={<TranslatedText enText={'Title'} ptText={'Título'}/>}
               invalid={!inputs.title.isValid}
               textInputConfig={{
                 multiline: false,
@@ -232,7 +233,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
             />
             <Input
               style={styles.rowInput}
-              label={"Date"}
+              label={<TranslatedText enText={'Date'} ptText={'Data'}/>}
               invalid={!inputs.date.isValid}
               textInputConfig={{
                 placeholder: "YYYY-MM-DD",
@@ -243,7 +244,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
           </View>
           <View style={styles.inputRow}>
             <Input
-              label={"Description"}
+              label={<TranslatedText enText={'Description'} ptText={'Descrição'}/>}
               invalid={!inputs.description.isValid}
               textInputConfig={{
                 multiline: true,
@@ -255,7 +256,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
 
           <View style={styles.inputRow}>
             <Input
-              label={"Designed User by Email"}
+              label={<TranslatedText enText={'Designed User by e-mail'} ptText={'Designação do usuário por e-mail'}/>}
               invalid={!inputs.designatedUser.isValid}
               textInputConfig={{
                 multiline: false,
@@ -268,7 +269,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
             <View key={index} style={styles.inputObjectivesRow}>
               <Input
                 style={styles.objectivesInput}
-                label={`Objective ${index + 1}`}
+                label={<TranslatedText enText={`Objective ${index + 1}`} ptText={`Objetivo ${index + 1}`}/>}
                 invalid={!objective.isValid}
                 textInputConfig={{
                   multiline: false,
@@ -292,24 +293,28 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
           ))}
           <View style={styles.buttonAddObjective}>
             <Button mode="flat" onPress={addObjective}>
-              Add Objective
+              <TranslatedText enText={'Add Objective'} ptText={'Add Objetivo'}/>
             </Button>
           </View>
         </ScrollView>
         {formIsInvalid && (
-          <Text style={styles.errorText}>
-            Invalid input values - please check your entered data
-          </Text>
+          <TranslatedText 
+            enText={'Invalid input values - please check your entered data.'} 
+            ptText={'Valores de entrada inválidos - verifique os dados inseridos.'}
+            style={styles.errorText}
+          />
         )} 
         {!inputs.designatedUser.isValid && (
-          <Text style={styles.errorText}>
-            You cannot assign a task to yourself.
-          </Text>
+          <TranslatedText 
+            enText={'You cannot assign a task to yourself.'} 
+            ptText={'Você não pode atribuir uma tarefa a si mesmo.'}
+            style={styles.errorText}
+          />
         )}
         <View style={isEditing ? styles.buttonsContainerEdit : styles.buttonsContainer}>
           <View style={isEditing ? styles.buttonContentEdit : styles.buttonContent}>
             <Button mode="flat" onPress={onCancel}>
-              Cancel
+              <TranslatedText enText={'Cancel'} ptText={'Cancelar'}/>
             </Button>
             <Button onPress={submitHandler}>
               {submitButtonLabel}
@@ -317,7 +322,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
           </View>
           {isEditing && (
           <Pressable style={styles.deleteContainer} onPress={onPressDelete}>
-            <Text style={styles.textButton}>Delete task</Text>
+            <TranslatedText enText={'Delete task'} ptText={'Deletar tarefa'} style={styles.textButton}/>
             <IconButton
               icon="trash"
               color={Colors.error500}

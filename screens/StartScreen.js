@@ -15,6 +15,7 @@ import CustomButton from '../components/Start/CustomButton';
 import Description from '../components/Start/Description';
 import Footer from '../components/Start/Footer';
 import { Colors } from '../constants/styles';
+import TranslatedText from "../store/language-context";
 
 function StartScreen() {
     const navigation = useNavigation();
@@ -34,16 +35,16 @@ function StartScreen() {
         </View>
         <Banner />
         <Description
-          title={"Welcome !"}
-          description={"Best place to create tasks and manage your teams"}
+          title={<TranslatedText enText={"Welcome!"} ptText={'Bem vindo!'}/>}
+          description={<TranslatedText enText={"Best place to create tasks and manage your teams"} ptText={"O melhor lugar para criar tarefas e gerenciar suas equipes"}/>}
         />
         <View style={styles.buttonsContainer}>
           <CustomButton 
-            title={"LOGIN"} 
+            title={<TranslatedText enText={"LOGIN"} ptText={'ENTRAR'}/>} 
             onPress={() => onPressHandler("Login")}
           />
           <CustomButton
-            title={"SIGN UP"}
+            title={<TranslatedText enText={"SIGN UP!"} ptText={'CADASTRAR-SE'}/>}
             styleButton={styles.signUpButton}
             styleText={styles.signText}
             onPress={() => onPressHandler("Signup")}

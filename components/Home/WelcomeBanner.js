@@ -1,6 +1,7 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
+import { View, StyleSheet, Image, Pressable } from 'react-native';
 import { useTheme } from "../../store/theme-context";
+import TranslatedText from "../../store/language-context";
 
 export default function WelcomeComp({ onPress }) {
 
@@ -12,12 +13,16 @@ export default function WelcomeComp({ onPress }) {
             onPress={onPress}
         >
             <View style={styles.textContainer}>
-                <Text style={[styles.title, {color: colors.swich950}]}>
-                    Welcome!
-                </Text>
-                <Text style={[styles.text, {color: colors.text200}]}>
-                    Let's make today productive!
-                </Text>
+                <TranslatedText
+                    enText={'Welcome!'}
+                    ptText={'Bem-vindo!'}
+                    style={[styles.title, {color: colors.swich950}]}
+                />
+                <TranslatedText
+                    enText={"Let's make today productive!"}
+                    ptText={'Vamos tornar o dia de hoje produtivo!'}
+                    style={[styles.text, {color: colors.text200}]}
+                />
             </View>
             <View style={styles.imageContainer}>
                 <Image

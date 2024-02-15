@@ -10,6 +10,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import TranslatedText from "../store/language-context";
 
 function ManageGroupScreen({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -78,11 +79,11 @@ function ManageGroupScreen({ navigation, route }) {
           onCancel={cancelHandler}
           onSubmit={confirmHandler}
           defaultValues={selectGroup}
-          submitButtonLabel={isEditing ? 'Update' : 'Create'}
-          PageTitle={isEditing ? 'Edit your team' : 'Create a new team'}
+          submitButtonLabel={isEditing ? <TranslatedText enText={'Update'} ptText={'Atualizar'}/> : <TranslatedText enText={'Create'} ptText={'Criar'}/>}
+          PageTitle={isEditing ? <TranslatedText enText={'Edit your team'} ptText={'Edite sua equipe'}/> : <TranslatedText enText={'Create a new team'} ptText={'Crie uma nova equipe'}/>}
           styleForm={isEditing ? styles.formEditing : styles.formCreate}
           styleContent={isEditing ? styles.contentEdit : styles.contentCreate}
-          inputName={isEditing ? 'Edit group name' : 'Enter the group name'}
+          inputName={isEditing ? <TranslatedText enText={'Edit group name'} ptText={'Editar nome do grupo'}/> : <TranslatedText enText={'Enter the group name'} ptText={'Digite o nome do grupo'}/>}
           styleInputsContainer={isEditing ? styles.inputEdit : styles.inputCreate}
           styleDeleteContainer={isEditing ? styles.deleteContainer : {display: 'none'}}
           styleButtons={isEditing ? styles.styleButtonsEdit : styles.styleButtonsCreate}

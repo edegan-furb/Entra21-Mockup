@@ -6,7 +6,7 @@ import { getFirestore } from "firebase/firestore";
 const firebaseConfig = {
   apiKey: "",
   authDomain: "",
-  databaseURL: "m",
+  databaseURL: "",
   projectId: "",
   storageBucket: "",
   messagingSenderId: "",
