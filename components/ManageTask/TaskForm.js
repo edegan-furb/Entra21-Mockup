@@ -143,7 +143,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
     }));
     const taskData = {
       title: inputs.title.value,
-      date: new Date(inputs.date.value),
+      date: new Date(formDate),
       description: inputs.description.value,
       designatedUser: inputs.designatedUser.value,
       objectives: objectivesData,
@@ -208,6 +208,27 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
     inputs.objectives.some((objective) => !objective.isValid)
   ;
 
+  const [formDate, setformDate] = useState('');
+
+  const formatDate = (input) => {
+    if (!input) return input;
+
+    // Formatar a data com traços
+    let formattedDate = '';
+    for (let i = 0; i < input.length; i++) {
+      if ((i === 7 || i === 4) && input[i] !== '-') {
+        formattedDate += '-';
+      }
+      formattedDate += input[i];
+    }
+
+    return formattedDate;
+  };
+
+  const handleTextChange = (text) => {
+    setformDate(formatDate(text));
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
@@ -237,8 +258,10 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
               invalid={!inputs.date.isValid}
               textInputConfig={{
                 placeholder: "YYYY-MM-DD",
-                onChangeText: inputChangeHandler.bind(this, "date"),
-                value: inputs.date.value,
+                onChangeText: handleTextChange,
+                value: formDate,
+                maxLength: 10,
+                keyboardType: "number-pad"
               }}
             />
           </View>
