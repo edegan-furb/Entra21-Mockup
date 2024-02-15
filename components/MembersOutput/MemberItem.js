@@ -33,7 +33,7 @@ function MemberItem({
   }
 
   const isAdmin = foundMember && foundMember.admin === true;
-  const userId = user?._key?.path?.segments[user._key.path.segments.length - 1];
+  const userId = user;
   const isCurrentUser = currentUser === userId;
 
   const removeMemberHandler = () => {
@@ -80,7 +80,12 @@ function MemberItem({
       </View>
       <View style={styles.btnContainer}>
         {isCurrentUser ? (
-          <Text style={styles.currentUserText}>You</Text>
+          <IconButton
+            icon={"exit-outline"}
+            color={"white"}
+            size={24}
+            onPress={removeMemberHandler}
+          />
         ) : isAdmin === true ? (
           <IconButton
             icon={"person-remove-outline"}
