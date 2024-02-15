@@ -23,7 +23,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
       isValid: true,
     },
     date: {
-      value: defaultValues ? getFormattedDate(defaultValues.date) : "",
+      value: defaultValues ? getFormattedDate(defaultValues.date, true) : "",
       isValid: true,
     },
     description: {
