@@ -260,6 +260,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
               invalid={!inputs.designatedUser.isValid}
               textInputConfig={{
                 multiline: false,
+                autoCapitalize: 'none',
                 onChangeText: inputChangeHandler.bind(this, "designatedUser"),
                 value: inputs.designatedUser.value,
               }}
