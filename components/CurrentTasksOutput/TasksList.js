@@ -2,13 +2,11 @@ import { FlatList } from "react-native";
 import { StyleSheet, View } from "react-native";
 import TaskHome from "./TaskHome";
 
-function TasksList({ tasks, groupId }) {
 
-  console.log("task:", tasks)
+function TasksList({ tasks, groupId }) {
 
   // Organizing list by date
   tasks.sort((a, b) => new Date(a.date) - new Date(b.date));
-
 
   return (
     <View style={styles.listContainer}>
@@ -17,7 +15,7 @@ function TasksList({ tasks, groupId }) {
         renderItem={({ item }) => 
         <TaskHome
           {...item}
-          groupId = { groupId }
+          groupId={groupId}
         />}
         numColumns={2}
         showsVerticalScrollIndicator={false}

@@ -23,13 +23,14 @@ export default function TaskHome({ date, title, objectives, completed, id, group
         navigation.navigate("TaskScreen", {
             taskId: id,
             groupId: groupId,
+            
         });
     }
-
-    let numCompletedObjectives = objectives.filter(objective => (objective.completed === true)).length;
+    
+    let numCompletedObjectives = objectives.filter(objective => (objective.completed === true)).length || 0;
     let numObjectives = objectives.length || 0;
     
-
+    
     const progressCalc = function () {
 
         //  Getting the numebr of completed objectives 
@@ -47,7 +48,8 @@ export default function TaskHome({ date, title, objectives, completed, id, group
     const { colors } = useTheme();
     
     //Getting the group name
-    const groupName = useContext(GroupsContext).groups[0].title;
+    let groupName = useContext(GroupsContext).groups.find(g => (g.tasks.filter(t => t.id === id)).length === 1).title || null;
+
 
     return(
         <Pressable 
@@ -70,7 +72,7 @@ export default function TaskHome({ date, title, objectives, completed, id, group
                 />
                 <View style={styles.taskInfoContainer}>
                     <Text style={[styles.taskName, {color: colors.text200}]} numberOfLines={3}>{title}</Text>
-                    <Text style={[styles.groupName, {color: colors.text200}]}>
+                    <Text style={[styles.groupName, {color: colors.text200}]} numberOfLines={2}>
                         <Ionicons name="people-outline" size={16}/> {groupName}
                     </Text>
                 </View>
