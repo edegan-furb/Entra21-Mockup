@@ -80,7 +80,7 @@ function TaskScreen({ route, navigation, user }) {
               onPress={() => {
                 navigation.navigate("ManageTasksScreen", {
                   editedTaskId: taskId,
-                  groupId: groupId,
+                  groupId: groupId || selectTask.group,
                 });
               }}
             />
