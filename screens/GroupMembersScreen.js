@@ -19,8 +19,10 @@ import { View } from "react-native";
 import IconButton from "../components/ui/IconButton";
 import { Colors } from "../constants/styles";
 import { auth } from "../util/firebase/auth";
+import { useTheme } from "../store/theme-context";
 
 function GroupMembersScreen({ navigation, route }) {
+  const { language } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState();
   const [initialLoad, setInitialLoad] = useState(true);
@@ -29,6 +31,7 @@ function GroupMembersScreen({ navigation, route }) {
   const groupId = route.params?.groupId;
   const groupsCtx = useContext(GroupsContext);
   const currentUser = auth.currentUser.uid;
+  const nameGroup = language === 'en' ? "'s - Members" : ' - Membros';
 
   useEffect(() => {
     const fetchAdminStatus = async () => {
@@ -105,7 +108,7 @@ function GroupMembersScreen({ navigation, route }) {
   useLayoutEffect(() => {
     const selectGroup = groupsCtx.groups.find((group) => group.id === groupId);
     navigation.setOptions({
-      title: `${selectGroup ? selectGroup.title : "Group"}'s Members`,
+      title: `${selectGroup ? selectGroup.title : "Group"}${nameGroup}`,
       headerRight: renderHeaderButtons,
     });
   }, [navigation, groupId, groupsCtx.groups, renderHeaderButtons]);

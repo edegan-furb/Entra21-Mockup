@@ -26,13 +26,16 @@ import TranslatedText from "../store/language-context";
 
 function TaskScreen({ route, navigation, user }) {
 
-  const { colors } = useTheme();
+  const { colors, language } = useTheme();
 
   const [error, setError] = useState();
   const currentUser = auth.currentUser.uid;
   const groupsCtx = useContext(GroupsContext);
   const taskId = route.params?.taskId;
   const groupId = route.params?.groupId;
+
+  const statusConclutedTasks = language === 'en' ? 'Completed' : 'Concluída';
+  const statusOngoingTasks = language === 'en' ? 'Ongoing' : 'Em andamento';
 
   let selectTask = null;
   let foundMember = null;
@@ -101,7 +104,7 @@ function TaskScreen({ route, navigation, user }) {
       title:
         selectTask?.title +
           " - " +
-          (selectTask?.completed ? "completed" : "ongoing") || "Task",
+          (selectTask?.completed ? statusConclutedTasks : statusOngoingTasks) || "Task",
       headerRight: renderHeaderButtons,
     });
   }, [navigation, selectTask, renderHeaderButtons]);
