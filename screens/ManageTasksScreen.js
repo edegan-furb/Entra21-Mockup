@@ -27,6 +27,8 @@ function ManageTasksScreen({ navigation, route }) {
 
   const isEditing = !!editedTaskId;
 
+  const previous = route.params?.previous;
+
   let selectTask = null;
 
   if (groupsCtx.groups) {
@@ -49,7 +51,7 @@ function ManageTasksScreen({ navigation, route }) {
     try {
       await deleteTask(editedTaskId);
       groupsCtx.deleteTask(groupId, editedTaskId);
-      navigation.navigate("GroupScreen", {
+      navigation.navigate(previous, {
         groupId: groupId,
       })
     } catch (error) {
@@ -119,18 +121,18 @@ function ManageTasksScreen({ navigation, route }) {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{flex: 1}}
+        style={{ flex: 1 }}
         keyboardVerticalOffset={isEditing ? -100 : -100}
       >
         <View style={styles.container}>
           <TaskForm
             onCancel={cancelHandler}
-            submitButtonLabel={isEditing ? <TranslatedText enText={'Update task'} ptText={'Atualizar tarefa'}/> : <TranslatedText enText={'Add task'} ptText={'Add tarefa'}/>}
+            submitButtonLabel={isEditing ? <TranslatedText enText={'Update task'} ptText={'Atualizar tarefa'} /> : <TranslatedText enText={'Add task'} ptText={'Add tarefa'} />}
             onSubmit={confirmHandler}
             defaultValues={selectTask}
-            pageTitle={editedTaskId ? <TranslatedText enText={'Update task'} ptText={'Atualizar tarefa'}/> : <TranslatedText enText={'Add task'} ptText={'Adicionar tarefa'}/>}
+            pageTitle={editedTaskId ? <TranslatedText enText={'Update task'} ptText={'Atualizar tarefa'} /> : <TranslatedText enText={'Add task'} ptText={'Adicionar tarefa'} />}
             isEditing={isEditing}
             onPressDelete={deleteGroupHandler}
           />

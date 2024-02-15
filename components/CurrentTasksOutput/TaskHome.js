@@ -21,6 +21,7 @@ export default function TaskHome({ date, title, objectives, completed, id, group
 
     function taskPressHandler() {
         navigation.navigate("TaskScreen", {
+            previous: "Home",
             taskId: id,
             groupId: groupId,
             
@@ -48,7 +49,7 @@ export default function TaskHome({ date, title, objectives, completed, id, group
     const { colors } = useTheme();
     
     //Getting the group name
-    let groupName = useContext(GroupsContext).groups.find(g => (g.tasks.filter(t => t.id === id)).length === 1).title || null;
+    let groupName = useContext(GroupsContext).groups.find(g => (g.tasks.filter(t => t.id === id)).length === 1)?.title || null;
 
 
     return(

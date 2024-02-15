@@ -1,4 +1,4 @@
-export function getFormattedDate(date) {
+export function getFormattedDate(date, isInput) {
   if (!date) return null; // Verifica se a data é nula ou indefinida
 
   //inicializing variables
@@ -12,6 +12,10 @@ export function getFormattedDate(date) {
       day: '2-digit',
       timeZone: 'UTC'
   };
+  //Verifing if the date is in a input
+  if(isInput){
+    return date.toISOString().slice(0, 10);;
+  }
 
   return formatDate.toLocaleDateString('en-US', options);
 }
