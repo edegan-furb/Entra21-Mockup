@@ -161,8 +161,10 @@ const themes = {
 
 const ThemeContext = createContext({
     theme: 'dark',
-    toggleTheme: () => { },
+    toggleTheme: () => {},
     colors: themes.dark, // Padrão para o tema escuro
+    language: 'en', // Padrão para o idioma inglês
+    toggleLanguage: () => {}, // Função para alternar o idioma
 });
 
 export const useTheme = () => useContext(ThemeContext);
@@ -170,16 +172,20 @@ export const useTheme = () => useContext(ThemeContext);
 export const ThemeProvider = ({ children }) => {
     // Verifica se o tema está salvo no AsyncStorage
     useEffect(() => {
-        AsyncStorage.getItem('selectedTheme')
-            .then(theme => {
-                if (theme) {
-                    setTheme(theme);
+        AsyncStorage.multiGet(['selectedTheme', 'selectedLanguage'])
+            .then(([theme, language]) => {
+                if (theme && theme[1]) {
+                    setTheme(theme[1]);
+                }
+                if (language && language[1]) {
+                    setLanguage(language[1]);
                 }
             })
-            .catch(error => console.error('Erro ao recuperar o tema:', error));
+            .catch(error => console.error('Erro ao recuperar tema/idioma:', error));
     }, []);
 
     const [theme, setTheme] = useState('light');
+    const [language, setLanguage] = useState('en');
 
     const toggleTheme = () => {
         const newTheme = theme === 'light' ? 'dark' : 'light';
@@ -188,10 +194,17 @@ export const ThemeProvider = ({ children }) => {
             .catch(error => console.error('Erro ao definir o tema:', error));
     };
 
+    const toggleLanguage = () => {
+        const newLanguage = language === 'en' ? 'pt' : 'en'; // Alternando entre inglês e português, você pode ajustar conforme necessário
+        setLanguage(newLanguage);
+        AsyncStorage.setItem('selectedLanguage', newLanguage)
+            .catch(error => console.error('Erro ao definir o idioma:', error));
+    };
+
     const colors = themes[theme];
 
     return (
-        <ThemeContext.Provider value={{ theme, toggleTheme, colors }}>
+        <ThemeContext.Provider value={{ theme, toggleTheme, colors, language, toggleLanguage }}>
             {children}
         </ThemeContext.Provider>
     );

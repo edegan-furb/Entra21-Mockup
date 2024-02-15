@@ -9,6 +9,7 @@ import { auth } from "../util/firebase/firebaseConfig";
 import CurrentTasksOutput from '../components/CurrentTasksOutput/CurrentTaskOuput'
 import { useNavigation } from "@react-navigation/core";
 import WelcomeComp from "../components/Home/WelcomeBanner";
+import TranslatedText from "../store/language-context";
 
 function WelcomeScreen() {
   const [loading, setLoading] = useState(true);
@@ -92,20 +93,37 @@ function WelcomeScreen() {
   return (
     <SafeAreaView style={[styles.rootContainer, {backgroundColor: colors.background50}]}>
       <View style={styles.hiContainer}>
-        <Text style={[styles.hi, {color: colors.text900}]} numberOfLines={1}>{username ? ("Hi, " + username) : ("Welcome back!")}</Text>
+        <TranslatedText
+          enText={username ? ("Hi, " + username) : ("Welcome back!")}
+          ptText={username ? ("Olá, " + username) : ("Bem vindo de volta!")}
+          style={[styles.hi, {color: colors.text900}]}
+          numberOfLines={1}
+        />
       </View>
       <View style={styles.container}>
         <View style={styles.welcomeContainer}>
           <WelcomeComp  onPress={goToGroups}/>
         </View>
         <View style={styles.ongoingTasksContainer}>
-          <Text style={[styles.ongoingTasks, {color: colors.text900}]}>Ongoing task</Text>
+          <TranslatedText
+            enText={'Ongoing tasks'}
+            ptText={'Tarefas em andamento'}
+            style={[styles.ongoingTasks, {color: colors.text900}]}
+          />
         </View>
         <View style={styles.tasksContainer}>
           {loading ? (
             <ActivityIndicator size="small" color={Colors.primary800} />
           ) : (
-            <CurrentTasksOutput tasks={userTasks} firstText="No tasks found" />
+            <CurrentTasksOutput 
+                tasks={userTasks} 
+                firstText={
+                <TranslatedText
+                  enText={"You don't have tasks yet"}
+                  ptText={'Você ainda não possui tarefas'}
+                />
+              } 
+            />
           )}
         </View>
       </View>

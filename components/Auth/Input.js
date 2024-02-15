@@ -2,6 +2,8 @@ import { View, TextInput, StyleSheet, Pressable } from 'react-native';
 import { useState } from "react";
 import { Colors } from '../../constants/styles';
 import { Ionicons } from '@expo/vector-icons';
+import TranslatedText from '../../store/language-context';
+import { useTheme } from '../../store/theme-context';
 
 function Input({
   keyboardType,
@@ -9,10 +11,8 @@ function Input({
   onUpdateValue,
   value,
   isInvalid,
-  placeHolder,
   height,
-  onFocus,
-  onBlur
+  placeHolder
 }) {
 
   const [hidePass, setHidePass] = useState(true);
@@ -22,7 +22,6 @@ function Input({
       <View style={[styles.inputArea, isInvalid && styles.inputInvalid]}>
         <TextInput
           style={styles.input}
-          //autoCapitalize={false}
           autoCapitalize="none"
           keyboardType={keyboardType}
           secureTextEntry={secure ? hidePass : !hidePass}
@@ -30,8 +29,6 @@ function Input({
           value={value}
           placeholder={placeHolder}
           placeholderTextColor={isInvalid ? Colors.error500 : '#999'}
-          onFocus={onFocus}
-          onBlur={onBlur}
         />        
         <Pressable onPress={() => setHidePass(!hidePass)}>
           {/* Icon check */}

@@ -6,6 +6,7 @@ import { Colors } from "../../constants/styles";
 import { useTheme } from '../../store/theme-context'; // Adj
 import { Ionicons, Foundation } from '@expo/vector-icons';
 import { useEffect, useState } from "react";
+import TranslatedText from "../../store/language-context";
 
 function GroupItem({ id, title, tasks, members }) {
 
@@ -62,7 +63,11 @@ function GroupItem({ id, title, tasks, members }) {
             </View>
           </View>
           <View style={styles.graphiContainer}>
-            <Text style={[styles.graphiTextInf, {color: colors.text700}]}>Concluido {numberCompletedTasks.toFixed(0)}%</Text>
+            <TranslatedText
+              enText={`Concluded ${numberCompletedTasks.toFixed(0)}%`}
+              ptText={`Concluído ${numberCompletedTasks.toFixed(0)}%`}
+              style={[styles.graphiTextInf, {color: colors.text700}]}
+            />
               <Progress.Bar 
                 progress={progress}
                 color={colors.background300} 

@@ -26,13 +26,14 @@ export default CurrentTaskOuput;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
   textContainer: {
-    width: '100%',
+    width: '50%',
     height: '70%',
     alignItems: "center",
     justifyContent: "center",
-    gap: 10,
   },
   text: {
     width: '80%',

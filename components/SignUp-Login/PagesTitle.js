@@ -66,13 +66,13 @@ const styles = StyleSheet.create({
     paddingLeft: "7%",
   },
   title: {
-    fontSize: 40,
+    fontSize: 35,
     color: Colors.primary800,
     fontFamily: "open-sans-bold",
   },
   subTitle: {
     color: Colors.primary800,
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: "open-sans-bold",
   },
 })

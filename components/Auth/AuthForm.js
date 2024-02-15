@@ -6,6 +6,8 @@ import { useNavigation } from "@react-navigation/native";
 
 import Button from '../ui/Button';
 import Input from './Input';
+import { useTheme } from '../../store/theme-context';
+import TranslatedText from '../../store/language-context';
 
 function AuthForm({ isLogin, onSubmit, credentialsInvalid, onFocus, onBlur }) {
   const [enteredEmail, setEnteredEmail] = useState('');
@@ -13,8 +15,15 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid, onFocus, onBlur }) {
   const [enteredPassword, setEnteredPassword] = useState('');
   const [enteredConfirmPassword, setEnteredConfirmPassword] = useState('');
 
-  const navigation = useNavigation();
+  const { language } = useTheme() || {}; 
+
+  const placeHolderEmail = language === 'en' ? 'Email Adress' : 'Email de Acesso';
+  const placeHolderPassword = language === 'en' ? 'Password' : 'Senha';
+  const placeHolderConfirmEmail = language === 'en' ? 'Confirm Email Address' : 'Confirme seu Email';
+  const placeHolderConfirmPass = language === 'en' ? 'Confirm Password' : 'Confirme sua senha';
   
+  const navigation = useNavigation();
+
   function onPressHandler(page) {
     if(page === 'Signup') {
       navigation.navigate("Signup");
@@ -59,39 +68,33 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid, onFocus, onBlur }) {
     <View style={styles.form}>
       <View style={isLogin ? styles.inputAreaLogin : styles.inputAreaSignup}>
         <Input
-          placeHolder="Email Address"
+          placeHolder={placeHolderEmail}
           onUpdateValue={updateInputValueHandler.bind(this, 'email')}
           value={enteredEmail}
           keyboardType="email-address"
           isInvalid={emailIsInvalid}
           height={0}
-          onFocus={onFocus}
-          onBlur={onBlur}
         />
         {!isLogin && (
           <Input
-            placeHolder="Confirm Email Address"
+            placeHolder={placeHolderConfirmEmail}
             onUpdateValue={updateInputValueHandler.bind(this, 'confirmEmail')}
             value={enteredConfirmEmail}
             keyboardType="email-address"
             isInvalid={emailsDontMatch}
             height={0}
-            onFocus={onFocus}
-            onBlur={onBlur}
           />
         )}
         <Input
-          placeHolder="Password"
+          placeHolder={placeHolderPassword}
           onUpdateValue={updateInputValueHandler.bind(this, 'password')}
           secure
           value={enteredPassword}
           isInvalid={passwordIsInvalid}
-          onFocus={onFocus}
-          onBlur={onBlur}
         />
         {!isLogin && (
           <Input
-            placeHolder="Confirm Password"
+            placeHolder={placeHolderConfirmPass}
             onUpdateValue={updateInputValueHandler.bind(
               this,
               'confirmPassword'
@@ -99,8 +102,6 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid, onFocus, onBlur }) {
             secure
             value={enteredConfirmPassword}
             isInvalid={passwordsDontMatch}
-            onFocus={onFocus}
-            onBlur={onBlur}
           />
         )}
         <View style={styles.buttonsContainer}>
@@ -108,16 +109,32 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid, onFocus, onBlur }) {
             <Button 
               onPress={submitHandler} 
             >
-              {isLogin ? 'LOGIN' : 'SIGNUP'}
+              {isLogin ? 
+                <TranslatedText enText={'LOGIN'} ptText={'ENTRAR'}/>  
+                : 
+                <TranslatedText enText={'SIGNUP'} ptText={'CADASTRAR-SE'}/>
+              }
             </Button>
           </View>
           <View style={styles.signUpButton}>
-            <Text style={styles.signText}>{isLogin ? "Don't have an account?" : 'Do you have an account?'}</Text>
+            <Text style={styles.signText}>
+              {isLogin ? 
+                <TranslatedText enText={ "Don't have an account?"} ptText={'Ainda não possui uma conta?'}/>  
+                : 
+                <TranslatedText enText={'Do you have an account?'} ptText={'Já possui uma conta?'}/>
+              }
+            </Text>
             <Pressable
               style={({ pressed }) => pressed && styles.pressed}
               onPress={() => onPressHandler(isLogin ? "Signup" : 'Login')}
             >
-              <Text style={styles.signTextButton}>{isLogin ? "SignUp" : 'LogIn'}</Text>
+              <Text style={styles.signTextButton}>
+                {isLogin ?
+                  <TranslatedText enText={'SignUp'} ptText={'Cadastre-se'}/> 
+                  : 
+                  <TranslatedText enText={'LogIn'} ptText={'Entre'}/>
+                }
+              </Text>
             </Pressable>
           </View>
         </View>

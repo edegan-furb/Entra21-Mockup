@@ -22,6 +22,7 @@ import {
 } from "../util/firebase/firestore/user";
 import Error from "../components/ui/Error";
 import { useTheme } from "../store/theme-context";
+import TranslatedText from "../store/language-context";
 
 function TaskScreen({ route, navigation, user }) {
 
@@ -132,13 +133,13 @@ function TaskScreen({ route, navigation, user }) {
           <View style={styles.designatedUserContainer}>
             <View style={styles.dateContent}>
               <Ionicons name='calendar-outline' size={13} color={Colors.primary100} />
-              <Text style={styles.dateText}>  Deadline: </Text>
-              <Text style={styles.date}> {getFormattedDate(selectTask?.date)}</Text>
+              <TranslatedText enText={'Deadline:'} ptText={'Prazo final:'} style={styles.designatedUserText}/>
+              <Text style={styles.date}>{getFormattedDate(selectTask?.date)}</Text>
             </View>
             <View style={styles.dateContent}>
               <Ionicons name='person-outline' size={13} color={Colors.primary100} />
-              <Text style={styles.designatedUserText}>  Desinated: </Text>
-              <Text style={styles.designatedUser} numberOfLines={1} ellipsizeMode="tail"> {selectTask?.designatedUser}</Text>
+              <TranslatedText enText={'Desinated:'} ptText={'Designado:'} style={styles.designatedUserText}/>
+              <Text style={styles.designatedUser} numberOfLines={1} ellipsizeMode="tail">{selectTask?.designatedUser}</Text>
             </View>
           </View>
           <View style={styles.buttonContainer}>
@@ -149,7 +150,7 @@ function TaskScreen({ route, navigation, user }) {
       <View style={styles.descriptionContainer}>
         <View style={styles.titleContent}>
           <Ionicons name="document-text-outline" color={colors.text900} size={16} />
-          <Text style={[styles.title, {color: colors.text900}]}>Description</Text>
+          <TranslatedText enText={'Description'} ptText={'Descrição'} style={[styles.title, {color: colors.text900}]}/>
         </View>
         <View style={[styles.descriptionContent, {backgroundColor: colors.background900}]}>
           <ScrollView showsVerticalScrollIndicator={false}>
@@ -160,7 +161,7 @@ function TaskScreen({ route, navigation, user }) {
       <View style={styles.objectivesContainer}>
         <View style={styles.titleContent}>
           <Feather name="target" color={colors.text900} size={15}/>
-          <Text style={[styles.title, {color: colors.text900}]}>Objectives</Text>
+          <TranslatedText enText={'Objectives'} ptText={'Objetivos'} style={[styles.title, {color: colors.text900}]}/>
         </View>
         <ScrollView contentContainerStyle={styles.objectivesScrollContainer} showsVerticalScrollIndicator={false}>
           {selectTask?.objectives.map((objective, index) => (
@@ -223,6 +224,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderBottomWidth: 1,
     borderColor: Colors.primary100,
+    gap: 8
   },
   dateText: {
     fontSize: 16,

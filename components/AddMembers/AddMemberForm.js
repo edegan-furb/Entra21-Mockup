@@ -9,6 +9,7 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { useTheme } from "../../store/theme-context";
+import TranslatedText from '../../store/language-context';
 
 function AddMemberForm({ onCancel, onSubmit }) {
 
@@ -62,12 +63,21 @@ function AddMemberForm({ onCancel, onSubmit }) {
       <View style={styles.form}>
         <View style={styles.titleContainer}>
           <View style={styles.titleContent}> 
-            <Text style={styles.title}>Add Members</Text>
+            <TranslatedText
+              enText={'Add Members'}
+              ptText={'Adicionar Membros'}
+              style={styles.title}
+            />
           </View>
         </View>
         <View style={styles.inputContainer}>
           <Input
-            label={"User by Email"}
+            label={
+              <TranslatedText
+                enText={'User E-mail'}
+                ptText={'E-mail do usuário'}
+              />
+            }
             textInputConfig={{
               multiline: false,
               onChangeText: inputChangeHandler.bind(this, "email"),
@@ -76,7 +86,11 @@ function AddMemberForm({ onCancel, onSubmit }) {
         </View>
         <View style={styles.switch}>
           <View style={styles.switchContent}> 
-            <Text style={styles.text}>Set as Admin</Text>
+            <TranslatedText
+              enText={'Set as Admin'}
+              ptText={'Definir como administrador'}
+              style={styles.text}
+            />
             <Switch
               activeText={''}
               inActiveText={''}
@@ -92,18 +106,26 @@ function AddMemberForm({ onCancel, onSubmit }) {
             />
           </View>
           {formIsInvalid && (
-              <Text style={styles.errorText}>
-                Invalid email - please check your entered data
-              </Text>
+              <TranslatedText
+                enText={'Invalid email - please check your entered data'}
+                ptText={'E-mail inválido - verifique os dados inseridos'}
+                style={styles.errorText}
+              />
             )}
         </View>
         <View style={styles.buttonsContainer}>
           <View style={styles.buttonContent}>
             <Button mode={"flat"} onPress={onCancel}>
-              Cancel
+              <TranslatedText
+                enText={'Cancel'}
+                ptText={'Cancelar'}
+              /> 
             </Button>
             <Button onPress={submitHandler}>
-              Add
+              <TranslatedText
+                enText={'Add'}
+                ptText={'Adicionar'}
+              />
             </Button>
           </View>
         </View>

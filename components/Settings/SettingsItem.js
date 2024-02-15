@@ -7,22 +7,27 @@ import { useTheme } from "../../store/theme-context";
 
 export default function SettingsItem({ text, nameIcon, swich, swichLanguage, activeText, inActiveText, onPress, swichTheme }) {
 
-    const [icon, setIcon] = useState(false);
-    const { colors, toggleTheme, theme } = useTheme();
+    const { colors, toggleTheme, theme, language, toggleLanguage } = useTheme();
 
     // Define o estado inicial do switch com base no tema atual
-    const [switchValue, setSwitchValue] = useState(theme === 'dark');
+    const [switchValueTheme, setSwitchValueTheme] = useState(theme === 'dark');
 
     // Atualiza o estado do switch quando o tema muda
     useEffect(() => {
-        setSwitchValue(theme === 'dark');
+        setSwitchValueTheme(theme === 'dark');
     }, [theme]);
 
     // Função para lidar com a mudança do switch
-    const handleSwitchChange = () => {
-        setSwitchValue(previousValue => !previousValue);
+    const handleSwitchChangeTheme = () => {
+        setSwitchValueTheme(previousValue => !previousValue);
         toggleTheme();
     };
+
+    const handleSwitchChangeLang = () => {
+        toggleLanguage(); // Chame a função toggleLanguage para alternar o idioma
+    };
+
+    const switchValueLang = language === 'en' ? false : true; // Valor do switch dependendo do idioma selecionado
 
     return(
         <Pressable 
@@ -44,8 +49,8 @@ export default function SettingsItem({ text, nameIcon, swich, swichLanguage, act
                 <Switch
                     activeText={activeText}
                     inActiveText={inActiveText}
-                    value={switchValue}
-                    onValueChange={handleSwitchChange}
+                    value={switchValueTheme}
+                    onValueChange={handleSwitchChangeTheme}
                     backgroundActive={colors.swich950}
                     circleActiveColor={colors.swich200}
                     backgroundInactive={colors.swich500}
@@ -59,8 +64,8 @@ export default function SettingsItem({ text, nameIcon, swich, swichLanguage, act
                 <Switch
                     activeText={activeText}
                     inActiveText={inActiveText}
-                    value={icon}
-                    onValueChange={(valor) => setIcon(valor)}
+                    value={switchValueLang}
+                    onValueChange={handleSwitchChangeLang}
                     backgroundActive={colors.swich500}
                     circleActiveColor={colors.swich200}
                     backgroundInactive={colors.swich500}
