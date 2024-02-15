@@ -88,15 +88,14 @@ const styles = StyleSheet.create({
     fontFamily: 'open-sans-bold'
   },
   text: {
-    fontSize: 15,
+    fontSize: 14,
     padding: 10,
     textAlign: "justify"
   },
   textInf: {
-    fontSize: 15,
+    fontSize: 14,
     paddingVertical: 10,
     paddingHorizontal: 30,
     textAlign: "justify"
   }
-  
 })
