@@ -35,6 +35,7 @@ function TaskScreen({ route, navigation, user }) {
   const groupId = route.params?.groupId;
 
   let selectTask = null;
+  let foundMember = null;
 
   if (groupsCtx.groups) {
     groupsCtx.groups?.forEach((group) => {
@@ -45,6 +46,18 @@ function TaskScreen({ route, navigation, user }) {
       });
     });
   }
+
+  if (groupsCtx.groups) {
+    groupsCtx.groups?.forEach((group) => {
+      group.members?.forEach((member) => {
+        if (member.user === currentUser) {
+          foundMember = member;
+        }
+      });
+    });
+  }
+
+  const isAdmin = foundMember && foundMember.admin === true;
 
   useEffect(() => {
     if (!selectTask) {
@@ -58,7 +71,7 @@ function TaskScreen({ route, navigation, user }) {
   const renderHeaderButtons = useCallback(() => {
     return (
       <View style={{ flexDirection: "row" }}>
-        {selectTask.owner.id === currentUser && (
+        {(isAdmin || selectTask.owner.id === currentUser) && (
           <>
             <IconButton
               icon={"create-outline"}
@@ -67,7 +80,7 @@ function TaskScreen({ route, navigation, user }) {
               onPress={() => {
                 navigation.navigate("ManageTasksScreen", {
                   editedTaskId: taskId,
-                  groupId: selectTask.group,
+                  groupId: groupId,
                 });
               }}
             />
@@ -87,18 +100,22 @@ function TaskScreen({ route, navigation, user }) {
     navigation.setOptions({
       title:
         selectTask?.title +
-        " - " +
-        (selectTask?.completed ? "completed" : "ongoing") || "Task",
+          " - " +
+          (selectTask?.completed ? "completed" : "ongoing") || "Task",
       headerRight: renderHeaderButtons,
     });
   }, [navigation, selectTask, renderHeaderButtons]);
 
   async function onChangeCompletedStatusHandler(objectiveId) {
     try {
-      const email = await getEmailByUsername(selectTask.designatedUser)
+      const email = await getEmailByUsername(selectTask.designatedUser);
       const designatedUser = await getUserIdByEmail(email);
       if (designatedUser === currentUser) {
-        groupsCtx.updateObjectiveStatus(selectTask.group.id, taskId, objectiveId);
+        groupsCtx.updateObjectiveStatus(
+          selectTask.group.id,
+          taskId,
+          objectiveId
+        );
         await updateObjectiveStatus(taskId, objectiveId);
       } else {
         Alert.alert(
@@ -115,6 +132,7 @@ function TaskScreen({ route, navigation, user }) {
 
   async function onChangeTaskCompletedStatusHandler() {
     try {
+      console.log(selectTask.designatedUser)
       groupsCtx.updateTaskStatus(selectTask.group, taskId);
       await updateTaskStatus(taskId);
     } catch {
@@ -134,7 +152,7 @@ function TaskScreen({ route, navigation, user }) {
             <View style={styles.dateContent}>
               <Ionicons name='calendar-outline' size={13} color={Colors.primary100} />
               <TranslatedText enText={'Deadline:'} ptText={'Prazo final:'} style={styles.designatedUserText}/>
-              <Text style={styles.date}>{getFormattedDate(selectTask?.date)}</Text>
+              <Text style={styles.date}>{selectTask?.date ? getFormattedDate(selectTask?.date) : "No Date"}</Text>
             </View>
             <View style={styles.dateContent}>
               <Ionicons name='person-outline' size={13} color={Colors.primary100} />
