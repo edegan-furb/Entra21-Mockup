@@ -27,7 +27,7 @@ function MemberItem({
   const currentGroup = groupsCtx.groups?.find(g => g.id === groupId);
   let foundMember = null;
 
-  if (groupsCtx.groups) {
+  if (currentGroup) {
     currentGroup.members?.forEach((member) => {
       if (member.user === currentUser) {
         foundMember = member;
