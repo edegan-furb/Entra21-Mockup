@@ -27,6 +27,7 @@ function TaskScreen({ route, navigation }) {
   const groupsCtx = useContext(GroupsContext);
   const taskId = route.params?.taskId;
   const groupId = route.params?.groupId;
+  const previous = route.params?.previous;
 
   let selectTask = null;
   let foundMember = null;
@@ -44,7 +45,8 @@ function TaskScreen({ route, navigation }) {
   if (groupsCtx.groups) {
     groupsCtx.groups?.forEach((group) => {
       group.members?.forEach((member) => {
-        if (member.user === currentUser) {
+        console.log(member.group.id)
+        if (member.user === currentUser && member.group.id === groupId) {
           foundMember = member;
         }
       });
@@ -55,7 +57,7 @@ function TaskScreen({ route, navigation }) {
 
   useEffect(() => {
     if (!selectTask) {
-      navigation.navigate("GroupScreen", {
+      navigation.navigate(previous, {
         groupId: groupId,
       });
       Alert.alert("Task Deleted", "This task no longer exists");
@@ -73,6 +75,7 @@ function TaskScreen({ route, navigation }) {
               size={24}
               onPress={() => {
                 navigation.navigate("ManageTasksScreen", {
+                  previous: previous,
                   editedTaskId: taskId,
                   groupId: groupId || selectTask.group,
                 });
@@ -94,8 +97,8 @@ function TaskScreen({ route, navigation }) {
     navigation.setOptions({
       title:
         selectTask?.title +
-          " - " +
-          (selectTask?.completed ? "completed" : "ongoing") || "Task",
+        " - " +
+        (selectTask?.completed ? "completed" : "ongoing") || "Task",
       headerRight: renderHeaderButtons,
     });
   }, [navigation, selectTask, renderHeaderButtons]);

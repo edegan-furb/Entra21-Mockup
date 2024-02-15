@@ -5,12 +5,12 @@ import { Colors } from "../../constants/styles";
 import { getFormattedDate } from "../../util/date";
 import { Ionicons } from "@expo/vector-icons";
 
-function TaskItem({ id, title, designatedUser, groupId, date, completed }) {
+function CurrentTaskItem({ id, title, designatedUser, groupId, date, completed }) {
   const navigation = useNavigation();
 
   function taskPressHandler() {
     navigation.navigate("TaskScreen", {
-      previous: "GroupScreen",
+      previous: "Welcome",
       taskId: id,
       groupId: groupId,
     });
@@ -26,7 +26,7 @@ function TaskItem({ id, title, designatedUser, groupId, date, completed }) {
           <View style={styles.titleContainer}>
             <Text style={[styles.textBase, styles.title]}>{title}</Text>
             <Ionicons
-              name= {completed ? "checkmark-circle-outline" :"ellipse-outline" }
+              name={completed ? "checkmark-circle-outline" : "ellipse-outline"}
               color={Colors.primary100}
               size={21}
             />
@@ -39,7 +39,7 @@ function TaskItem({ id, title, designatedUser, groupId, date, completed }) {
   );
 }
 
-export default TaskItem;
+export default CurrentTaskItem;
 
 const styles = StyleSheet.create({
   pressed: {

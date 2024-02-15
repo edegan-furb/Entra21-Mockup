@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState, useCallback } from "react";
 import { View, ActivityIndicator, Text, StyleSheet } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
-import TasksOutput from "../components/TasksOutput/TaskOuput";
+import CurrentTasksOutput from "../components/CurrentTaskOutput/CurrentTaskOuput";
 import { GroupsContext } from "../store/groups-context";
 import { fetchGroups } from "../util/firebase/firestore/groups";
 import { fetchUsernameAndEmail } from "../util/firebase/firestore/user";
@@ -97,7 +97,7 @@ function WelcomeScreen() {
         {loading ? (
           <ActivityIndicator size="large" color={Colors.primary800} />
         ) : (
-          <TasksOutput tasks={userTasks} fallbackText="No Tasks" />
+          <CurrentTasksOutput tasks={userTasks} fallbackText="No Tasks" />
         )}
       </View>
     </View>

@@ -28,6 +28,8 @@ function ManageTasksScreen({ navigation, route }) {
 
   const isEditing = !!editedTaskId;
 
+  const previous = route.params?.previous;
+
   let selectTask = null;
 
   if (groupsCtx.groups) {
@@ -50,7 +52,7 @@ function ManageTasksScreen({ navigation, route }) {
     try {
       await deleteTask(editedTaskId);
       groupsCtx.deleteTask(groupId, editedTaskId);
-      navigation.navigate("GroupScreen", {
+      navigation.navigate(previous, {
         groupId: groupId,
       });
     } catch (error) {
