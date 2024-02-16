@@ -1,30 +1,33 @@
+import { View, StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
+import { useContext, useEffect, useState, useCallback } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import * as SplashScreen from "expo-splash-screen";
-import { useContext, useEffect, useState, useCallback } from "react";
-import { Ionicons } from "@expo/vector-icons";
 import * as Font from "expo-font";
-import StartScreen from "./screens/StartScreen";
-import LoginScreen from "./screens/LoginScreen";
-import SignupScreen from "./screens/SignupScreen";
-import WelcomeScreen from "./screens/WelcomeScreen";
-import AllGroupsScreen from "./screens/AllGroupsScreen";
-import SettingsScreen from "./screens/SettingsScreen";
-import ManageGroupScreen from "./screens/ManageGroupScreen";
-import AuthContextProvider, { AuthContext } from "./store/auth-context";
-import { ThemeProvider } from "./store/theme-context"
-import IconButton from "./components/ui/IconButton";
-import GroupsContextProvider from "./store/groups-context";
-import GroupScreen from "./screens/GroupScreen";
-import { View, StatusBar } from "react-native";
-import GroupMembersScreen from "./screens/GroupMembersScreen";
-import AddMemberScreen from "./screens/AddMemberScreen";
-import ManageTasksScreen from "./screens/ManageTasksScreen";
-import TaskScreen from "./screens/TaskScreen";
-import { useTheme } from "./store/theme-context";
-import TranslatedText from "./store/language-context";
+import { Ionicons } from "@expo/vector-icons";
+
+import AuthContextProvider, { AuthContext } from "./src/Context/auth-context";
+import GroupsContextProvider from "./src/Context/groups-context";
+import TranslatedText from "./src/Context/language-context";
+import { ThemeProvider } from "./src/Context/theme-context"
+import { useTheme } from "./src/Context/theme-context";
+import IconButton from "./src/components/ui/IconButton";
+
+import StartScreen from "./src/screens/StartScreen";
+import LoginScreen from "./src/screens/LoginScreen";
+import SignupScreen from "./src/screens/SignupScreen";
+import WelcomeScreen from "./src/screens/WelcomeScreen";
+import AllGroupsScreen from "./src/screens/AllGroupsScreen";
+import SettingsScreen from "./src/screens/SettingsScreen";
+import ManageGroupScreen from "./src/screens/ManageGroupScreen";
+import GroupScreen from "./src/screens/GroupScreen";
+import GroupMembersScreen from "./src/screens/GroupMembersScreen";
+import AddMemberScreen from "./src/screens/AddMemberScreen";
+import ManageTasksScreen from "./src/screens/ManageTasksScreen";
+import TaskScreen from "./src/screens/TaskScreen";
 
 const BottomTabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
