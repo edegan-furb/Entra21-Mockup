@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Pressable, ActivityIndicator, Image, SafeAreaView, TextInput} from "react-native";
 import { Ionicons, Entypo } from '@expo/vector-icons';
 import { Colors } from "../../constants/styles";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
     uploadPicture,
     getImageUrlByName,
@@ -10,6 +10,7 @@ import {
 import { fetchUsernameAndEmail, updateUsername } from "../../util/firebase/firestore/user";
 import { useTheme } from "../../store/theme-context";
 import TranslatedText from "../../store/language-context";
+import { GroupsContext } from "../../store/groups-context";
 
 export default function ModalInformationsPerfil() {
 
@@ -21,52 +22,52 @@ export default function ModalInformationsPerfil() {
     const [email, setEmail] = useState("Loading..");
     const [isEditing, setIsEditing] = useState(false);
     const [editUsername, setEditUsername] = useState("");
+    const groupsCtx = useContext(GroupsContext);
+
+    const groupNumbers = groupsCtx.groups.length;
 
     useEffect(() => {
         setIsLoading(true);
         const fetchUserDetails = async () => {
-        const imageName = await getCurrrentUserImageName();
-        if (imageName) {
+          const imageName = await getCurrrentUserImageName();
+          if (imageName) {
             const url = await getImageUrlByName(imageName);
             setImageSource({ uri: url });
-        }
-
-        const userDetails = await fetchUsernameAndEmail();
-        if (userDetails) {
+          }
+          const userDetails = await fetchUsernameAndEmail();
+          if (userDetails) {
             setUsername(userDetails.username);
             setEmail(userDetails.email);
             setEditUsername(userDetails.username);
-        }
-
-        setIsLoading(false);
-    };
-
+          }
+    
+          setIsLoading(false);
+        };
+    
         fetchUserDetails();
     }, []);
-
+  
     const handleUploadPicture = async () => {
         setIsLoading(true);
         const imageName = await uploadPicture();
         if (imageName) {
-            const url = await getImageUrlByName(imageName);
-            setImageSource({ uri: url });
+          const url = await getImageUrlByName(imageName);
+          setImageSource({ uri: url });
         }
         setIsLoading(false);
-    };
-
+      };
+  
     const toggleEdit = () => {
         setIsEditing(!isEditing);
         if (isEditing) {
-            handleSavePress(); // Save the changes when toggling from editing to viewing
+            handleSavePress();
         }
     };
 
     const handleSavePress = async () => {
-        //setIsLoading(true);
         await updateUsername(editUsername);
         setUsername(editUsername);
         setIsEditing(false);
-        //setIsLoading(false);
     };
 
     return(
@@ -125,8 +126,8 @@ export default function ModalInformationsPerfil() {
                 </View>
                 <Text style={[styles.textInf, {color: colors.text900}]}>{email}</Text>
                 <TranslatedText
-                    enText="Registered groups:"
-                    ptText="Grupos registrados:"
+                    enText={`Registered groups: ${groupNumbers}`}
+                    ptText={`Grupos registrados: ${groupNumbers}`}
                     style={[styles.textInf, {color: colors.text900}]}
                 />
             </View>         

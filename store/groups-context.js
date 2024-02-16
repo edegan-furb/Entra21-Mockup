@@ -24,8 +24,8 @@ function groupsReducer(state, action) {
       return [...state, { ...action.payload }].sort((a, b) =>
         a.title.localeCompare(b.title)
       );
-      case "SET":
-        // Sort groups by name in ascending order
+    case "SET":
+      // Sort groups by name in ascending order
         const sortedGroups = [...action.payload].sort((a, b) => {
           const titleA = a.title || "";
           const titleB = b.title || ""; 

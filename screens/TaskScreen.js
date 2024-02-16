@@ -33,6 +33,7 @@ function TaskScreen({ route, navigation, user }) {
   const groupsCtx = useContext(GroupsContext);
   const taskId = route.params?.taskId;
   const groupId = route.params?.groupId;
+  const currentGroup = groupsCtx.groups?.find(group => group.id === groupId);
   const previous = route.params?.previous;
 
   const statusConclutedTasks = language === 'en' ? 'Completed' : 'Concluída';
@@ -51,13 +52,12 @@ function TaskScreen({ route, navigation, user }) {
     });
   }
 
-  if (groupsCtx.groups) {
-    groupsCtx.groups?.forEach((group) => {
-      group.members?.forEach((member) => {
-        if (member.user === currentUser) {
-          foundMember = member;
-        }
-      });
+  if (currentGroup) {
+    currentGroup.members?.forEach((member) => { 
+      if (member.user === currentUser) {
+        console.log(member)
+        foundMember = member;
+      }
     });
   }
 

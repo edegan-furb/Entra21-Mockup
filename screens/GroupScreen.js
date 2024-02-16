@@ -16,6 +16,7 @@ import TasksOutput from "../components/TasksOutput/TaskOuput";
 import Error from "../components/ui/Error";
 import LoadingOverlay from "../components/ui/LoadingOverlay";
 import TranslatedText from "../store/language-context";
+import { useTheme } from "../store/theme-context";
 
 function GroupScreen({ route, navigation }) {
   const currentUser = auth.currentUser.uid;
@@ -29,6 +30,9 @@ function GroupScreen({ route, navigation }) {
   const [initialLoad, setInitialLoad] = useState(true);
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const { language } = useTheme();
+
+  const nameGroup = language === 'en' ? "'s - Tasks" : ' - Tarefas';
 
   useEffect(() => {
     const getTasks = async () => {
@@ -98,15 +102,15 @@ function GroupScreen({ route, navigation }) {
         />
         {isAdminStatus && (
           <IconButton
-          icon={"add-circle-outline"}
-          color={Colors.primary100}
-          size={24}
-          onPress={() => {
-            navigation.navigate("ManageTasksScreen", {
-              groupId: groupId,
-            });
-          }}
-        />
+            icon={"add-circle-outline"}
+            color={Colors.primary100}
+            size={24}
+            onPress={() => {
+              navigation.navigate("ManageTasksScreen", {
+                groupId: groupId,
+              });
+            }}
+          />
         )}
       </View>
     );
@@ -114,7 +118,7 @@ function GroupScreen({ route, navigation }) {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: selectGroup?.title || "Group",
+      title: `${selectGroup?.title || "Group"}${nameGroup}`,
       headerRight: renderHeaderButtons,
     });
   }, [navigation, selectGroup, renderHeaderButtons]);

@@ -8,7 +8,6 @@ function TasksList({ tasks, groupId }) {
       <FlatList
         data={tasks}
         renderItem={({ item }) => <TaskItem {...item} groupId={groupId} />}
-        keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
         style={styles.list}
       />

@@ -165,7 +165,7 @@ function GroupMembersScreen({ navigation, route }) {
       setIsLoading(false);
     }
   }
-
+  
   // const handleRemoveMember = (memberId) => {
   //   removeMember(memberId)
   //     .then(() => {
@@ -184,6 +184,7 @@ function GroupMembersScreen({ navigation, route }) {
       members={groupMembers}
       onRemoveMember={deleteMemberHandler}
       onChangeAdminStatus={onChangeAdminStatusHandler}
+      groupId={groupId}
     />
   );
 }

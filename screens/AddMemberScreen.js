@@ -8,6 +8,7 @@ import { useContext, useState } from "react";
 import { GroupsContext } from "../store/groups-context";
 import { generateUniqueId } from "../util/generateUniqueId";
 import { useTheme } from "../store/theme-context";
+import { Colors } from "../constants/styles";
 
 function AddMembersScreen({ route, navigation }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -62,7 +63,7 @@ function AddMembersScreen({ route, navigation }) {
     return <Error message={error} />;
   }
   if (isLoading) {
-    return <Loading style={{ backgroundColor: colors.background800 }} />;
+    return <Loading style={{ backgroundColor: Colors.primary800 }} />;
   }
 
   return (

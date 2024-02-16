@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import TasksList from "./TasksList";
 import { useTheme } from "../../store/theme-context";
 
-function CurrentTaskOuput({ tasks, firstText, groupId }) {
+function CurrentTaskOuput({ tasks, firstText }) {
   // Use the theme colors
   const { colors } = useTheme()
 
@@ -15,7 +15,7 @@ function CurrentTaskOuput({ tasks, firstText, groupId }) {
   ;
 
   if (Array.isArray(tasks) && tasks.length > 0) {
-    content = <TasksList tasks={tasks} groupId={groupId}/>;
+    content = <TasksList tasks={tasks}/>;
   }
 
   return <View style={styles.container}>{content}</View>;

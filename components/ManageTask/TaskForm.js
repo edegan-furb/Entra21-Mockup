@@ -31,7 +31,7 @@ function TaskForm({
       isValid: true,
     },
     date: {
-      value: defaultValues ? getFormattedDate(defaultValues.date, true) : "",
+      value: defaultValues ? getFormattedDate(defaultValues.date) : "",
       isValid: true,
     },
     description: {
@@ -405,8 +405,8 @@ export default TaskForm;
 
 const styles = StyleSheet.create({
   container: {
-    width: wp("90%"),
-    height: hp("75%"),
+    width: wp('90%'),
+    height: hp('70%'),
     backgroundColor: Colors.primary900,
     borderRadius: 20,
     marginTop: "15%",

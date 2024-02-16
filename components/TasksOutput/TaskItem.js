@@ -24,16 +24,14 @@ function TaskItem({ id, title, designatedUser, groupId, date, objectives, comple
     >
       <View style={styles.taskItem}>
         <View style={styles.container}>
-          <View style={styles.iconContent}>
-            <Ionicons name="reader-outline" color={Colors.primary400} size={60}/>
-          </View>
+          <Ionicons name="reader-outline" color={Colors.primary400} size={60}/>
           <View style={styles.titleContent}>
             <Text style={styles.title}>{title}</Text>
               <Text style={styles.textInf} numberOfLines={1}>
-                <Ionicons name="person" color={Colors.neutral100} size={15}/>   {designatedUser}
+                <Ionicons name="person" color={Colors.neutral100} size={15}/>  {designatedUser}
               </Text>
             <Text style={styles.textInf}>
-              <Ionicons name="calendar-outline" color={Colors.neutral100} size={15}/>   {getFormattedDate(date)} 
+              <Ionicons name="calendar-outline" color={Colors.neutral100} size={15}/>  {getFormattedDate(date)} 
             </Text>
             <Text style={styles.textInf}>
               <Feather name="target" color={Colors.neutral100} size={15}/>  {`${numCompletedObjectives}/${objectives.length}`}
@@ -47,7 +45,9 @@ function TaskItem({ id, title, designatedUser, groupId, date, objectives, comple
                 size={21}
               />
             </View>
-            <Ionicons name="arrow-redo" color={Colors.primary400} size={25}/>
+            <View style={styles.iconArrowContent}>
+              <Ionicons name="arrow-redo" color={Colors.primary400} size={25}/>
+            </View>
           </View>
         </View>
       </View>
@@ -91,7 +91,8 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     textAlign: "center",
     fontWeight: "bold",
-    color: Colors.primary50,
+    color: Colors.primary400,
+    letterSpacing: 1
   },
   textInf: {
     paddingVertical: 2,
@@ -100,10 +101,17 @@ const styles = StyleSheet.create({
     color: Colors.neutral100,
   },
   iconContent: {
-    height: '80%'
+    height: '75%',
+    alignItems: "center",
+    justifyContent: "center"
   },
   iconCompletedContent: {
     flex: 1,
     alignItems: "flex-start"
+  },
+  iconArrowContent: {
+    flex: 2,
+    alignItems: "center",
+    justifyContent: "center"
   }
 });

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, View, SafeAreaView, ActivityIndicator } from "react-native";
 import { GroupsContext } from "../store/groups-context";
 import { Colors } from "../constants/styles";
@@ -23,10 +23,8 @@ function WelcomeScreen() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-
         await loadUserData();
       } else {
-
         setLoading(false);
       }
     });
@@ -35,12 +33,13 @@ function WelcomeScreen() {
   }, []);
 
   const loadUserData = async () => {
+    setLoading(true);
     try {
       const userDetails = await fetchUsernameAndEmail();
       setUsername(userDetails.username);
       await loadGroups();
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      setLoading(false);
     }
   };
 
