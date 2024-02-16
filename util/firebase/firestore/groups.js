@@ -328,7 +328,11 @@ export async function fetchGroupsTasks(callback) {
             const groupData = groupDocSnapshot.data();
             // Check if the group ID is not already in the groupsTasksData Map and add it if missing.
             if (!groupsTasksData.has(groupId)) {
-              groupsTasksData.set(groupId, { ...groupData, tasks: new Map() });
+              groupsTasksData.set(groupId, {
+                id: groupId,
+                ...groupData,
+                tasks: new Map(),
+              });
             }
 
             // Construct a query to find all tasks associated with the current group.
