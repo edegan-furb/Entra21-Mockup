@@ -7,6 +7,7 @@ import {
   updateDoc,
   doc,
   getDoc,
+  deleteDoc,
 } from "firebase/firestore";
 
 // Function to update an existing user.
@@ -104,6 +105,36 @@ export async function getUserIdByEmail(email) {
     return userId;
   } catch (error) {
     console.error("Error retrieving user ID by email:", error.message);
+    throw error;
+  }
+}
+
+
+export async function deleteAccount() {
+  try {
+    const user = auth.currentUser;
+    const userId = user.uid;
+    const userDocRef = doc(db, "users", userId);
+
+    if (userId) {
+      // Delete the user's specific document in the "users" collection
+      await deleteDoc(userDocRef);
+
+      // Find and delete all documents in the "members" collection where `user` equals `userId`
+      const membersQuery = query(collection(db, 'members'), where('user', '==', userDocRef));
+      const querySnapshot = await getDocs(membersQuery);
+
+      // Delete each document found in the query
+      for (const document of querySnapshot.docs) {
+        await deleteDoc(document.ref);
+      }
+
+      // Delete the user's authentication account
+      await user.delete();
+      console.log('User account and all related documents deleted successfully');
+    }
+  } catch (error) {
+    console.error("Error deleting account:", error.message);
     throw error;
   }
 }

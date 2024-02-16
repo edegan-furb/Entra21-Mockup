@@ -4,7 +4,7 @@ import { GroupsContext } from "../Context/groups-context";
 import { Colors } from "../constants/styles";
 import { fetchGroupsTasks } from "../util/firebase/firestore/groups";
 import { fetchUsernameAndEmail } from "../util/firebase/firestore/user";
-import { useTheme } from "../Context/theme-context"; 
+import { useTheme } from "../Context/theme-context";
 import { auth } from "../util/firebase/firebaseConfig";
 import CurrentTasksOutput from '../components/CurrentTasksOutput/CurrentTaskOuput'
 import { useNavigation } from "@react-navigation/core";
@@ -18,8 +18,8 @@ function WelcomeScreen() {
   const groupsCtx = useContext(GroupsContext);
   const navigation = useNavigation();
 
-  const { colors } = useTheme(); 
-  
+  const { colors } = useTheme();
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
@@ -45,18 +45,27 @@ function WelcomeScreen() {
 
   const loadGroups = async () => {
     try {
-      const stopListening = await fetchGroupsTasks(async (groups) => {
-        groupsCtx.setGroups(groups);
-        if (username) {
+      // Initialize loading state to true when starting to fetch data
+      setLoading(true);
+
+      await fetchGroupsTasks((groups) => {
+        if (groups && groups.length > 0) {
+          groupsCtx.setGroups(groups);
           const tasks = getTasksForUser(groups, username);
           setUserTasks(tasks);
+        } else {
+          // Handle the case where there are no groups or tasks
+          groupsCtx.setGroups([]);
+          setUserTasks([]);
         }
 
+        // Set loading to false after handling data
         setLoading(false);
       });
-      return () => stopListening();
+
     } catch (error) {
       console.error("Error fetching groups:", error);
+      // Ensure loading is stopped even if an error occurs
       setLoading(false);
     }
   };
@@ -90,38 +99,38 @@ function WelcomeScreen() {
   }
 
   return (
-    <SafeAreaView style={[styles.rootContainer, {backgroundColor: colors.background50}]}>
+    <SafeAreaView style={[styles.rootContainer, { backgroundColor: colors.background50 }]}>
       <View style={styles.hiContainer}>
         <TranslatedText
           enText={username ? ("Hi, " + username) : ("Welcome back!")}
           ptText={username ? ("Olá, " + username) : ("Bem vindo de volta!")}
-          style={[styles.hi, {color: colors.text900}]}
+          style={[styles.hi, { color: colors.text900 }]}
           numberOfLines={1}
         />
       </View>
       <View style={styles.container}>
         <View style={styles.welcomeContainer}>
-          <WelcomeComp  onPress={goToGroups}/>
+          <WelcomeComp onPress={goToGroups} />
         </View>
         <View style={styles.ongoingTasksContainer}>
           <TranslatedText
             enText={'Ongoing tasks'}
             ptText={'Tarefas em andamento'}
-            style={[styles.ongoingTasks, {color: colors.text900}]}
+            style={[styles.ongoingTasks, { color: colors.text900 }]}
           />
         </View>
         <View style={styles.tasksContainer}>
           {loading ? (
             <ActivityIndicator size="small" color={Colors.primary800} />
           ) : (
-            <CurrentTasksOutput 
-                tasks={userTasks} 
-                firstText={
+            <CurrentTasksOutput
+              tasks={userTasks}
+              firstText={
                 <TranslatedText
                   enText={"You don't have tasks yet"}
                   ptText={'Você ainda não possui tarefas'}
                 />
-              } 
+              }
             />
           )}
         </View>
