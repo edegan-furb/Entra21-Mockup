@@ -93,15 +93,15 @@ function TaskForm({
   }, [defaultValues, getEmailByUsername]);
 
   useEffect(() => {
-    const initialDateValue = defaultValues
-      ? getFormattedDate(defaultValues.date, true)
-      : inputs.title.value;
-    setformDate(initialDateValue);
-    setInputs((currentInputs) => ({
-      ...currentInputs,
-      date: { value: initialDateValue, isValid: true },
-    }));
-  }, [defaultValues, inputs.title.value]);
+    if (defaultValues) {
+      const initialDateValue = getFormattedDate(defaultValues.date, true);
+      setformDate(initialDateValue);
+      setInputs((currentInputs) => ({
+        ...currentInputs,
+        date: { value: initialDateValue, isValid: true },
+      }));
+    }
+  }, [defaultValues]);
 
   function inputChangeHandler(inputIdentifier, enteredValue, index = null) {
     if (inputIdentifier === "objectives") {
