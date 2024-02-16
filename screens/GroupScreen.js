@@ -30,9 +30,6 @@ function GroupScreen({ route, navigation }) {
   const [initialLoad, setInitialLoad] = useState(true);
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const { language } = useTheme();
-
-  const nameGroup = language === 'en' ? "'s - Tasks" : ' - Tarefas';
 
   useEffect(() => {
     const getTasks = async () => {
@@ -118,7 +115,7 @@ function GroupScreen({ route, navigation }) {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: `${selectGroup?.title || "Group"}${nameGroup}`,
+      title: `${selectGroup?.title || "Group"}`,
       headerRight: renderHeaderButtons,
     });
   }, [navigation, selectGroup, renderHeaderButtons]);

@@ -31,7 +31,7 @@ function GroupMembersScreen({ navigation, route }) {
   const groupId = route.params?.groupId;
   const groupsCtx = useContext(GroupsContext);
   const currentUser = auth.currentUser.uid;
-  const nameGroup = language === 'en' ? "'s - Members" : ' - Membros';
+  const nameGroup = language === 'en' ? "Members" : 'Membros';
 
   useEffect(() => {
     const fetchAdminStatus = async () => {
@@ -106,12 +106,11 @@ function GroupMembersScreen({ navigation, route }) {
   // }, [groupId, groupsCtx]);
 
   useLayoutEffect(() => {
-    const selectGroup = groupsCtx.groups.find((group) => group.id === groupId);
     navigation.setOptions({
-      title: `${selectGroup ? selectGroup.title : "Group"}${nameGroup}`,
+      title: nameGroup,
       headerRight: renderHeaderButtons,
     });
-  }, [navigation, groupId, groupsCtx.groups, renderHeaderButtons]);
+  }, [navigation, renderHeaderButtons]);
 
   const renderHeaderButtons = useCallback(() => {
     return (
