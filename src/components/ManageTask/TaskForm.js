@@ -406,7 +406,7 @@ export default TaskForm;
 const styles = StyleSheet.create({
   container: {
     width: wp('90%'),
-    height: hp('70%'),
+    height: hp('75%'),
     backgroundColor: Colors.primary900,
     borderRadius: 20,
     marginTop: "15%",
@@ -436,7 +436,6 @@ const styles = StyleSheet.create({
   },
   form: {
     width: "100%",
-    height: "85%",
     paddingHorizontal: 10,
     flex: 1,
     borderTopEndRadius: 30,
@@ -468,7 +467,7 @@ const styles = StyleSheet.create({
     width: "80%",
   },
   removeButton: {
-    height: "70%",
+    height: "65%",
   },
   buttonAddObjective: {
     padding: 10,

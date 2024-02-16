@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, SafeAreaView, Modal} from "react-native";
+import { View, Text, StyleSheet, SafeAreaView, Modal, Alert } from "react-native";
 import { AuthContext } from "../Context/auth-context";
 import React, { useState, useContext } from "react";
 import SettingsItem from "../components/Settings/SettingsItem";
@@ -10,6 +10,7 @@ import {
 } from "react-native-responsive-screen";
 import { useTheme } from "../Context/theme-context";
 import TranslatedText from "../Context/language-context";
+import { deleteAccount } from "../util/firebase/firestore/user";
 
 function SettingsScreen() {
 
@@ -18,15 +19,41 @@ function SettingsScreen() {
   const authCtx = useContext(AuthContext);
   const [modalVisible, setModalVisible] = useState(false);
 
+  async function deleteAccountHandler() {
+    Alert.alert(
+      "Delete Account",
+      "Are you sure you want to delete your account? This action cannot be undone.",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Delete",
+          onPress: async () => {
+            try {
+              await deleteAccount();
+              // Account deletion was successful, now log the user out
+              authCtx.logout(); // Call the logout function from your AuthContext
+            } catch (error) {
+              console.error("Error deleting account:", error.message);
+              // Optionally, inform the user that the account deletion failed
+            }
+          }
+        }
+      ]
+    );
+  }
+
   return (
-    <SafeAreaView style={[styles.rootContainer, {backgroundColor: colors.background50}]}>
-      <View style={[styles.contentPerfil, {borderBottomWidth: 2, borderColor: colors.border500,}]}>
-        <InfPerfil/>
+    <SafeAreaView style={[styles.rootContainer, { backgroundColor: colors.background50 }]}>
+      <View style={[styles.contentPerfil, { borderBottomWidth: 2, borderColor: colors.border500, }]}>
+        <InfPerfil />
       </View>
 
       <View style={styles.containerBody}>
         <View style={styles.contentBody}>
-          <Text style={[styles.titleSettings, {color: colors.text900}]}>Settings</Text>
+          <Text style={[styles.titleSettings, { color: colors.text900 }]}>Settings</Text>
           <SettingsItem
             nameIcon={"sunny-outline"}
             text={
@@ -71,6 +98,7 @@ function SettingsScreen() {
                 ptText="Deletar conta"
               />
             }
+            onPress={deleteAccountHandler}
           />
           <SettingsItem
             nameIcon={"log-out-outline"}
@@ -84,15 +112,15 @@ function SettingsScreen() {
           />
         </View>
       </View>
-      <Modal 
+      <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
       >
-        <ModalInformationsPerfil 
+        <ModalInformationsPerfil
           onPress={() => setModalVisible(false)}
         />
-    </Modal>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -122,7 +150,7 @@ const styles = StyleSheet.create({
   },
   titleSettings: {
     fontSize: 14,
-  fontFamily: 'open-sans-bold'
+    fontFamily: 'open-sans-bold'
   },
   modalContainer: {
     width: "100%",
