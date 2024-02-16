@@ -20,10 +20,10 @@ function GroupItem({ id, title, tasks, members }) {
   
   // Atualiza o estado local sempre que as tarefas compartilhadas mudarem
   useEffect(() => {
-      // Verifica se tasks está definido antes de chamar filter
-      const completedTasksCount = tasks ? tasks.filter(task => task.completed).length : 0;
-      setNumberOfTasks(tasks ? tasks.length : 0);
-      setCompletedTasks(completedTasksCount);
+    // Verifica se tasks está definido antes de chamar filter
+    const completedTasksCount = tasks ? tasks.filter(task => task.completed).length : 0;
+    setNumberOfTasks(tasks ? tasks.length : 0);
+    setCompletedTasks(completedTasksCount);
   }, [tasks]);
 
   // Cálculos relacionados às tarefas
