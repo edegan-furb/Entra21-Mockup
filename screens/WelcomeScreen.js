@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, View, SafeAreaView, ActivityIndicator } from "react-native";
 import { GroupsContext } from "../store/groups-context";
 import { Colors } from "../constants/styles";
-import { fetchGroups } from "../util/firebase/firestore/groups";
+import { fetchGroupsTasks } from "../util/firebase/firestore/groups";
 import { fetchUsernameAndEmail } from "../util/firebase/firestore/user";
 import { useTheme } from "../store/theme-context"; 
 import { auth } from "../util/firebase/firebaseConfig";
@@ -46,7 +46,7 @@ function WelcomeScreen() {
 
   const loadGroups = async () => {
     try {
-      const stopListening = await fetchGroups(async (groups) => {
+      const stopListening = await fetchGroupsTasks(async (groups) => {
         groupsCtx.setGroups(groups);
         if (username) {
           const tasks = getTasksForUser(groups, username);
