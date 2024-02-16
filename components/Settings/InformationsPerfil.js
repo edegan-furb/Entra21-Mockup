@@ -21,52 +21,50 @@ export default function ModalInformationsPerfil() {
     const [email, setEmail] = useState("Loading..");
     const [isEditing, setIsEditing] = useState(false);
     const [editUsername, setEditUsername] = useState("");
-
+  
     useEffect(() => {
         setIsLoading(true);
         const fetchUserDetails = async () => {
-        const imageName = await getCurrrentUserImageName();
-        if (imageName) {
+          const imageName = await getCurrrentUserImageName();
+          if (imageName) {
             const url = await getImageUrlByName(imageName);
             setImageSource({ uri: url });
-        }
-
-        const userDetails = await fetchUsernameAndEmail();
-        if (userDetails) {
+          }
+    
+          const userDetails = await fetchUsernameAndEmail();
+          if (userDetails) {
             setUsername(userDetails.username);
             setEmail(userDetails.email);
             setEditUsername(userDetails.username);
-        }
-
-        setIsLoading(false);
-    };
-
+          }
+    
+          setIsLoading(false);
+        };
+    
         fetchUserDetails();
-    }, []);
-
+      }, []);
+  
     const handleUploadPicture = async () => {
         setIsLoading(true);
         const imageName = await uploadPicture();
         if (imageName) {
-            const url = await getImageUrlByName(imageName);
-            setImageSource({ uri: url });
+          const url = await getImageUrlByName(imageName);
+          setImageSource({ uri: url });
         }
         setIsLoading(false);
-    };
-
+      };
+  
     const toggleEdit = () => {
-        setIsEditing(!isEditing);
-        if (isEditing) {
-            handleSavePress(); // Save the changes when toggling from editing to viewing
-        }
+      setIsEditing(!isEditing);
+      if (isEditing) {
+        handleSavePress();
+      }
     };
 
     const handleSavePress = async () => {
-        //setIsLoading(true);
         await updateUsername(editUsername);
         setUsername(editUsername);
         setIsEditing(false);
-        //setIsLoading(false);
     };
 
     return(

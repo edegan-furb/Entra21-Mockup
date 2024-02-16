@@ -1,7 +1,8 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, View, SafeAreaView, ActivityIndicator } from "react-native";
 import { GroupsContext } from "../store/groups-context";
 import { Colors } from "../constants/styles";
+import { useFocusEffect } from "@react-navigation/native";
 import { fetchGroups } from "../util/firebase/firestore/groups";
 import { fetchUsernameAndEmail } from "../util/firebase/firestore/user";
 import { useTheme } from "../store/theme-context"; 
@@ -23,10 +24,8 @@ function WelcomeScreen() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-
         await loadUserData();
       } else {
-
         setLoading(false);
       }
     });
@@ -34,13 +33,29 @@ function WelcomeScreen() {
     return () => unsubscribe();
   }, []);
 
+  useFocusEffect(
+    useCallback(() => {
+      const fetchIfUserExists = async () => {
+        const user = auth.currentUser;
+        if (user) {
+          await loadUserData();
+        } else {
+          setLoading(false);
+        }
+      };
+
+      fetchIfUserExists();
+    }, [])
+  );
+
   const loadUserData = async () => {
+    setLoading(true);
     try {
       const userDetails = await fetchUsernameAndEmail();
       setUsername(userDetails.username);
       await loadGroups();
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      setLoading(false);
     }
   };
 

@@ -17,13 +17,14 @@ import {
 import TranslatedText from "../../store/language-context";
 
 function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTitle, isEditing, onPressDelete }) {
+  const [formDate, setformDate] = useState('');
   const [inputs, setInputs] = useState({
     title: {
       value: defaultValues ? defaultValues.title : "",
       isValid: true,
     },
     date: {
-      value: defaultValues ? getFormattedDate(defaultValues.date, true) : "",
+      value: defaultValues ? getFormattedDate(defaultValues.date) : "",
       isValid: true,
     },
     description: {
@@ -36,36 +37,34 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
       isValid: true,
     },
     objectives:
-      defaultValues && defaultValues.objectives ? defaultValues.objectives.map((obj) => ({
-        id: obj.id,
-        value: obj.value,
-        completed: obj.completed,
-        isValid: true,
-      }))
-      : 
-      [
-        {
-          id: generateUniqueId(),
-          value: "",
-          completed: false,
-          isValid: true,
-        },
-      ],
-    }
-  );
+      defaultValues && defaultValues.objectives
+        ? defaultValues.objectives.map((obj) => ({
+            id: obj.id,
+            value: obj.value,
+            completed: obj.completed,
+            isValid: true,
+          }))
+        : [
+            {
+              id: generateUniqueId(),
+              value: "",
+              completed: false,
+              isValid: true,
+            },
+          ],
+  });
   const [currentUserEmail, setCurrentUserEmail] = useState("");
 
   useEffect(() => {
     // Assuming fetchUsernameAndEmail is an async function that returns { email: userEmail }
     fetchUsernameAndEmail()
       .then((userDetails) => {
-          setCurrentUserEmail(userDetails.email);
-          console.log(currentUserEmail);
+        setCurrentUserEmail(userDetails.email);
+        console.log(currentUserEmail);
       })
       .catch((error) => {
         console.error("Error fetching user email:", error);
-      }
-    );
+      });
   }, []);
 
   useEffect(() => {
@@ -82,8 +81,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
         .catch((error) => {
           console.error("Failed to fetch email", error);
           // Handle error, possibly by setting state
-        }
-      );
+        });
     }
   }, [defaultValues, getEmailByUsername]);
 
@@ -154,8 +152,7 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
     const descriptionIsValid = taskData.description.trim().length > 0;
     const designatedUserIsValid =
       taskData.designatedUser.includes("@") &&
-      taskData.designatedUser.toLowerCase() !== currentUserEmail
-    ;
+      taskData.designatedUser.toLowerCase() !== currentUserEmail;
     const objectivesAreValid = inputs.objectives.every(
       (objective) => objective.value.trim().length > 0
     );
@@ -207,8 +204,6 @@ function TaskForm({ submitButtonLabel, onCancel, onSubmit, defaultValues, pageTi
     !inputs.designatedUser.isValid ||
     inputs.objectives.some((objective) => !objective.isValid)
   ;
-
-  const [formDate, setformDate] = useState('');
 
   const formatDate = (input) => {
     if (!input) return input;
@@ -366,7 +361,7 @@ export default TaskForm;
 const styles = StyleSheet.create({
   container: {
     width: wp('90%'),
-    height: hp('75%'),
+    height: hp('70%'),
     backgroundColor: Colors.primary900,
     borderRadius: 20,
     marginTop: '15%',

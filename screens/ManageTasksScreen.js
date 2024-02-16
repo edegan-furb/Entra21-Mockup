@@ -53,13 +53,12 @@ function ManageTasksScreen({ navigation, route }) {
       groupsCtx.deleteTask(groupId, editedTaskId);
       navigation.navigate(previous, {
         groupId: groupId,
-      })
+      });
     } catch (error) {
       setError("Could not delete group - please try again later");
       setIsLoading(false);
     }
   }
-
 
   async function confirmHandler(taskData) {
     setIsLoading(true);
