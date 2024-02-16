@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import TaskHome from "./TaskHome";
 
 
-function TasksList({ tasks, groupId }) {
+function TasksList({ tasks }) {
 
   // Organizing list by date
   tasks.sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -13,10 +13,7 @@ function TasksList({ tasks, groupId }) {
       <FlatList
         data={tasks}
         renderItem={({ item }) => 
-        <TaskHome
-          {...item}
-          groupId={groupId}
-        />}
+        <TaskHome {...item}/>}
         numColumns={2}
         showsVerticalScrollIndicator={false}
         keyExtractor={(item) => item.id}

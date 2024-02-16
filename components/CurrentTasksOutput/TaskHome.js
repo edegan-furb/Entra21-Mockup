@@ -15,7 +15,7 @@ import { GroupsContext } from "../../store/groups-context";
 import { getFormattedDate } from "../../util/date";
 
 
-export default function TaskHome({ date, title, objectives, completed, id, groupId}) {
+export default function TaskHome({ date, title, objectives, completed, id, group}) {
 
     const navigation = useNavigation();
 
@@ -23,7 +23,7 @@ export default function TaskHome({ date, title, objectives, completed, id, group
         navigation.navigate("TaskScreen", {
             previous: "Home",
             taskId: id,
-            groupId: groupId,
+            groupId: group,
             
         });
     }
@@ -73,7 +73,7 @@ export default function TaskHome({ date, title, objectives, completed, id, group
                 />
                 <View style={styles.taskInfoContainer}>
                     <Text style={[styles.taskName, {color: colors.text200}]} numberOfLines={3}>{title}</Text>
-                    <Text style={[styles.groupName, {color: colors.text200}]} numberOfLines={2}>
+                    <Text style={[styles.groupName, {color: colors.text200}]} numberOfLines={1}>
                         <Ionicons name="people-outline" size={16}/> {groupName}
                     </Text>
                 </View>
@@ -81,7 +81,7 @@ export default function TaskHome({ date, title, objectives, completed, id, group
 
             <View style={styles.progressContainer}>
                 <Text style={[styles.ProgressText, {color: colors.text200}]}>
-                    <Feather name="target" color={Colors.text200} size={16}/> {numCompletedObjectives}/{numObjectives}
+                    <Feather name="target" color={Colors.text200} size={16}/> {`${numCompletedObjectives}/${numObjectives}`}
                 </Text>
                 <View style={styles.barContainer}>
                     <Progress.Bar 
