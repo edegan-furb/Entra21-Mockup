@@ -35,7 +35,7 @@ function SettingsScreen() {
                 ptText="Tema"
               />
             }
-            activeText={"🌙 "}
+            activeText={"🌙"}
             inActiveText={"☀"}
             swichTheme={true}
             swich={true}
@@ -48,8 +48,8 @@ function SettingsScreen() {
                 ptText="Idioma"
               />
             }
-            activeText={'🇧🇷'}
-            inActiveText={'🇺🇸'}
+            activeText={'Br'}
+            inActiveText={'En'}
             swichLanguage={true}
             swich={true}
           />
