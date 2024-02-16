@@ -38,6 +38,10 @@ function TaskScreen({ route, navigation, user }) {
 
   const statusConclutedTasks = language === 'en' ? 'Completed' : 'Concluída';
   const statusOngoingTasks = language === 'en' ? 'Ongoing' : 'Em andamento';
+  const alertConclutedTask = language === 'en' ? 'Some objectives have not yet been completed.' : 'Alguns objetivos ainda não foram concluídos.';
+  const alertConclutedObjectives = language === 'en' ? "This Task was not assigned to you." : 'Esta tarefa não foi atribuída a você.';
+  const deleteTasktext = language === 'en' ? "Task Deleted!" : "Tarefa Deletada!";
+  const deleteTaskSubText = language === 'en' ? "This task no longer exists." : "Esta tarefa não existe mais."
 
   let selectTask = null;
   let foundMember = null;
@@ -68,7 +72,7 @@ function TaskScreen({ route, navigation, user }) {
       navigation.navigate(previous, {
         groupId: groupId,
       });
-      Alert.alert("Task Deleted", "This task no longer exists");
+      Alert.alert(deleteTasktext, deleteTaskSubText);
     }
   }, [navigation, selectTask]);
 
@@ -122,9 +126,9 @@ function TaskScreen({ route, navigation, user }) {
         await updateObjectiveStatus(taskId, objectiveId);
       } else {
         Alert.alert(
-          "Access Denied",
-          "This Task was not assigned to you.",
-          [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+          "Ops!",
+          alertConclutedObjectives,
+          [{ text: "OK" }],
           { cancelable: false }
         );
       }
@@ -135,17 +139,30 @@ function TaskScreen({ route, navigation, user }) {
 
   async function onChangeTaskCompletedStatusHandler() {
     try {
-      console.log(selectTask.designatedUser)
-      groupsCtx.updateTaskStatus(selectTask.group, taskId);
-      await updateTaskStatus(taskId);
-    } catch {
+      // Verifica se todos os objetivos estão concluídos
+      const allObjectivesCompleted = selectTask.objectives.every(objective => objective.completed);
+      if (allObjectivesCompleted) {
+        // Atualiza o status da tarefa no contexto de grupos
+        groupsCtx.updateTaskStatus(selectTask.group, taskId);
+        // Atualiza o status da tarefa
+        await updateTaskStatus(taskId);
+      } else {
+        // Se algum objetivo não estiver concluído, você pode exibir um alerta ou lidar com isso de acordo com sua lógica
+        Alert.alert(
+          'Ops!',
+          alertConclutedTask,
+          [{ text: "OK"}],
+          { cancelable: false }
+        );
+      }
+  
+      if (error && !isLoading) {
+        return <Error message={error} />;
+      }
+    } catch (error) {
       setError("Could not update task status - please try again later");
     }
-  }
-
-  if (error && !isLoading) {
-    return <Error message={error} />;
-  }
+  } 
 
   return (
     <View style={[styles.rootContainer, { backgroundColor: colors.background50 }]}>
