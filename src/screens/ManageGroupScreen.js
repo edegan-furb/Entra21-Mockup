@@ -2,7 +2,7 @@ import { View, StyleSheet } from "react-native";
 import { useLayoutEffect, useContext, useState } from "react";
 import GroupForm from "../components/ManageGroup/GroupForm";
 import { Colors } from "../constants/styles";
-import { GroupsContext } from "../store/groups-context";
+import { GroupsContext } from "../context/groups-context";
 import IconButton from "../components/ui/IconButton";
 import { deleteGroup, createGroup, updateGroup } from "../util/firebase/firestore/groups";
 import Error from "../components/ui/Error";

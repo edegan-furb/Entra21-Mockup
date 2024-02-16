@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState, useCallback } from "react";
 import { View, ActivityIndicator, Text, StyleSheet } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import CurrentTasksOutput from "../components/CurrentTaskOutput/CurrentTaskOuput";
-import { GroupsContext } from "../store/groups-context";
+import { GroupsContext } from "../context/groups-context";
 import { fetchGroups } from "../util/firebase/firestore/groups";
 import { fetchUsernameAndEmail } from "../util/firebase/firestore/user";
 import { auth } from "../util/firebase/firebaseConfig";

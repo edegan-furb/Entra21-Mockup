@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { View, Text, StyleSheet, ScrollView, Alert } from "react-native";
 import { Colors } from "../constants/styles";
-import { GroupsContext } from "../store/groups-context";
+import { GroupsContext } from "../context/groups-context";
 import IconButton from "../components/ui/IconButton";
 import { auth } from "../util/firebase/auth";
 import { getFormattedDate } from "../util/date";

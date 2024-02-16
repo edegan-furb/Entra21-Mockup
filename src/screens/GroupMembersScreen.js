@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useCallback,
 } from "react";
-import { GroupsContext } from "../store/groups-context";
+import { GroupsContext } from "../context/groups-context";
 import MembersOutput from "../components/MembersOutput/MembersOutput";
 import {
   fetchGroupMembers,

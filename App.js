@@ -14,10 +14,10 @@ import AllGroupsScreen from "./src/screens/AllGroupsScreen";
 import SettingsScreen from "./src/screens/SetttingsScreen";
 import ManageGroupScreen from "./src/screens/ManageGroupScreen";
 import { Colors } from "./src/constants/styles";
-import AuthContextProvider, { AuthContext } from "./src/store/auth-context";
-import { ThemeProvider } from "./src/store/theme-context"
+import AuthContextProvider, { AuthContext } from "./src/context/auth-context";
+import { ThemeProvider } from "./src/context/theme-context"
 import IconButton from "./src/components/ui/IconButton";
-import GroupsContextProvider from "./src/store/groups-context";
+import GroupsContextProvider from "./src/context/groups-context";
 import GroupScreen from "./src/screens/GroupScreen";
 import { View } from "react-native";
 import GroupMembersScreen from "./src/screens/GroupMembersScreen";

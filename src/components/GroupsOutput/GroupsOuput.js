@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 
 //import { Colors } from "../../constants/styles";
 import GroupsList from "./GroupsList";
-import { useTheme } from '../../store/theme-context'; // Adjust the import path
+import { useTheme } from '../../context/theme-context'; // Adjust the import path
 
 function GroupsOutput({ groups, fallbackText }) {
 

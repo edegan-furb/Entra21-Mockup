@@ -6,7 +6,7 @@ import { setAdminStatus, addMember } from "../util/firebase/firestore/members";
 import Error from "../components/ui/Error";
 import Loading from "../components/ui/LoadingOverlay";
 import { useContext, useState } from "react";
-import { GroupsContext } from "../store/groups-context";
+import { GroupsContext } from "../context/groups-context";
 import { generateUniqueId } from "../util/generateUniqueId";
 
 function AddMembersScreen({ route, navigation }) {

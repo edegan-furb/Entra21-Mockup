@@ -3,7 +3,7 @@ import { Alert, Image, StyleSheet, Text, View } from "react-native";
 import { Colors } from "../../constants/styles";
 import IconButton from "../ui/IconButton";
 import { auth } from "../../util/firebase/auth";
-import { GroupsContext } from "../../store/groups-context";
+import { GroupsContext } from "../../context/groups-context";
 import {
   getImageUrlByName,
   getUserImageName,

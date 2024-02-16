@@ -2,7 +2,7 @@ import { View, StyleSheet, Alert } from "react-native";
 import { useLayoutEffect, useContext, useState, useEffect } from "react";
 import TaskForm from "../components/ManageTask/TaskForm";
 import { Colors } from "../constants/styles";
-import { GroupsContext } from "../store/groups-context";
+import { GroupsContext } from "../context/groups-context";
 import Error from "../components/ui/Error";
 import Loading from "../components/ui/LoadingOverlay";
 import {

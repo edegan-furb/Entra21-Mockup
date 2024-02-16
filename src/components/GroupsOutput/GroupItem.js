@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { Colors } from "../../constants/styles";
-import { useTheme } from "../../store/theme-context";
+import { useTheme } from "../../context/theme-context";
 import { Ionicons } from "@expo/vector-icons";
 
 function GroupItem({ id, title, tasks, members }) {

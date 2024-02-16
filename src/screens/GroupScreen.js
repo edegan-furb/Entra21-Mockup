@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { View, Alert } from "react-native";
 import { Colors } from "../constants/styles";
-import { GroupsContext } from "../store/groups-context";
+import { GroupsContext } from "../context/groups-context";
 import { auth } from "../util/firebase/auth";
 import { isAdmin } from "../util/firebase/firestore/groups";
 import { fetchGroupTasks } from "../util/firebase/firestore/tasks";
