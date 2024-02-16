@@ -3,7 +3,7 @@ import { Colors } from "../../constants/styles";
 import MembersList from "./MembersList";
 import { useTheme } from "../../store/theme-context";
 
-function MembersOutput({ members, onRemoveMember, onChangeAdminStatus }) {
+function MembersOutput({ members, onRemoveMember, onChangeAdminStatus, groupId }) {
 
   const { colors } = useTheme();
 
@@ -13,6 +13,7 @@ function MembersOutput({ members, onRemoveMember, onChangeAdminStatus }) {
         members={members}
         onRemoveMember={onRemoveMember}
         onChangeAdminStatus={onChangeAdminStatus}
+        groupId={groupId}
       />
     );
   }

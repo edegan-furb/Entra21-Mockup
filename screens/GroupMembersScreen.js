@@ -165,7 +165,7 @@ function GroupMembersScreen({ navigation, route }) {
       setIsLoading(false);
     }
   }
-
+  
   // const handleRemoveMember = (memberId) => {
   //   removeMember(memberId)
   //     .then(() => {
