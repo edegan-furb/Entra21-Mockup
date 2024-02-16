@@ -41,7 +41,7 @@ function TaskScreen({ route, navigation, user }) {
   const alertConclutedTask = language === 'en' ? 'Some objectives have not yet been completed.' : 'Alguns objetivos ainda não foram concluídos.';
   const alertConclutedObjectives = language === 'en' ? "This Task was not assigned to you." : 'Esta tarefa não foi atribuída a você.';
   const deleteTasktext = language === 'en' ? "Task Deleted!" : "Tarefa Deletada!";
-  const deleteTaskSubText = language === 'en' ? "This task no longer exists." : "Esta tarefa não existe mais."
+  const deleteTaskSubText = language === 'en' ? "This task no longer exists." : "Esta tarefa não existe mais.";
 
   let selectTask = null;
   let foundMember = null;

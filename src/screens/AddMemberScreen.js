@@ -18,7 +18,12 @@ function AddMembersScreen({ route, navigation }) {
   const groupId = route.params?.groupId;
   const selectGroup = groupsCtx.groups.find((group) => group.id === groupId);
 
-  const { colors } = useTheme();
+  const { colors, language } = useTheme();
+
+  const userNotFoundText = language === 'en' ? 'Not Found' : 'Não encontrado';
+  const userNotFoundSubText = language === 'en' ? 'No user found with the specified email.' : 'Nenhum usuário encontrado com o e-mail especificado.';
+  const userMemberText = language === 'en' ? 'User Already a Member' : 'O usuário já é membro';
+  const userMemberSubText = language === 'en' ? 'This user is already a member of the group.' : 'Este usuário já é membro do grupo.';
 
   function cancelHandler() {
     navigation.goBack();
@@ -32,11 +37,11 @@ function AddMembersScreen({ route, navigation }) {
         (member) => member.user.id === userId
       );
       if (!userId) {
-        Alert.alert("Not Found", "No user found with the specified email.");
+        Alert.alert(userNotFoundText, userNotFoundSubText);
       } else if (isAlreadyMember) {
         Alert.alert(
-          "User Already a Member",
-          "This user is already a member of the group."
+          userMemberText,
+          userMemberSubText
         );
       } else {
         const memberId = generateUniqueId();

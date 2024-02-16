@@ -6,6 +6,7 @@ import { GroupsContext } from "../../Context/groups-context";
 import { useContext, useEffect, useState } from "react";
 import { getImageUrlByName, getUserImageName } from "../../util/firebase/storage";
 import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from "../../Context/theme-context";
 
 function MemberItem({
   id,
@@ -18,11 +19,14 @@ function MemberItem({
   groupId
 }) {
   const [imageSource, setImageSource] = useState(null);
-
+  const { language } = useTheme();
   const currentUser = auth.currentUser.uid;
   const groupsCtx = useContext(GroupsContext);
   const currentGroup = groupsCtx.groups?.find(g => g.id === groupId);
   let foundMember = null;
+
+  const alertAdminDeniedText = language === 'en' ? 'Access Denied' : 'Acesso Negado';
+  const alertAdminDeniedSubText = language === 'en' ? 'You are not an administrador' : 'Você não é um administrador.';
 
   if (currentGroup) {
     currentGroup.members?.forEach((member) => {
@@ -43,9 +47,9 @@ function MemberItem({
   const changeAdminStatus = () => {
     if (!isAdmin) {
       Alert.alert(
-        "Access Denied",
-        "You are not an administrator.",
-        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+        alertAdminDeniedText,
+        alertAdminDeniedSubText,
+        [{ text: "OK" }],
         { cancelable: false }
       );
     } else {

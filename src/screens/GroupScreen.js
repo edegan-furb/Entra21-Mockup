@@ -25,11 +25,15 @@ function GroupScreen({ route, navigation }) {
   const selectGroup = groupsCtx.groups.find((group) => group.id === groupId);
   const selectedGroup = groupsCtx.groups.find((group) => group.id === groupId);
   const groupTasks = selectedGroup ? selectedGroup.tasks : [];
+  const { language } = useTheme();
 
   const [isAdminStatus, setIsAdminStatus] = useState(false);
   const [initialLoad, setInitialLoad] = useState(true);
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(true);
+
+  const updateText = language === 'en' ? 'Access Update' : 'Atualizado com Sucesso';
+  const updateSubText = language === 'en' ? 'You no longer have access to this group' : 'Você não tem mais acesso a este grupo';
 
   useEffect(() => {
     const getTasks = async () => {
@@ -58,7 +62,7 @@ function GroupScreen({ route, navigation }) {
   useEffect(() => {
     if (!selectGroup) {
       navigation.navigate("Groups");
-      Alert.alert("Access Update", "You no longer have access to this group");
+      Alert.alert(updateText, updateSubText);
     }
   }, [navigation, selectGroup]);
 

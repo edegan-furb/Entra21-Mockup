@@ -14,22 +14,30 @@ import { deleteAccount } from "../util/firebase/firestore/user";
 
 function SettingsScreen() {
 
-  const { colors } = useTheme();
+  const { colors, language } = useTheme();
 
   const authCtx = useContext(AuthContext);
   const [modalVisible, setModalVisible] = useState(false);
+  
+  const alertDeletCancel = language === 'en' ? 'Cancel' : 'Cancelar';
+  const alertDeletAccountText = language === 'en' ? 'Delete Account' : 'Deletar Conta';
+  const alertDeletAccountSubText = language === 'en' ? 
+    'Are you sure you want to delete your account? This action cannot be undone.' : 
+    'Tem certeza que deseja excluir sua conta? Essa ação não pode ser desfeita.'
+  ;
 
   async function deleteAccountHandler() {
     Alert.alert(
-      "Delete Account",
-      "Are you sure you want to delete your account? This action cannot be undone.",
+      alertDeletAccountText,
+      alertDeletAccountSubText,
       [
         {
-          text: "Cancel",
+          text: alertDeletCancel,
           style: "cancel"
         },
         {
           text: "Delete",
+          style: "destructive",
           onPress: async () => {
             try {
               await deleteAccount();

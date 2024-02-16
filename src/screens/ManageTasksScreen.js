@@ -16,18 +16,25 @@ import { generateUniqueId } from "../util/generateUniqueId";
 import TranslatedText from "../Context/language-context";
 
 function ManageTasksScreen({ navigation, route }) {
+  const groupsCtx = useContext(GroupsContext);   
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
-  const editedTaskId = route.params?.editedTaskId;
-
-  const groupId = route.params?.groupId;
-
-  const groupsCtx = useContext(GroupsContext);
-
   const isEditing = !!editedTaskId;
-
+  const editedTaskId = route.params?.editedTaskId;
+  const groupId = route.params?.groupId;
   const previous = route.params?.previous;
+  
+  const emailNotFoundText = language === 'en' ? 'Not Found' : 'Não encontrado';
+  const emailNotFoundSubText = language === 'en' ? 
+    'No user found with the specified email.' : 
+    'Nenhum usuário encontrado com o e-mail especificado.'
+  ;
+  const userNotFoundText = language === 'en' ? 'User not a Member' : 'Usuário não é membro';
+  const userNotFoundSubText = language === 'en' ? 
+    'This user is not a member of the group.' : 
+    'Este usuário não é membro do grupo.'
+  ;
 
   let selectTask = null;
 
@@ -69,14 +76,14 @@ function ManageTasksScreen({ navigation, route }) {
       // );
 
       if (!userId) {
-        Alert.alert("Not Found", "No user found with the specified email.");
+        Alert.alert(emailNotFoundText, emailNotFoundSubText);
         return;
       }
       const checkMembership = await isMember(groupId, userId);
       if (!checkMembership) {
         Alert.alert(
-          "User not a Member",
-          "This user is not a member of the group."
+          userNotFoundText,
+          userNotFoundSubText
         );
         return;
       }
