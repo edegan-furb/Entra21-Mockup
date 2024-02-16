@@ -250,6 +250,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderBottomWidth: 1,
     borderColor: Colors.primary100,
+    borderBottomRightRadius: 15,
+    borderBottomLeftRadius: 3,
     gap: 8
   },
   dateText: {
