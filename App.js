@@ -7,23 +7,23 @@ import * as SplashScreen from "expo-splash-screen";
 import { useContext, useEffect, useState, useCallback } from "react";
 import { Ionicons } from "@expo/vector-icons";
 
-import LoginScreen from "./screens/LoginScreen";
-import SignupScreen from "./screens/SignupScreen";
-import WelcomeScreen from "./screens/WelcomeScreen";
-import AllGroupsScreen from "./screens/AllGroupsScreen";
-import SettingsScreen from "./screens/SetttingsScreen";
-import ManageGroupScreen from "./screens/ManageGroupScreen";
-import { Colors } from "./constants/styles";
-import AuthContextProvider, { AuthContext } from "./store/auth-context";
-import { ThemeProvider } from "./store/theme-context"
-import IconButton from "./components/ui/IconButton";
-import GroupsContextProvider from "./store/groups-context";
-import GroupScreen from "./screens/GroupScreen";
+import LoginScreen from "./src/screens/LoginScreen";
+import SignupScreen from "./src/screens/SignupScreen";
+import WelcomeScreen from "./src/screens/WelcomeScreen";
+import AllGroupsScreen from "./src/screens/AllGroupsScreen";
+import SettingsScreen from "./src/screens/SetttingsScreen";
+import ManageGroupScreen from "./src/screens/ManageGroupScreen";
+import { Colors } from "./src/constants/styles";
+import AuthContextProvider, { AuthContext } from "./src/store/auth-context";
+import { ThemeProvider } from "./src/store/theme-context"
+import IconButton from "./src/components/ui/IconButton";
+import GroupsContextProvider from "./src/store/groups-context";
+import GroupScreen from "./src/screens/GroupScreen";
 import { View } from "react-native";
-import GroupMembersScreen from "./screens/GroupMembersScreen";
-import AddMemberScreen from "./screens/AddMemberScreen";
-import ManageTasksScreen from "./screens/ManageTasksScreen";
-import TaskScreen from "./screens/TaskScreen";
+import GroupMembersScreen from "./src/screens/GroupMembersScreen";
+import AddMemberScreen from "./src/screens/AddMemberScreen";
+import ManageTasksScreen from "./src/screens/ManageTasksScreen";
+import TaskScreen from "./src/screens/TaskScreen";
 
 const BottomTabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
