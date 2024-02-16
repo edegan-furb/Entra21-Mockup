@@ -104,9 +104,7 @@ function TaskScreen({ route, navigation, user }) {
   useLayoutEffect(() => {
     navigation.setOptions({
       title:
-        selectTask?.title +
-        " - " +
-        (selectTask?.completed ? statusConclutedTasks : statusOngoingTasks) || "Task",
+        selectTask?.title,
       headerRight: renderHeaderButtons,
     });
   }, [navigation, selectTask, renderHeaderButtons]);
@@ -155,14 +153,19 @@ function TaskScreen({ route, navigation, user }) {
         <View style={styles.dateContainer}>
           <View style={styles.designatedUserContainer}>
             <View style={styles.dateContent}>
-              <Ionicons name='calendar-outline' size={13} color={Colors.primary100} />
-              <TranslatedText enText={'Deadline:'} ptText={'Prazo final:'} style={styles.designatedUserText} />
-              <Text style={styles.date}>{selectTask?.date ? getFormattedDate(selectTask?.date) : "No Date"}</Text>
-            </View>
-            <View style={styles.dateContent}>
               <Ionicons name='person-outline' size={13} color={Colors.primary100} />
               <TranslatedText enText={'Desinated:'} ptText={'Designado:'} style={styles.designatedUserText} />
               <Text style={styles.designatedUser} numberOfLines={1} ellipsizeMode="tail">{selectTask?.designatedUser}</Text>
+            </View>
+            <View style={styles.dateContent}>
+              <Ionicons name={selectTask?.completed ? 'checkmark-outline' : 'reload-outline'} size={13} color={Colors.primary100} />
+              <TranslatedText enText={'Task status :'} ptText={'Status da tarefa:'} style={styles.designatedUserText} />
+              <Text style={styles.designatedUser} numberOfLines={1} ellipsizeMode="tail">{selectTask?.completed ? statusConclutedTasks : statusOngoingTasks}</Text>
+            </View>
+            <View style={styles.dateContent}>
+              <Ionicons name='calendar-outline' size={13} color={Colors.primary100} />
+              <TranslatedText enText={'Deadline:'} ptText={'Prazo final:'} style={styles.designatedUserText} />
+              <Text style={styles.date}>{selectTask?.date ? getFormattedDate(selectTask?.date) : "No Date"}</Text>
             </View>
           </View>
           <View style={styles.buttonContainer}>
@@ -250,12 +253,12 @@ const styles = StyleSheet.create({
     gap: 8
   },
   dateText: {
-    fontSize: 16,
+    fontSize: 14,
     color: Colors.primary100,
     fontWeight: "bold"
   },
   date: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "400",
     color: Colors.primary100,
   },
@@ -269,12 +272,12 @@ const styles = StyleSheet.create({
     resizeMode: 'contain'
   },
   designatedUserText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "bold",
     color: Colors.primary100,
   },
   designatedUser: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "400",
     color: Colors.primary100,
     width: '60%',
