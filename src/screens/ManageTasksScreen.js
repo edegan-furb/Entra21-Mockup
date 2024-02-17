@@ -14,11 +14,13 @@ import { getUserIdByEmail } from "../util/firebase/firestore/user";
 import { isMember } from "../util/firebase/firestore/groups";
 import { generateUniqueId } from "../util/generateUniqueId";
 import TranslatedText from "../Context/language-context";
+import { useTheme } from "@react-navigation/native";
 
 function ManageTasksScreen({ navigation, route }) {
   const groupsCtx = useContext(GroupsContext);   
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
+  const { language } = useTheme();
 
   const isEditing = !!editedTaskId;
   const editedTaskId = route.params?.editedTaskId;

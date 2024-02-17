@@ -34,7 +34,7 @@ function AddMembersScreen({ route, navigation }) {
     try {
       const userId = await getUserIdByEmail(memberData.email);
       const isAlreadyMember = selectGroup?.members.some(
-        (member) => member.user.id === userId
+        (member) => member.user === userId
       );
       if (!userId) {
         Alert.alert(userNotFoundText, userNotFoundSubText);
