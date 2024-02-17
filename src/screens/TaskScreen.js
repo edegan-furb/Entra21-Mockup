@@ -42,6 +42,10 @@ function TaskScreen({ route, navigation, user }) {
   const alertConclutedObjectives = language === 'en' ? "This Task was not assigned to you." : 'Esta tarefa não foi atribuída a você.';
   const deleteTasktext = language === 'en' ? "Task Deleted!" : "Tarefa Deletada!";
   const deleteTaskSubText = language === 'en' ? "This task no longer exists." : "Esta tarefa não existe mais.";
+  const alertObjectivesStatus = language === 'en' ? 
+    "You can't change the status of objectives for a completed task." : 
+    'Você não pode alterar o status dos objetivos de uma tarefa concluída.'
+  ;
 
   let selectTask = null;
   let foundMember = null;
@@ -115,6 +119,17 @@ function TaskScreen({ route, navigation, user }) {
 
   async function onChangeCompletedStatusHandler(objectiveId) {
     try {
+      if (selectTask.completed) {
+        // Se a tarefa estiver concluída, não permita a alteração do status do objetivo
+        Alert.alert(
+          "Ops!",
+          alertObjectivesStatus,
+          [{ text: "OK"}],
+          { cancelable: false }
+        );
+        return;
+      }
+  
       const email = await getEmailByUsername(selectTask.designatedUser);
       const designatedUser = await getUserIdByEmail(email);
       if (designatedUser === currentUser) {
@@ -155,7 +170,7 @@ function TaskScreen({ route, navigation, user }) {
           { cancelable: false }
         );
       }
-  
+
       if (error && !isLoading) {
         return <Error message={error} />;
       }
