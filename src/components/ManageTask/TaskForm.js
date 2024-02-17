@@ -306,6 +306,7 @@ function TaskForm({
               textInputConfig={{
                 multiline: false,
                 autoCapitalize: "none",
+                keyboardType: "email-address",
                 onChangeText: inputChangeHandler.bind(this, "designatedUser"),
                 value: inputs.designatedUser.value,
               }}

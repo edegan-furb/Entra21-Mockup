@@ -80,6 +80,8 @@ function AddMemberForm({ onCancel, onSubmit }) {
             }
             textInputConfig={{
               multiline: false,
+              keyboardType: "email-address",
+              autoCapitalize: "none",
               onChangeText: inputChangeHandler.bind(this, "email"),
             }}
           />
