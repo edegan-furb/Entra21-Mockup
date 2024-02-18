@@ -49,24 +49,20 @@ function AuthStack() {
 
 function AuthenticatedBottomTab() {
   const { colors } = useTheme();
-
-  const name = <TranslatedText enText={'Groups'} ptText={'Grupos'}/>
-
+  
   return (
     <BottomTabs.Navigator
-      sceneContainerStyle={{ backgroundColor: colors.background50 }}
       screenOptions={{
-        headerStyle: { backgroundColor: colors.background500 },
         tabBarStyle: { backgroundColor: colors.bgTabBar900},
         tabBarActiveTintColor: colors.icons100,
-        tabBarShowLabel: true
+        tabBarShowLabel: true,
+        headerShown: false,
       }}
     >
       <BottomTabs.Screen
         name="Home"
         component={WelcomeScreen}
         options={{
-          headerShown: false,
           tabBarIcon: ({ focused }) => {
             if(focused) {
               return <Ionicons 
@@ -83,14 +79,13 @@ function AuthenticatedBottomTab() {
         name="Groups"
         component={AllGroupsScreen}
         options={{
-          tabBarLabel: ({ focused, color }) => (
+          tabBarShowLabel: ({ focused, color }) => (
             <TranslatedText
               enText="Groups"
               ptText="Grupos"
               style={{ color: focused ? color : colors.iconFocused400, fontSize: 10 }}
             />
           ),
-          headerShown: false,
           tabBarIcon: ({focused}) => {
             if(focused) {
             return <Ionicons 
@@ -114,7 +109,6 @@ function AuthenticatedBottomTab() {
               style={{ color: focused ? color : colors.iconFocused400, fontSize: 10 }}
             />
           ),
-          headerShown: false,
           tabBarIcon: ({focused}) => {
             if(focused) {
             return <Ionicons 
