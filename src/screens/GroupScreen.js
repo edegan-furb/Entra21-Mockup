@@ -32,7 +32,7 @@ function GroupScreen({ route, navigation }) {
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
-  const updateText = language === 'en' ? 'Access Update' : 'Atualizado com Sucesso';
+  const updateText = language === 'en' ? 'Deleted Group' : 'Grupo Deletado';
   const updateSubText = language === 'en' ? 'You no longer have access to this group' : 'Você não tem mais acesso a este grupo';
 
   useEffect(() => {
