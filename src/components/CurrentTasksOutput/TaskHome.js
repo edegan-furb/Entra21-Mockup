@@ -48,9 +48,13 @@ export default function TaskHome({ date, title, objectives, completed, id, group
 
     const { colors } = useTheme();
     
-    //Getting the group name
-    let groupName = useContext(GroupsContext).groups.find(g => (g.tasks.filter(t => t.id === id)).length === 1)?.title || null;
-
+    let groupName = null;
+    // verifica se o grupo existe e se possui a propriedade tasks antes de tentar acessá-la
+    const groups = useContext(GroupsContext).groups;
+    const foundGroup = groups.find(g => g.tasks && g.tasks.find(t => t.id === id));
+    if (foundGroup) {
+        groupName = foundGroup.title;
+    }
 
     return(
         <Pressable 
