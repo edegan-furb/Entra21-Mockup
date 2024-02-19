@@ -58,6 +58,6 @@ $ npx expo start
 
 * [Ariel](https://github.com/Ariel-Alejandr0)
 * [Eduardo](https://github.com/edegan-furb)
-* [Julio](https://github.com/jcvanzs)
+* [Julio](https://github.com/jcvanz)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
