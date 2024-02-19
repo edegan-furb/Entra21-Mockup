@@ -339,3 +339,25 @@ export async function deleteTask(taskId) {
     throw new Error("Failed to delete task.");
   }
 }
+
+// Function to check with all Task's Objectives are completed
+export async function ObjectivesCompleted(taskId) {
+  // Reference to the subcollection 'objectives' under a specific parent document
+  const objectivesRef = collection(db, `tasks/${taskId}/objectives`);
+
+  // Create a query to retrieve all documents
+  const q = query(objectivesRef);
+
+  try {
+    // Execute query
+    const querySnapshot = await getDocs(q);
+
+    // Check if all objectives are completed
+    const allObjectivesCompleted = querySnapshot.docs.every(doc => doc.data().completed);
+
+    return allObjectivesCompleted;
+  } catch (error) {
+    console.error("Error getting documents: ", error);
+    return false;
+  }
+}

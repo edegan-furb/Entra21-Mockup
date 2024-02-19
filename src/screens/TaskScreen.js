@@ -15,6 +15,7 @@ import { getFormattedDate } from "../util/date";
 import {
   updateObjectiveStatus,
   updateTaskStatus,
+  ObjectivesCompleted,
 } from "../util/firebase/firestore/tasks";
 import {
   getEmailByUsername,
@@ -70,6 +71,8 @@ function TaskScreen({ route, navigation, user }) {
   }
 
   const isAdmin = foundMember && foundMember.admin === true;
+
+  const allObjectivesCompleted = selectTask.objectives.every(objective => objective.completed);
 
   useEffect(() => {
     if (!selectTask) {
@@ -154,8 +157,8 @@ function TaskScreen({ route, navigation, user }) {
 
   async function onChangeTaskCompletedStatusHandler() {
     try {
+      const allObjectivesCompleted = await ObjectivesCompleted(selectTask?.id)
       // Verifica se todos os objetivos estão concluídos
-      const allObjectivesCompleted = selectTask.objectives.every(objective => objective.completed);
       if (allObjectivesCompleted) {
         // Atualiza o status da tarefa no contexto de grupos
         groupsCtx.updateTaskStatus(selectTask.group, taskId);
