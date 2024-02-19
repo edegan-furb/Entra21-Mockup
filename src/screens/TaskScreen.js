@@ -42,10 +42,10 @@ function TaskScreen({ route, navigation, user }) {
   const alertConclutedObjectives = language === 'en' ? "This Task was not assigned to you." : 'Esta tarefa não foi atribuída a você.';
   const deleteTasktext = language === 'en' ? "Task Deleted!" : "Tarefa Deletada!";
   const deleteTaskSubText = language === 'en' ? "This task no longer exists." : "Esta tarefa não existe mais.";
-  const alertObjectivesStatus = language === 'en' ? 
-    "You can't change the status of objectives for a completed task." : 
+  const alertObjectivesStatus = language === 'en' ?
+    "You can't change the status of objectives for a completed task." :
     'Você não pode alterar o status dos objetivos de uma tarefa concluída.'
-  ;
+    ;
 
   let selectTask = null;
   let foundMember = null;
@@ -61,7 +61,7 @@ function TaskScreen({ route, navigation, user }) {
   }
 
   if (currentGroup) {
-    currentGroup.members?.forEach((member) => { 
+    currentGroup.members?.forEach((member) => {
       if (member.user === currentUser) {
         console.log(member)
         foundMember = member;
@@ -124,12 +124,12 @@ function TaskScreen({ route, navigation, user }) {
         Alert.alert(
           "Ops!",
           alertObjectivesStatus,
-          [{ text: "OK"}],
+          [{ text: "OK" }],
           { cancelable: false }
         );
         return;
       }
-  
+
       const email = await getEmailByUsername(selectTask.designatedUser);
       const designatedUser = await getUserIdByEmail(email);
       if (designatedUser === currentUser) {
@@ -166,7 +166,7 @@ function TaskScreen({ route, navigation, user }) {
         Alert.alert(
           'Ops!',
           alertConclutedTask,
-          [{ text: "OK"}],
+          [{ text: "OK" }],
           { cancelable: false }
         );
       }
@@ -177,7 +177,7 @@ function TaskScreen({ route, navigation, user }) {
     } catch (error) {
       setError("Could not update task status - please try again later");
     }
-  } 
+  }
 
   return (
     <View style={[styles.rootContainer, { backgroundColor: colors.background50 }]}>
@@ -187,7 +187,7 @@ function TaskScreen({ route, navigation, user }) {
             <View style={styles.dateContent}>
               <Ionicons name='person-outline' size={13} color={Colors.primary100} />
               <TranslatedText enText={'Desinated:'} ptText={'Designado:'} style={styles.designatedUserText} />
-              <Text style={styles.designatedUser} numberOfLines={1} ellipsizeMode="tail">{selectTask?.designatedUser}</Text>
+              <Text style={styles.designatedUser} numberOfLines={1} ellipsizeMode="tail">{selectTask?.designatedUser || <TranslatedText enText={'Non existing user'} ptText={'Usuário não existente'} />}</Text>
             </View>
             <View style={styles.dateContent}>
               <Ionicons name={selectTask?.completed ? 'checkmark-outline' : 'reload-outline'} size={13} color={Colors.primary100} />
