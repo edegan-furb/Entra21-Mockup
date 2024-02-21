@@ -22,7 +22,7 @@ function ManageTasksScreen({ navigation, route }) {
   const [error, setError] = useState();
   const { language } = useTheme();
 
-  const isEditing = !!editedTaskId;
+  const isEditing = !editedTaskId;
   const editedTaskId = route.params?.editedTaskId;
   const groupId = route.params?.groupId;
   const previous = route.params?.previous;

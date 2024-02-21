@@ -407,7 +407,7 @@ export default TaskForm;
 const styles = StyleSheet.create({
   container: {
     width: wp('90%'),
-    height: hp('75%'),
+    height: hp('80%'),
     backgroundColor: Colors.primary900,
     borderRadius: 20,
     marginTop: "15%",
